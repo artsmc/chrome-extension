@@ -1,0 +1,50 @@
+/* extension/styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+#popup-container {
+    width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.message-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.message-body {
+    margin-bottom: 10px;
+}
+
+.message-response {
+    color: #888;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007c92;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #005f70;
+}
