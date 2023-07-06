@@ -1,5 +1,5 @@
 {
-  "name": "ng-tldl-blog",
+  "name": "phoneangel-chrome-extension",
   "version": "0.5.0",
   "description": "A default scafolding for building Backend APIs with Angular 7 front-end.",
   "main": "index.js",
@@ -50,6 +50,7 @@
     "@types/socket.io": "^2.1.13",
     "@types/tokgen": "^1.0.1",
     "@xrip/cachegoose": "github:xrip/cachegoose",
+    "@zendeskgarden/stylelint-config": "^19.0.0",
     "aws-sdk": "^2.711.0",
     "aws-transcription-to-srt": "^1.0.5",
     "aws-transcription-to-vtt": "^1.0.3",

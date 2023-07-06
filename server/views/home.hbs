@@ -1,0 +1,354 @@
+
+<div class="lazy" data-aos="fade-up">
+  <div class="wrapper">
+    <div class="hero-container">
+      <div class="row">
+        <div class="split-content ">
+          <div class='form'>
+            <h1>Automatically Create Show Notes</h1>
+            <form class="onboard" id="email-form" name="email-form" method="post" onsubmit="javascript:validateForm(event);" class="form-2">
+              <div class="field">
+                <input type="text" class="text-field cta-field w-input" maxlength="256" name="podcast" data-name="podcast"
+                  placeholder="Podcast" id="podcast"><br>
+              </div>
+              <div class="field">
+                <input type="email" class="text-field cta-field w-input" maxlength="256" name="form_email" data-name="form_email"
+                  placeholder="Email Address" id="form_email" required=""><br>
+              </div>
+              <div class="field">
+                <div class="div-block-2">
+                  <div class="text-block">Agency or Podcaster</div>
+                  <div class="div-block-13"><label class="radio-button option w-radio" onclick="change(event)"><input type="radio"
+                        data-name="is-agency" id="is-agency" name="is-agency" value="true"
+                        class="w-form-formradioinput w-radio-input"><span for="is-agency"
+                        class="radio-button-label w-form-label">Agency</span></label><label class="radio-button option w-radio active"
+                      onclick="change(event)"><input type="radio" value="false" data-name="is-agency" id="is-agency-2" name="is-agency"
+                        class="w-form-formradioinput w-radio-input"><span for="is-agency"
+                        class="radio-button-label-2 w-form-label">Podcaster</span></label></div>
+                </div>
+              </div>
+              <div class="input-group"></div>
+              <button type="submit" class="btn submit" onclick="validateForm(event);">
+                Sign Up
+              </button>
+            </form>
+            <div class="w-form-loading">
+              <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class='response'>
+                <p>Sending your data</p>
+              </div>
+            </div>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>
+                <p>Oops! Something went wrong while submitting the form.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="split-content main base">
+          <div class="highlighted-content">
+            <h1>Prelaunch</h1>
+            <div class="content"><p>We had over 120 agencies and podcasters sign up for our beta. Lets get building!</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row cards">
+          <div class="stage stage-1 active" data-completion="100%" data-source="stage1">
+            <h3>Stage 1 <span>Prelaunch</span></h3>
+            <h4>April 4th-30th</h4>
+            <p>Get validation through sign-ups and chats.</p>
+            <br>
+            <p class="purple"><strong>We had over 120 agencies and podcasters sign up for our beta. Lets get building!</strong></p>
+          </div>
+          <div class="stage not-active" data-completion="10%" data-source="stage2">
+            <h3>Stage 2 <span>The Build</span></h3>
+            <h4>4-5 months</h4>
+            <p>Build the initial MVP
+            for testing by the prelaunch users.</p>
+          </div>
+          <div class="stage not-active" data-completion="On Going" data-source="stage3">
+            <h3>Stage 3 <span>Education</span></h3>
+            <h4>May 11th</h4>
+            <p>We have launched a YouTube Page to help educate podcasters.</p>
+          </div>
+          <div class="stage not-active" data-completion="On Going" data-source="stage4">
+            <h3>Stage 4 <span>Alpha</span></h3>
+            <h4>May 1st-Oct</h4>
+            <p>Validate the user experience and application flow with early adopters.</p>
+          </div>
+          <div>
+          </div>
+        </div>
+      </div>
+</div>
+<div class="hero hero-section lazy" data-aos="fade-up">
+  <div class="w-container">
+    <div class="call">
+       
+    </div>
+  </div>
+</div>
+<div class="lazy">
+  <div class="call lazy">
+    <div class="w-container">
+      <div class="topic">
+        <h1 class="hero h1">Simple Pricing</h1>
+        <p>Our pricing structure is straight forward and transparent, you are charged for length of your podcast. And if you are an
+        agency you will have the opportunity for better rates depending on the total amount of podcast time you manage monthly.</p>
+      </div>
+      <div class="step" data-aos="fade-up">
+        <div class="calc step-right">
+          <div class="calc step-content">
+            <h3 class="heading-2 step-head">Check your current spending against our pricing</h3>
+            <div class="calculator">
+              <div class="form-container">
+                <form  class="form-calculate">
+                  <div class="form-wrapper">
+                    <div class="form-group"  data-aos="fade-up">
+                      <label>Average time of your podcast</label>
+                      <div class="selection-group" data-for="avgTime" data-selection="20">
+                        <button class="btn calc-btn active" data-value="30">30 min</button>
+                        <button class="btn calc-btn" data-value="40">40 min</button>
+                        <button class="btn calc-btn" data-value="60">60 min</button>
+                        <button class="btn calc-btn" data-value="90">90 min</button>
+                      </div>
+                    </div>
+                    <div class="form-group"  data-aos="fade-up">
+                      <label>AI or human transcription</label>
+                      <div class="selection-group" data-for="isHuman" data-selection="ai">
+                        <button class="btn calc-btn" data-value="human">Human</button>
+                        <button class="btn calc-btn active" data-value="ai">A.I</button>
+                      </div>
+                    </div>
+                    <div class="form-group"  data-aos="fade-up">
+                      <label>Average hourly cost of your VA</label>
+                      <div class="selection-group" data-for="cost" data-selection="10">
+                        <button class="btn calc-btn" data-value="6">$6/hr</button>
+                        <button class="btn calc-btn" data-value="8">$8/hr</button>
+                        <button class="btn calc-btn active" data-value="10">$10/hr</button>  
+                        <button class="btn calc-btn" data-value="myself">I do it myself</button>
+                      </div>
+                    </div>
+                    <div class="form-group hidden cost"  data-aos="fade-up">
+                      <label>What's your time worth</label>
+                      <div class="split-input">
+                        <div class="range">
+                          <input type="range" name="points" step="5" min="15" max="200" value="15">
+                        </div>
+                        <div class="range-output"><h4 class="thin">$<span class="react">50</span>/hour</h4></div>
+                      </div>
+                    </div>
+                    <div class="form-group"  data-aos="fade-up">
+                      <label>Number of podcast per month</label>
+                      <div class="selection-group" data-for="podcastCount" data-selection="4">
+                        <button class="btn calc-btn" data-value="1">1 podcast</button>
+                        <button class="btn calc-btn" data-value="2">2 podcast</button> 
+                        <button class="btn calc-btn" data-value="3">3 podcast</button>
+                        <button class="btn calc-btn active" data-value="4">4 podcast</button>
+                      </div>
+                    </div>
+                    <div class="finalize">
+                      <button type="submit" class="sign-up-btn w-button" data-wait="Please wait..." 
+                        onclick="calculateForm(event);">Calculate</button>
+                    </div><br>
+                    <div class="results hidden"  data-aos="fade-up">
+                      <p>We provide both the transcription and the show notes, cutting the cost of your Virtual Assistant by 50%.<br>
+                      You can furthur optimize the service by just using the automation process without a VA.</p>
+                      <div class="monthly-wrapper">
+                        <div class="monthly">
+                          <div class="left"><h2 class="thin">$<span class="your"></span>/mo</h2></div>
+                          <div class="right">
+                            <h2 class="thin">$<span class="our"></span>/mo</h2>
+                          </div>
+                        </div>
+                      </div><br>
+                      <div class="action-step"  data-aos="fade-up">
+                        <div class="div-block-6"><a href="#" class="link button" onclick="topScroll()">Sign up</a></div><br>
+                        <div class="offer"><p>It’s time to get off the fence, we are offering you one month free up to 4 podcasts as an early adopter.</p></div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div><!--fomr-container-->
+            </div><!--calculator-->
+          </div>
+        </div>
+        <div class="image-step left">
+          <div class="clip-image">
+            <img class="scaled" src="images/simple-pricing.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lazy">
+  <div class="call lazy">
+    <div class="w-container">
+      <div class="topic">
+        <h1 class="hero h1">Automated Show Notes</h1>
+        <p class="hero p">Automatically generate show notes for your podcast in just minutes for a fraction of the cost
+          of a Virtual Assistant or Marketing Agency.</p>
+      </div>
+      <div class="step" data-aos="fade-up">
+        <div class="step-right">
+          <div class="step-content">
+            <h3 class="heading-2 step-head">Step 1</h3>
+            <h4 class="heading-3">Upload Your Audio</h4>
+            <div class="text-block-2">So, you got your podcast audio recorded - awesome! Now all you need to do is
+              upload it into our platform and let Mr. Wilde do all the work.</div>
+            <div class="list">
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Upload any .mp3 file in just seconds</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Have several episodes? Upload them all at once</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Grant your team access with limited permissions</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="image-step left">
+          <div class="clip-image">
+            <img class="scaled" src="images/upload-file.png">
+          </div>
+          {{!-- <div class="vid-contents">
+            <div class="video-hero jquery-background-video-wrapper demo-video-wrapper">
+              <video class="jquery-background-video" playsinline autoplay muted loop poster="images/upload-poster.png">
+                <source src="vids/upload.webm" type="video/webm">
+                <source src="vids/upload.mp4" type="video/mp4">
+              </video>
+              <div class="video-overlay"></div>
+            </div>
+          </div> --}}
+        </div>
+      </div>
+      <div class="step" data-aos="fade-up">
+        <div class="image-step right">
+          <div class="clip-image">
+            <img class="scaled" src="images/review-transcript.png">
+          </div>
+        </div>
+        <div class="step-left">
+          <div class="step-content">
+            <h3 class="heading-2 step-head">Step 2</h3>
+            <h4 class="heading-3">Review Your Transcript</h4>
+            <div class="text-block-2">Choose from our automated transcription service or opt for a 99% accurate
+              hand-typed transcription for an additional fee.</div>
+            <div class="list">
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">FREE automated transcript of your podcast</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Use your transcript on your blog for increased SEO</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Identify important parts and get more meaningful show notes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step" data-aos="fade-up">
+        <div class="image-step left">
+          <div class="clip-image">
+            <img class="scaled" src="images/finalize-notes.png">
+          </div>
+        </div>
+        <div class="step-right">
+          <div class="step-content">
+            <h3 class="heading-2 step-head">Step 3</h3>
+            <h4 class="heading-3">Finalize Your Show Notes</h4>
+            <div class="text-block-2">Automatically generate show notes for your podcast in just minutes for a fraction
+              of the cost of a Virtual Assistant or marketing agency.</div>
+            <div class="list">
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Make any final tweaks to your podcast summary</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Apply any formatting with our WYSIWYG editor</p>
+              </div>
+              <div class="list-item"><img src="images/check.svg" alt="" class="image">
+                <p class="paragraph">Export your show notes in .doc, .csv, or .txt</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lazy">
+  <div class="contain-cta lazy" data-aos="fade-up">
+    <div class="container-2 w-container">
+      <div class="div-block-5">
+        <h2 class="heading-4">Stop Paying So Much For a Virtual Assistant</h2>
+        <p class="paragraph-2">Get your show notes created in a matter of minutes for a <strong class="bold-text">
+            fraction of the cost</strong> of your VA</p>
+      </div>
+      <div class="div-block-6"><a href="#" class="link button"  onclick="topScroll()">Sign up</a></div>
+    </div>
+  </div>
+</div>
+<div class="lazy" data-aos="fade-up">
+  <div class="call lazy">
+    <div class="container w-container">
+      <h1 class="heading-5">All The Key Components of Podcast Show Notes Done-For-You</h1>
+      <div class="div-block-7" data-aos="fade-up">
+        <div class="text-block-3">Our show notes formula focuses on the<span class="highlight"> 3 most important
+          </span>elements of great show notes to engage your audience, highlight the core topics, and present your
+          Call-to-Action&#x27;s so that you can get your audience to the place you want. <br><strong>But we didn&#x27;t
+            stop there...</strong></div>
+      </div>
+      <div class="div-block-8" data-aos="fade-up">
+        <div class="columns-3 w-row">
+          <div class="column-4 w-col w-col-6">
+            <div>
+              <ul class="w-list-unstyled features">
+                <li class="active" data-source="summary">
+                  <h3 class="heading-6"><span>01.</span> Episode Summary</h3>
+                </li>
+                <li class="not-active" data-source="keypoints">
+                  <h3 class="heading-6"><span>02.</span> Key Points</h3>
+                </li>
+                <li class="not-active" data-source="keywords">
+                  <h3 class="heading-6"><span>03.</span> Keywords</h3>
+                </li>
+                <li class="not-active" data-source="blog">
+                  <h3 class="heading-6"><span>04.</span> Blog Ready</h3>
+                </li>
+                <li class="not-active" data-source="cta">
+                  <h3 class="heading-6"><span>05.</span> Call-to-Actions</h3>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="column-5 w-col w-col-6">
+            <div class="div-block-9">
+              <div>
+                <div style="padding-top:56.27659574468085%" class="video w-video w-embed">
+                    <iframe src="https://player.vimeo.com/video/403184909?autopause=0&background=1&autoplay=1&muted=1&loop=1" width="640" height="360" scrolling="no" frameborder="0"
+                      allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+                <div class="video-p">
+                <p class="paragraph-3">After the audio itself, one of the most important aspects of a podcast episode is the episode summary that you create.
+                The summary tells potential listeners what they can expect when they click the play button. Instead of spending your
+                precious time or paying someone writing these out, let Melville do it for you.</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

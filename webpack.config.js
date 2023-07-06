@@ -1,4 +1,3 @@
-require('sqreen');
 const dotenv = require('dotenv');
 var fs = require('fs');
 var webpack = require('webpack');
@@ -155,10 +154,6 @@ const config = smp.wrap({
   plugins: [
     new CopyPlugin({
       patterns: [
-        {
-          from: './sqreen.json',
-          to: './sqreen.json',
-        },
         {
           from: './server/public',
           to: './public/',
