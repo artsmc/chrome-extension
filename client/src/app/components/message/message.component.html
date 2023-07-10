@@ -7,11 +7,11 @@
         <div class="btn-group" dropdown>
           <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                   aria-controls="dropdown-basic">
-            Select <span class="caret"></span>
+            Tone <span class="caret"></span>
           </button>
           <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
               role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="#">Tone</a></li>
             <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
             <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
             <li class="divider dropdown-divider"></li>
@@ -21,39 +21,15 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3">
-        <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
-                  aria-controls="dropdown-basic">
-            Select <span class="caret"></span>
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-              role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-            <li class="divider dropdown-divider"></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-            </li>
-          </ul>
+        <div class="d-flex justify-content-center">
+          <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Character limit">
         </div>
       </div>
     </div>
     <div class="col-md-12 d-flex mt-4 text-center">
       <div class="col-xs-3 col-sm-3">
-        <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
-                  aria-controls="dropdown-basic">
-            Select <span class="caret"></span>
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-              role="menu" aria-labelledby="button-basic">
-            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-            <li class="divider dropdown-divider"></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-            </li>
-          </ul>
+        <div class="d-flex justify-content-center">
+          <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Emoji Allowed">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3">
@@ -87,22 +63,66 @@
       </div>
     </div>
   </div>
+
+  <!--Add agent-->
+
+  <div class="message-container">
+    <h2 class="text-center col-md-6">Add Agent</h2>
+    <div class="row">
+      <div class="col-md-12 d-flex text-center">
+        <div class="col-xs-6 col-sm-6">
+          <div class="d-flex justify-content-center">
+            <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Company #">
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-md-12 d-flex mt-4 text-center">
+        <div class="col-xs-6 col-sm-6">
+          <div class="d-flex justify-content-center">
+            <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email Address">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 d-flex mt-4 text-center">
+        <div class="col-xs-6 col-sm-6">
+          <div class="d-flex justify-content-center">
+            <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Agent Name">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 d-flex text-center">
+        <div class="col-xs-6 col-sm-6 mt-3">
+          <button type="button" class="btn btn-danger">
+            Sign up
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Login-->
+
+    <div class="message-container">
+      <h2 class="text-center col-md-6">Login</h2>
+      <div class="row">
+        <div class="col-md-12 d-flex text-center">
+          <div class="col-xs-6 col-sm-6">
+            <div class="d-flex justify-content-center">
+              <input type="email" class="form-control max-width-250" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email Address">
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-md-12 d-flex text-center">
+          <div class="col-xs-6 col-sm-6 mt-3">
+            <button type="button" class="btn btn-danger">
+              Login with Magic Link
+            </button>
+          </div>
+        </div>
+      </div>
+
   
-  <!-- <div class="btn-group" dropdown>
-    <button id="button-basic" dropdownToggle type="button" class="btn btn-light dropdown-toggle"
-            aria-controls="dropdown-basic">
-      Select <span class="caret"></span>
-    </button>
-    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-        role="menu" aria-labelledby="button-basic">
-      <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-      <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-      <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-      <li class="divider dropdown-divider"></li>
-      <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-      </li>
-    </ul>
-  </div> -->
   <!-- <div class="message-content">
     <p>{{ message?.content }}</p>
   </div>
