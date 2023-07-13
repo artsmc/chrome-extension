@@ -1,128 +1,114 @@
 import * as Tokgen from 'tokgen';
 import * as rp from 'request-promise';
 import * as Parser from 'rss-parser';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as aws from 'aws-sdk';
 import * as slug from 'slug';
-import { IUsers } from './../interfaces/user.interface';
-import { UserModel } from './../models/user.model';
+import { awsOpts } from './../_config/config';
+import { UserModel } from '../models/user.model';
 
 const parser = new Parser();
+const token = (size?: number) => {
+  const generator = new Tokgen({ chars: '0-9a-f', length: size || 12 });
+  return generator.generate();
+};
 export class UtilController {
-  constructor() {}
+  constructor() { }
   public token(size?: number): string {
     const generator = new Tokgen({ chars: '0-9a-f', length: size || 12 });
     return generator.generate();
-  }
-  async parseRSS(linkUrl: string) {
-    const request = await parser.parseURL(linkUrl);
-    const {items, feedUrl, paginationLinks, generator, link, language, copyright, lastBuildDate, ...feed} = request;
-    return feed;
-  }
-
-  public getUserByEmail(email: string) {
-    const user  = new Promise((resolve, reject) => {
-        UserModel.findOne({email, is_active: true}).populate('roles').then((result) => {
-          const userObj = result.toObject();
-          const {ip, country_name, region_name, loginCount, pending_new_email, city, latitude, longitude,  ...returnUser} = userObj;
-          resolve(returnUser);
-        }).catch(err => {
-          reject(err);
-        });
-      });
-    return user;
-  }
-  public getUserById(_id: string) {
-    const user  = new Promise((resolve, reject) => {
-        UserModel.findOne({_id, is_active: true}).populate('roles').then((result) => {
-          const userObj = result.toObject();
-          const {ip, country_name, region_name, loginCount, city, latitude, longitude,  ...returnUser} = userObj;
-          resolve(returnUser);
-        }).catch(err => {
-          reject(err);
-        });
-      });
-    return user;
-  }
-
-  public renderUA(ua: any) {
-    const returnUA = {};
-    if (ua['browser']['name']) {
-      returnUA[
-        'browser'
-      ] = `${ua['browser']['name']} Version: ${ua['browser']['version']}`;
-    }
-    if (ua['os']['name']) {
-      returnUA[
-        'system'
-      ] = `${ua['os']['name']} Version: ${ua['os']['version']}`;
-    }
-    if (ua['device']['name']) {
-      returnUA[
-        'device'
-      ] = `${ua['device']['vendor']} Model: ${ua['device']['model']} Type: ${ua['device']['type']}`;
-    }
-    return returnUA;
   }
 
   public async doAsyncWith(callback) {
     const cb = await callback();
     return cb;
   }
-  public async getUser(userID: string) {
-    const user  = await this.findUserByID(userID);
-    return user;
+  public timePromise(timeout, callback) {
+    return new Promise((resolve, reject) => {
+        // Set up the timeout
+        const timer = setTimeout(() => {
+            reject(new Error(`Promise timed out after ${timeout} ms`));
+        }, timeout);
+
+        // Set up the real work
+        callback(
+            (value) => {
+                clearTimeout(timer);
+                resolve(value);
+            },
+            (error) => {
+                clearTimeout(timer);
+                reject(error);
+            }
+        );
+    });
+}
+public async timeAsyncPromise(timeout, callback) {
+    return new Promise(async (resolve, reject) => {
+        // Set up the timeout
+        const timer = setTimeout(() => {
+            reject(new Error(`Promise timed out after ${timeout} ms`));
+        }, timeout);
+
+        // Set up the real work
+        callback(
+            async(value) => {
+                clearTimeout(timer);
+                resolve(value);
+            },
+            async(error) => {
+                clearTimeout(timer);
+                reject(error);
+            }
+        );
+    });
   }
 
-  public renameKey (object, key, newKey) {
+  public renameKey(object, key, newKey) {
     const clonedObj = this.clone(object);
     const targetKey = clonedObj[key];
     delete clonedObj[key];
     clonedObj[newKey] = targetKey;
     return clonedObj;
   }
-  public async findEmailChangeByKey(key) {
-    return new Promise((resolve, reject) => {
-        const findQuery =  {
-          'pending_new_email.key': key,
-          'pending_new_email.pending': true,
-          is_active: true
-        };
-        UserModel.findOne(findQuery, (err, user) => {
-            if (err) {
-              console.log({err});
-              reject({err});
-            } else {
-              resolve({user});
-            }
-        });
-      });
+  public delay(callback, time: number) {
+    setTimeout(() => {
+      console.log(this.token(5), 'starting');
+      callback();
+    }, time || 0);
+  }
+  public transform(value: number, format: string = 'HH:MM:SS'): string {
+    const milToSec = Math.floor(value * .001);
+    const secNum = parseInt(milToSec.toString(), 10); // don't forget the second param
+    let hours: number | string = Math.floor(secNum / 3600);
+    let minutes: number | string = Math.floor((secNum - (hours * 3600)) / 60);
+    let seconds: number | string = secNum - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours = '0' + hours; }
+    if (minutes < 10) { minutes = '0' + minutes; }
+    if (seconds < 10) { seconds = '0' + seconds; }
+    return hours + ':' + minutes + ':' + seconds;
   }
   private clone(obj) {
-    return {...obj};
+    return { ...obj };
   }
-  private async findUserByID(userID): Promise<IUsers> {
-    return new Promise((resolve, reject) => {
-        UserModel.findOne({_id: userID, is_active: true}, {lean: true, email: 1, roles: 1, firstExp: 1}).populate('roles').then((result) => {
-          resolve(result);
-        }).catch(err => {
-          reject(err);
-        });
-      });
-  }
-  private imageMIMEType(base64String): string {
-    const strings = base64String.split(',');
-    let extension = 'jpeg';
-    switch (strings[0]) {
-        case 'data:image/jpeg;base64':
-            extension = 'jpeg';
-            break;
-        case 'data:image/png;base64':
-            extension = 'png';
-            break;
-        default:
-            extension = 'jpeg';
-            break;
+  public updateAtIndex(source: any[], content: { index: number, change: string; }): any[] {
+    if (content.index > source.length) {
+      source.push(content.change);
     }
-    return extension;
+    const newUpdate = source.map((text, i) => {
+      // console.log(speaker._id === id, speaker._id.toString(), id);
+      if (i === content.index) {
+        text = content.change;
+      }
+      return text;
+    });
+    return newUpdate;
+  }
+  public removeAtIndex(source: any[], index: number): any[] {
+    source.splice(index, 1);
+    return source;
   }
 }
+

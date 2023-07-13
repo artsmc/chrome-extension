@@ -2,8 +2,6 @@ import * as Boom from 'boom';
 
 import { Request, Response, Router } from 'express';
 
-import { IUsers } from './../interfaces/user.interface';
-import { authController } from './../controllers/auth.controller';
 import { middlewareController } from '../controllers/middlware.controller';
 import { userController } from './../controllers/user.controller';
 
@@ -48,32 +46,5 @@ router.get('/email-change-status', middlewareController.isAuth, middlewareContro
   const status = userController.emailStatus(req.body.user);
   res.status(200).json(status);
 });
-router.post('/reset-password', middlewareController.isValidEmail, (req: Request, res: Response) => {
-  authController.forgotPassword(req.body.user)
-  .then(() => {
-    res.status(200).json('ok');
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(400).json(error);
-  });
-});
-router.post('/set-password/verify', middlewareController.validtokenKey, middlewareController.isAuth, (req: Request, res: Response) => {
-  authController.oneTimeCode(req.body.decode).then(token => {
-    res.status(200).json(token);
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(400).json(error);
-  });
-});
-router.post('/set-password', middlewareController.isAuth, middlewareController.validPassword, (req: Request, res: Response) => {
-  userController.setPassword(req.body).then(complete => {
-    res.status(200).json(complete);
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(400).json(error);
-  });
-});
+
 export const UserRouter: Router = router;
