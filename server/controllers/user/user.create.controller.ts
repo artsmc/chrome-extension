@@ -1,6 +1,7 @@
-import { UtilController } from "../../../../controllers/util.controller";
 import { IUsers } from "../../interfaces/user.interface";
 import { UserModel } from "../../models/user.model";
+import { UtilController } from "../util.controller";
+
 
 
 export class UserCreateController extends UtilController {
@@ -18,9 +19,10 @@ export class UserCreateController extends UtilController {
                         ...body,
                         token: this.token(7),
                     });
-                    newDoc.save(function (err) {
-                        if (err) { reject(err); }
+                    newDoc.save().then((user) => {
                         resolve(newDoc);
+                    }).catch((err) => {
+                        reject(err);
                     });
                 }
             });
@@ -32,9 +34,10 @@ export class UserCreateController extends UtilController {
                 ...body,
                 token: this.token(7),
             });
-            newDoc.save(function (err) {
-                if (err) { reject(err); }
+            newDoc.save().then((user) => {
                 resolve(newDoc);
+            }).catch((err) => {
+                reject(err);
             });
         });
     }

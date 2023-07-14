@@ -1,8 +1,8 @@
-import { UtilController } from "../../../../controllers/util.controller";
-import { UserModel } from "../../models/user.model";
+import { UtilController } from "../util.controller";
 
 
-export class UsersFindController extends UtilController {
+
+export class UsersFindController extends UtilController{
     constructor() {
         super();
     }

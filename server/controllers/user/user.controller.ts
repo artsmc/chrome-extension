@@ -1,6 +1,6 @@
 
-import { UtilController } from '../../../../controllers/util.controller';
 import { IUsers } from '../../interfaces/user.interface';
+import { UtilController } from '../util.controller';
 import { userCreateController } from './user.create.controller';
 import { usersFindController } from './user.find.controller';
 
