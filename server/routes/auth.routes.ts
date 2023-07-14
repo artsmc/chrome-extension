@@ -1,6 +1,7 @@
 
 import * as Boom from 'boom';
 import { Request, Response, Router } from 'express';
+// @ts-ignore
 import passport from "passport";
 import * as jwt from 'jsonwebtoken';
 import { magicLogin } from '../controllers/auth.controller';
@@ -42,6 +43,7 @@ router.get('/callback', (req: Request, res: Response, next) => {
     res.status(200).json(returnUser);
   })(req, res);
 });
+
 router.get('/test-auth', passAuth, (req: Request, res: Response) => {
   res.status(200).json({auth: true, jwtToken: req.body.authorization});
 });

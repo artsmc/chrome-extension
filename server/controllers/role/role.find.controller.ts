@@ -1,24 +1,10 @@
-import { IUsers } from "../../interfaces/user.interface";
-import { UserModel } from "../../models/user.model";
 import { UtilController } from "../util.controller";
 
 
 
-export class UsersFindController extends UtilController{
+export class RolesFindController extends UtilController{
     constructor() {
         super();
-    }
-    findById(body): Promise<IUsers> {
-        return new Promise(async (resolve, reject) => {
-            UserModel.findOne({ _id: body._id }, (err, user) => {
-                if (err) { reject(err); }
-                if (user) {
-                    resolve(user);
-                } else {
-                    reject('User not found');
-                }
-            });
-        });
     }
     findAll(body): Promise<any[]> {
         return new Promise(async (resolve, reject) => {
@@ -31,7 +17,7 @@ export class UsersFindController extends UtilController{
             };
             console.log(this.extendDefaults({ user: body.decode.user._id }, body.query));
             // @ts-ignore
-            UserModel.paginate(this.extendDefaults({ user: body.decode.user._id }, body.query), this.extendDefaults(options, body.options), (err: any, value) => {
+            RoleModel.paginate(this.extendDefaults({ user: body.decode.user._id }, body.query), this.extendDefaults(options, body.options), (err: any, value) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -51,4 +37,4 @@ export class UsersFindController extends UtilController{
     }
 
 }
-export const usersFindController = new UsersFindController();
+export const rolesFindController = new RolesFindController();

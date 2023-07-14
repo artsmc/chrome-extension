@@ -16,5 +16,5 @@ export const awsOpts = {
   secretAccessKey: process.env.AWS_SECRET,
   region: process.env.AWS_REGION,
 };
-export const jwtSecret = process.env.JWT_SECRET;
+export const jwtSecret = process.env.MAGIC_LINK_SECRET;
 

@@ -10,11 +10,21 @@ router.get('/test', (req: Request, res: Response) => {
   res.status(200).json({});
 });
 
-router.get('/my-account', middlewareController.isAuth, middlewareController.isValidUserId, (req: Request, res: Response) => {
-  console.log(req.body.user);
-  res.status(200).json(req.body.user);
+router.get('/my-account', middlewareController.isAuth,(req: Request, res: Response) => {
+  console.log(req.body.decoded);
+  userController.findById(req.body.decoded).then((user: any) => {
+    res.status(200).json(user);
+  }).catch((err: any) => {
+    res.status(500).json(err);
+  });
 });
-
+router.post('/update-my-account', middlewareController.isAuth, middlewareController.isValidCompany, (req: Request, res: Response) => {
+  userController.update(req.body).then((user: any) => {
+    res.status(200).json(user);
+  }).catch((err: any) => {
+    res.status(500).json(err);
+  });
+});
 
 
 

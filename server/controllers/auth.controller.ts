@@ -1,4 +1,5 @@
 import MagicLoginStrategy from "passport-magic-login"
+// @ts-ignore
 import passport from "passport";
 import Mailgun = require('mailgun-js');
 import { userCreateController } from "./user/user.create.controller";
