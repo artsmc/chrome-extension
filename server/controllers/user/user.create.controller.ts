@@ -1,6 +1,7 @@
-import { UtilController } from "../../../../controllers/util.controller";
+
 import { IUsers } from "../../interfaces/user.interface";
 import { UserModel } from "../../models/user.model";
+import { UtilController } from "../util.controller";
 
 
 export class UserCreateController extends UtilController {
