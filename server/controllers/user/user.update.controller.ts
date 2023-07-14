@@ -9,6 +9,7 @@ export class UserUpdateController extends UtilController {
         super();
     }
     update(body): Promise<IUsers> {
+        console.log({update:body})
         return new Promise(async (resolve, reject) => {
             UserModel.findOneAndUpdate({ _id: body._id }, body, { new: true }).then((user) => {
                 resolve(user);

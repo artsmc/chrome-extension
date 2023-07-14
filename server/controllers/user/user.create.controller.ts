@@ -14,7 +14,8 @@ export class UserCreateController extends UtilController {
         return new Promise(async (resolve, reject) => {
             roleController.findOrCreate({ name: 'agent' }).then((role) => {
                 UserModel.findOne({ email: body.email }).then((user) => {
-                if (user && user._id) {
+                const resolveUser = user? user.toObject() : null;
+                if (resolveUser && resolveUser._id) {
                     resolve(user);
                 } else {
                     const newDoc = new UserModel({
