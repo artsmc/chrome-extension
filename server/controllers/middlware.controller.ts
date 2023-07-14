@@ -26,6 +26,7 @@ class MiddlewareController extends UtilController  {
               console.log(err);
                 return res.status(403).send(Boom.badRequest('invalid query', { auth: false, jwtToken: 'Token Expired' }));
             } else {
+              console.log(decoded);
               req.body.decode = decoded;
               next();
             }
@@ -39,7 +40,7 @@ class MiddlewareController extends UtilController  {
   isValidCompany (req: Request, res: Response, next: () => void) {
     companyController.findByName(req.body).then((company: any) => {
       if(company && company._id){
-          req.body.company = company;
+          req.body.company = company.toObject();
           next();
       } else {
         res.status(403).send(Boom.badRequest('invalid query', {

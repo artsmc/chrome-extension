@@ -10,13 +10,10 @@ export class UsersFindController extends UtilController{
     }
     findById(body): Promise<IUsers> {
         return new Promise(async (resolve, reject) => {
-            UserModel.findOne({ _id: body._id }, (err, user) => {
-                if (err) { reject(err); }
-                if (user) {
-                    resolve(user);
-                } else {
-                    reject('User not found');
-                }
+            UserModel.findOne({ _id: body.user._id }).then((user) => {
+               resolve(user);
+            }).catch((err) => {
+                reject(err);
             });
         });
     }

@@ -13,7 +13,8 @@ class UserController extends UtilController {
         return userCreateController.create(body);
     }
     update(body): Promise<IUsers> {
-        return userUpdateController.update({...body,company:body.company._id, _id: body.decoded._id});
+        console.log(body);
+        return userUpdateController.update({...body, company: body.company._id, _id: body.decode._id});
     }
     find(body): Promise<IUsers[]> {
         return usersFindController.findAll(body);
