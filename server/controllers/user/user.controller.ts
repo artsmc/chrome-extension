@@ -14,5 +14,8 @@ class UserController extends UtilController {
     find(body): Promise<IUsers[]> {
         return usersFindController.findAll(body);
     }
+    findById(body): Promise<IUsers> {
+        return usersFindController.findById(body);
+    }
 }
 export const userController = new UserController();

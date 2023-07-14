@@ -10,16 +10,12 @@ router.get('/test', (req: Request, res: Response) => {
   res.status(200).json({});
 });
 
-router.get('/my-account', middlewareController.isAuth,(req: Request, res: Response) => {
-  console.log(req.body.decoded);
-  userController.findById(req.body.decoded).then((user: any) => {
-    res.status(200).json(user);
-  }).catch((err: any) => {
-    res.status(500).json(err);
-  });
+router.post('/add-company', (req: Request, res: Response) => {
+  console.log(req.body.company);
+  res.status(200).json(req.body.comapny);
 });
 
 
 
 
-export const UserRouter: Router = router;
+export const CompanyRouter: Router = router;
