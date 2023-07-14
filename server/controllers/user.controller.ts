@@ -14,12 +14,11 @@ class UserController extends UtilController {
           UserModel.findByIdAndUpdate (
             { _id: user.decode.user._id},
             {password: hash, firstExp: false},
-            { new: true, useFindAndModify: false }, (error, result) => {
-              if (error) {
-                reject(error);
-              }
+            { new: true, useFindAndModify: false }).then(result => {
               console.log(user, user.decode.user._id, result);
               resolve(result);
+          }).catch(error => {
+            reject(error);
           });
       });
     });
@@ -36,12 +35,11 @@ class UserController extends UtilController {
           key: this.token(),
           email: body.email
         }},
-        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
-          if (error) {
+        { new: true, useFindAndModify: false }).then(result => {
+              resolve(result);
+          }).catch(error => {
             reject(error);
-          }
-          resolve(result);
-      });
+          });
     });
   }
   public updateUser(body) {
@@ -50,12 +48,11 @@ class UserController extends UtilController {
       UserModel.findByIdAndUpdate (
         { _id: body.decode.user._id},
         body,
-        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
-          if (error) {
+        { new: true, useFindAndModify: false }).then(result => {
+              resolve(result);
+          }).catch(error => {
             reject(error);
-          }
-          resolve(result);
-      });
+          });
     });
   }
   public updateUserEmail(body) {
@@ -66,12 +63,11 @@ class UserController extends UtilController {
           pending_new_email: {pending: false},
           email: body.decode.user.pending_new_email.email
         },
-        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
-          if (error) {
+        { new: true, useFindAndModify: false }).then(result => {
+              resolve(result);
+          }).catch(error => {
             reject(error);
-          }
-          resolve(result);
-      });
+          });
     });
   }
   public emailStatus(user) {
