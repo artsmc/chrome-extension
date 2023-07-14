@@ -1,11 +1,10 @@
 import * as Tokgen from 'tokgen';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { PodcastModel } from './../models/podcast.model';
-import { UserModel } from './../models/user.model';
 import { UtilController } from './util.controller';
 import { jwtSecret } from './../_config/config';
 import { userSchema } from '../schemas/user.schema';
+import { UserModel } from '../models/user.model';
 
 class UserController extends UtilController {
   public setPassword(user) {
@@ -37,7 +36,7 @@ class UserController extends UtilController {
           key: this.token(),
           email: body.email
         }},
-        { new: true, useFindAndModify: false }, (error, result) => {
+        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
           if (error) {
             reject(error);
           }
@@ -51,7 +50,7 @@ class UserController extends UtilController {
       UserModel.findByIdAndUpdate (
         { _id: body.decode.user._id},
         body,
-        { new: true, useFindAndModify: false }, (error, result) => {
+        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
           if (error) {
             reject(error);
           }
@@ -67,7 +66,7 @@ class UserController extends UtilController {
           pending_new_email: {pending: false},
           email: body.decode.user.pending_new_email.email
         },
-        { new: true, useFindAndModify: false }, (error, result) => {
+        { new: true, useFindAndModify: false }, (error: any, result: unknown) => {
           if (error) {
             reject(error);
           }
