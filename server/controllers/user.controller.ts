@@ -1,7 +1,6 @@
 import * as Tokgen from 'tokgen';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { UtilController } from './util.controller';
 import { jwtSecret } from './../_config/config';
 import { userSchema } from '../schemas/user.schema';
 import { UserModel } from '../models/user.model';
