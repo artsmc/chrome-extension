@@ -47,13 +47,17 @@ export class AddAgentComponent implements OnInit {
   private initializeAddAgentForm(): void {
     this.addAgentForm = this.fromBuilder.group({
       companyName: [null, Validators.required],
-      email: [null, Validators.compose([Validators.required, Validators.email])],
+      // email: [null, Validators.compose([Validators.required, Validators.email])],
       agentName: [null, Validators.required]
     })
   }
 
   public signup(): void {
     console.log(this.addAgentForm);
+    this.userService.updateUser(this.addAgentForm.value.agentName, this.addAgentForm.value.companyName).subscribe((res) => {
+      console.log(res);
+      
+    })
   }
 
 }

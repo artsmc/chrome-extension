@@ -18,17 +18,27 @@ export class ErrorInterceptor implements HttpInterceptor {
   // }
 
   constructor(private authenticationService: UserService) { }
-​
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(request).pipe(catchError(err => {
-            if ([401, 403].includes(err.status) && this.authenticationService.userValue) {
-                // auto logout if 401 or 403 response returned from api
-                this.authenticationService.logout();
-            }
-​
-            const error = (err && err.error && err.error.message) || err.statusText;
-            console.error(err);
-            return throwError(() => error);
-        }))
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('interceptor');
+    
+    let authReq = request.clone();
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const authHeader = `Bearer ${token}`;
+      authReq = authReq.clone({ setHeaders: { Authorization: authHeader } });
     }
+    return next.handle(authReq);
+    // return next.handle(request).pipe(catchError(err => {
+    //   if ([401, 403].includes(err.status) && this.authenticationService.userValue) {
+    //     // auto logout if 401 or 403 response returned from api
+    //     this.authenticationService.logout();
+    //   }
+
+    //   const error = (err && err.error && err.error.message) || err.statusText;
+    //   console.error(err);
+    //   return throwError(() => error);
+    // }))
+  }
 }

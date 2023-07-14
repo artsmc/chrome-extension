@@ -69,6 +69,18 @@ export class UserService {
       .post(url,  payload)
       .pipe(catchError(this.handleError));
   }
+
+  updateUser(agentName: string, companyName: string): Observable<any> {
+    const token = localStorage.getItem('token')
+    const url = `${this.baseUrl}/user/update-my-account`
+    const payload = {
+      agent : agentName,
+      company : companyName
+    }
+    return this.http
+      .post(url,  payload)
+      .pipe(catchError(this.handleError));
+  }
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');

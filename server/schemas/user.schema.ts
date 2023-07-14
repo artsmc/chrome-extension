@@ -36,9 +36,6 @@ userSchema.pre<any>('validate', function (next) {
   if (!this.created_at) {
     this.created_at = new Date().toISOString();
   }
-  if (!this.username) {
-    this.username = this.email;
-  }
   if (!this.is_active) {
     this.is_active = true;
   }
