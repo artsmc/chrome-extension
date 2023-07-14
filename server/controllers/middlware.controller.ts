@@ -38,12 +38,14 @@ class MiddlewareController extends UtilController  {
   }
   isValidCompany (req: Request, res: Response, next: () => void) {
     companyController.findByName(req.body).then((company: any) => {
-      !company? res.status(403).send(Boom.badRequest('invalid query', {
-            auth: false, jwtToken: 'your company is not listed.'
-        })) : () => {
+      if(company && company._id){
           req.body.company = company;
           next();
-        }
+      } else {
+        res.status(403).send(Boom.badRequest('invalid query', {
+            auth: false, jwtToken: 'your company is not listed.'
+        })) 
+      }
     }).catch((err: any) => {
         res.status(500).json(err);
     });

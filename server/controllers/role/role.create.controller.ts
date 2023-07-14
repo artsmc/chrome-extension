@@ -11,9 +11,8 @@ export class RoleCreateController extends UtilController {
     }
     findOrCreate(body): Promise<IRoles> {
         return new Promise(async (resolve, reject) => {
-            RoleModel.findOne({ name: body.name }, (err, role) => {
-                if (err) { reject(err); }
-                if (role) {
+            RoleModel.findOne({ name: body.name }).then((role) => {
+                if (role && role._id) {
                     resolve(role);
                 } else {
                     const newDoc = new RoleModel({
@@ -25,6 +24,8 @@ export class RoleCreateController extends UtilController {
                         reject(err);
                     });
                 }
+            }).catch((err) => {
+                reject(err)
             });
         });
     }
