@@ -1,5 +1,7 @@
 import { IUsers } from "../../interfaces/user.interface";
+import { RoleModel } from "../../models/roles.model";
 import { UserModel } from "../../models/user.model";
+import { roleController } from "../role/role.controller";
 import { UtilController } from "../util.controller";
 
 
@@ -10,13 +12,15 @@ export class UserCreateController extends UtilController {
     }
     findOrCreate(body): Promise<IUsers> {
         return new Promise(async (resolve, reject) => {
-            UserModel.findOne({ email: body.email }, (err, user) => {
+            roleController.findOrCreate({ name: 'agent' }).then((role) => {
+                UserModel.findOne({ email: body.email }, (err, user) => {
                 if (err) { reject(err); }
                 if (user) {
                     resolve(user);
                 } else {
                     const newDoc = new UserModel({
                         ...body,
+                        role: role._id,
                         token: this.token(7),
                     });
                     newDoc.save().then((user) => {
@@ -26,16 +30,24 @@ export class UserCreateController extends UtilController {
                     });
                 }
             });
+            }).catch((err) => {
+                reject(err);
+            });
         });
     }
     create(body): Promise<IUsers> {
         return new Promise(async (resolve, reject) => {
-            const newDoc = new UserModel({
-                ...body,
-                token: this.token(7),
-            });
-            newDoc.save().then((user) => {
-                resolve(newDoc);
+            roleController.findOrCreate({ name: 'agent' }).then((role) => {
+                const newDoc = new UserModel({
+                    ...body,
+                    role: role._id,
+                    token: this.token(7),
+                });
+                newDoc.save().then((user) => {
+                    resolve(newDoc);
+                }).catch((err) => {
+                    reject(err);
+                });
             }).catch((err) => {
                 reject(err);
             });

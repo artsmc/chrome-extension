@@ -12,6 +12,9 @@ class RoleController extends UtilController {
     create(body): Promise<IRoles> {
         return roleCreateController.create(body);
     }
+    findOrCreate(body): Promise<IRoles> {
+        return roleCreateController.findOrCreate(body);
+    }
     find(body): Promise<IUsers[]> {
         return rolesFindController.findAll(body);
     }
