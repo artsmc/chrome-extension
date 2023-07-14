@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddAgentComponent } from './components/add-agent/add-agent.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   // {
@@ -27,8 +27,9 @@ const routes: Routes = [
     import('./components/agent-reponse/agent-reponse.module').then((m) => m.AgentReponseModule)
   },
   // { path: '', component: AddAgentComponent },
-  { path: '', redirectTo: '/signup', pathMatch: 'full' },
-  { path: 'signup', component: AddAgentComponent }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent }
+  // { path: 'signup', component: AddAgentComponent }
   // { path: '', redirectTo: 'signup' },
 ];
 

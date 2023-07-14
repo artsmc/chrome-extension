@@ -10,6 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AgentReponseModule } from './components/agent-reponse/agent-reponse.module';
 import { AddAgentModule } from './components/add-agent/add-agent.module';
 import { LoginModule } from './components/login/login.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LoginModule } from './components/login/login.module';
     BsDropdownModule.forRoot(),
     AgentReponseModule,
     AddAgentModule,
-    LoginModule
+    LoginModule,
+    HttpClientModule
   ],
   providers: [ZendeskService],
   bootstrap: [AppComponent]
