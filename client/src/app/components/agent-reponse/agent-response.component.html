@@ -1,0 +1,69 @@
+<div class="message-container">
+    <h2 class="text-center col-md-6">Agent Response</h2>
+    <form [formGroup]="agentResponseForm">
+    <div class="row">
+        <div class="col-md-12 d-flex text-center">
+            <div class="col-xs-3 col-sm-3">
+                <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                        Tone <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem"><a class="dropdown-item" href="#">Tone</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <div class="d-flex justify-content-center">
+                    <input type="text" formControlName="charLimit" class="form-control max-width-250" id="charLimit"
+                        aria-describedby="Character Limit" placeholder="Character limit">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex mt-4 text-center">
+            <div class="col-xs-3 col-sm-3">
+                <div class="d-flex justify-content-center">
+                    <input type="text" formControlName="emoji" class="form-control max-width-250" id="emoji"
+                        aria-describedby="Emoji" placeholder="Emoji Allowed">
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
+                        aria-controls="dropdown-basic">
+                        Select <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex mt-4 text-center">
+            <div class="col-xs-6 col-sm-6">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex text-center">
+            <div class="col-xs-6 col-sm-6 mt-3">
+                <button type="button" class="btn btn-danger" (click)="generateResponse()">
+                    Generate Response
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>

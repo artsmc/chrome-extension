@@ -1,0 +1,44 @@
+<div class="message-container">
+    <h2 class="text-center col-md-6">Add Agent</h2>
+    <form [formGroup]="addAgentForm">
+    <div class="row">
+        <div class="col-md-12 d-flex text-center">
+            <div class="col-xs-6 col-sm-6">
+                <div class="d-flex justify-content-center">
+                    <input type="text" formControlName="companyName" class="form-control max-width-250" id="companyName"
+                        aria-describedby="Company Name" placeholder="Company #">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 d-flex mt-4 text-center">
+            <div class="col-xs-6 col-sm-6">
+                <div class="d-flex justify-content-center">
+                    <input type="email" formControlName="email" class="form-control max-width-250" id="email"
+                        aria-describedby="emailHelp" placeholder="Email Address">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex mt-4 text-center">
+            <div class="col-xs-6 col-sm-6">
+                <div class="d-flex justify-content-center">
+                    <input type="text" formControlName="agentName" class="form-control max-width-250" id="agentName"
+                        aria-describedby="Agent Name" placeholder="Agent Name">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex text-center">
+            <div class="col-xs-6 col-sm-6 mt-3">
+                <button type="button" class="btn btn-danger" (click)="signup()">
+                    Sign up
+                </button>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex text-end">
+            <div class="col-xs-6 col-sm-6 mt-3">
+            <a class="loginLink" routerLink="/login">Login</a>
+        </div>
+        </div>
+    </div>
+</form>
+</div>
