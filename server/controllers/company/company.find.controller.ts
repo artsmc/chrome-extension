@@ -11,7 +11,7 @@ export class CompanyFindController extends UtilController{
     findByName(body): Promise<ICompanies> {
         return new Promise(async (resolve, reject) => {
             CompanyModel.findOne({ name: body.company }).then((company) => {
-                resolve(company);
+                resolve(company.toObject());
             }).catch((err) => {
                 reject(err);
             });
