@@ -30,9 +30,9 @@ export class RoleCreateController extends UtilController {
     }
     create(body): Promise<IRoles> {
         return new Promise(async (resolve, reject) => {
+            console.log(body)
             const newDoc = new RoleModel({
-                ...body,
-                token: this.token(7),
+                ...body
             });
             newDoc.save().then((user) => {
                 resolve(newDoc);

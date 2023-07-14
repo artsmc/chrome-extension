@@ -11,7 +11,7 @@ router.get('/test', (req: Request, res: Response) => {
 });
 
 router.post('/add-role', (req: Request, res: Response) => {
-  roleController.create(req.body.role).then((role: any) => {
+  roleController.create(req.body).then((role: any) => {
     res.status(200).json(role);
   }).catch((err: any) => {
     res.status(500).json(err);

@@ -30,8 +30,7 @@ export class CompanyCreateController extends UtilController {
     create(body): Promise<ICompanies> {
         return new Promise(async (resolve, reject) => {
             const newDoc = new CompanyModel({
-                ...body,
-                token: this.token(7),
+                ...body
             });
             newDoc.save().then((user) => {
                 resolve(newDoc);
