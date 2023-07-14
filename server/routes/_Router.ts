@@ -1,7 +1,7 @@
 import * as rateLimit from 'express-rate-limit';
 import { Request, Response, Router } from 'express';
 import { AuthRouter } from './auth.routes';
-import { middlewareController } from '../controllers/middlware.controller';
+import { UserRouter } from './user.routes';
 
 // Assign router to the express.Router() instance
 const router: Router = Router();
@@ -30,6 +30,7 @@ router.get('/test', (req: Request, res: Response) => {
   res.status(200).json({});
 });
 router.use('/auth', APILimiter, AuthRouter);
+router.use('/user', APILimiter, UserRouter);
 
 
 export const ExpressRouter: Router = router;
