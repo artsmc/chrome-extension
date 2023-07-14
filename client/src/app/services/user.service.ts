@@ -54,6 +54,12 @@ export class UserService {
   //     }));
   // }
 
+  authToken(): Observable<any> {
+    const token = localStorage.getItem('token')
+    const url = `${this.baseUrl}/auth/callback?token=${token}`
+    return this.http.get(url).pipe(catchError(this.handleError));
+  }
+
   login(email: string): Observable <any> {
     const url = `${this.baseUrl}/auth/magiclogin`;
     const payload = {

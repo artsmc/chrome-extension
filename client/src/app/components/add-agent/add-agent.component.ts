@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-add-agent',
@@ -15,7 +16,8 @@ export class AddAgentComponent implements OnInit {
   constructor(
     private fromBuilder: FormBuilder,
     private router: ActivatedRoute,
-    private route: Router
+    private route: Router,
+    private userService: UserService
   ) {
     this.router.queryParams
       .subscribe(params => {
@@ -26,6 +28,11 @@ export class AddAgentComponent implements OnInit {
         }
         if (token) {
           this.route.navigate(['/signup']);
+          this.userService.authToken().subscribe((res) => {
+            console.log(res.jwt);
+            localStorage.setItem('token', res.jwt)
+            
+          })
         }
       })
   }
