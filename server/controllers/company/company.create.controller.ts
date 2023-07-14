@@ -10,9 +10,8 @@ export class CompanyCreateController extends UtilController {
     }
     findOrCreate(body): Promise<ICompanies> {
         return new Promise(async (resolve, reject) => {
-            CompanyModel.findOne({ name: body.name }, (err, company) => {
-                if (err) { reject(err); }
-                if (company) {
+            CompanyModel.findOne({ name: body.name }).then((company) => {
+                if (company && company._id) {
                     resolve(company);
                 } else {
                     const newDoc = new CompanyModel({
@@ -24,6 +23,8 @@ export class CompanyCreateController extends UtilController {
                         reject(err);
                     });
                 }
+            }).catch((err) => {
+                reject(err);
             });
         });
     }

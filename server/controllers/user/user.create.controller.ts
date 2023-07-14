@@ -13,9 +13,8 @@ export class UserCreateController extends UtilController {
     findOrCreate(body): Promise<IUsers> {
         return new Promise(async (resolve, reject) => {
             roleController.findOrCreate({ name: 'agent' }).then((role) => {
-                UserModel.findOne({ email: body.email }, (err, user) => {
-                if (err) { reject(err); }
-                if (user) {
+                UserModel.findOne({ email: body.email }).then((user) => {
+                if (user && user._id) {
                     resolve(user);
                 } else {
                     const newDoc = new UserModel({
@@ -29,7 +28,9 @@ export class UserCreateController extends UtilController {
                         reject(err);
                     });
                 }
-            });
+                }).catch((err) => {
+                    reject(err);    
+                });
             }).catch((err) => {
                 reject(err);
             });

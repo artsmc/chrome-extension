@@ -10,7 +10,7 @@ export const magicLogin = new MagicLoginStrategy({
   // Used to encrypt the authentication token. Needs to be long, unique and (duh) secret.
   secret: process.env.MAGIC_LINK_SECRET,
   // The authentication callback URL
-  callbackUrl: "/login",
+  callbackUrl: "/signup",
 
   // Called with th e generated magic link so you can send it to the user
   // "destination" is what you POST-ed from the client
@@ -18,25 +18,25 @@ export const magicLogin = new MagicLoginStrategy({
   // for example "/auth/magiclogin/confirm?token=<longtoken>"
   sendMagicLink: async (destination, href) => {
     const data = {
-        from: 'Melville Admin <admin@melville.app>',
-        to: `${destination}`,
-        template: 'PodTitle-MagicLink',
-        'o:tracking-opens': 'yes',
-        'o:tag': ['PodTitle-MagicLink'],
-        'h:X-Mailgun-Variables': JSON.stringify({
-          ...{
-            siteUrl: process.env.API_HOST, ...{
-              email: destination,
-              authLink: `${process.env.URL}${href}`
-            }
+      from: 'Melville Admin <admin@melville.app>',
+      to: `${destination}`,
+      template: 'PodTitle-MagicLink',
+      'o:tracking-opens': 'yes',
+      'o:tag': ['PodTitle-MagicLink'],
+      'h:X-Mailgun-Variables': JSON.stringify({
+        ...{
+          siteUrl: process.env.API_HOST, ...{
+            email: destination,
+            authLink: `${process.env.URL}${href}`
           }
-        }),
-      };
-      mailgun.messages().send(data, (error, body) => {
-        if (error) {
-          console.log(error);
         }
-      });
+      }),
+    };
+    mailgun.messages().send(data, (error, body) => {
+      if (error) {
+        console.log(error);
+      }
+    });
   },
   // Once the user clicks on the magic link and verifies their login attempt,
   // you have to match their email to a user record in the database.
@@ -46,12 +46,12 @@ export const magicLogin = new MagicLoginStrategy({
   // and the user data as the second argument!
   verify: (payload, callback) => {
     // Get or create a user with the provided email from the database
-    userCreateController.findOrCreate({email:payload.destination})
+    userCreateController.findOrCreate({ email: payload.destination })
       .then(user => {
         callback(null, user);
       })
       .catch(err => {
-        console.log({verifyingError: err})
+        console.log({ verifyingError: err })
         callback(err)
       })
   },
