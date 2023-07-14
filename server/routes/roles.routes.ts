@@ -3,6 +3,7 @@ import * as Boom from 'boom';
 import { Request, Response, Router } from 'express';
 
 import { middlewareController } from '../controllers/middlware.controller';
+import { roleController } from '../controllers/role/role.controller';
 
 const router: Router = Router();
 router.get('/test', (req: Request, res: Response) => {
@@ -10,8 +11,11 @@ router.get('/test', (req: Request, res: Response) => {
 });
 
 router.post('/add-role', (req: Request, res: Response) => {
-  console.log(req.body.user);
-  res.status(200).json(req.body.comapny);
+  roleController.create(req.body.role).then((role: any) => {
+    res.status(200).json(role);
+  }).catch((err: any) => {
+    res.status(500).json(err);
+  });
 });
 
 

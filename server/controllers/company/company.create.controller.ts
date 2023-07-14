@@ -10,16 +10,15 @@ export class CompanyCreateController extends UtilController {
     }
     findOrCreate(body): Promise<ICompanies> {
         return new Promise(async (resolve, reject) => {
-            CompanyModel.findOne({ email: body.email }, (err, user) => {
+            CompanyModel.findOne({ name: body.name }, (err, company) => {
                 if (err) { reject(err); }
-                if (user) {
-                    resolve(user);
+                if (company) {
+                    resolve(company);
                 } else {
                     const newDoc = new CompanyModel({
-                        ...body,
-                        token: this.token(7),
+                        ...body
                     });
-                    newDoc.save().then((user) => {
+                    newDoc.save().then((company) => {
                         resolve(newDoc);
                     }).catch((err) => {
                         reject(err);

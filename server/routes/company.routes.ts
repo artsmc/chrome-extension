@@ -1,9 +1,6 @@
 import * as Boom from 'boom';
-
 import { Request, Response, Router } from 'express';
-
-import { middlewareController } from '../controllers/middlware.controller';
-import { userController } from '../controllers/user/user.controller';
+import { comapnyController } from '../controllers/company/company.controller';
 
 const router: Router = Router();
 router.get('/test', (req: Request, res: Response) => {
@@ -12,7 +9,11 @@ router.get('/test', (req: Request, res: Response) => {
 
 router.post('/add-company', (req: Request, res: Response) => {
   console.log(req.body.company);
-  res.status(200).json(req.body.comapny);
+  comapnyController.create(req.body.company).then((company: any) => {
+    res.status(200).json(company);
+  }).catch((err: any) => {
+    res.status(500).json(err);
+  });
 });
 
 

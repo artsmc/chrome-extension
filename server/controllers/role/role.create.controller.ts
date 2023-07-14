@@ -11,14 +11,13 @@ export class RoleCreateController extends UtilController {
     }
     findOrCreate(body): Promise<IRoles> {
         return new Promise(async (resolve, reject) => {
-            RoleModel.findOne({ email: body.email }, (err, user) => {
+            RoleModel.findOne({ name: body.name }, (err, role) => {
                 if (err) { reject(err); }
-                if (user) {
-                    resolve(user);
+                if (role) {
+                    resolve(role);
                 } else {
                     const newDoc = new RoleModel({
-                        ...body,
-                        token: this.token(7),
+                        ...body
                     });
                     newDoc.save().then((user) => {
                         resolve(newDoc);
