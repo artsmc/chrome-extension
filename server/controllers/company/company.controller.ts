@@ -14,5 +14,8 @@ class ComapnyController extends UtilController {
     find(body): Promise<ICompanies[]> {
         return companyFindController.findAll(body);
     }
+    findByName(body): Promise<ICompanies[]> {
+        return companyFindController.findByName(body);
+    }
 }
-export const comapnyController = new ComapnyController();
+export const companyController = new ComapnyController();

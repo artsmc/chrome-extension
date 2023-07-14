@@ -18,7 +18,13 @@ router.get('/my-account', middlewareController.isAuth,(req: Request, res: Respon
     res.status(500).json(err);
   });
 });
-
+router.post('/update-my-account', middlewareController.isAuth, middlewareController.isValidCompany, (req: Request, res: Response) => {
+  userController.update(req.body).then((user: any) => {
+    res.status(200).json(user);
+  }).catch((err: any) => {
+    res.status(500).json(err);
+  });
+});
 
 
 

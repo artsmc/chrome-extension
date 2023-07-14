@@ -3,6 +3,7 @@ import { IUsers } from '../../interfaces/user.interface';
 import { UtilController } from '../util.controller';
 import { userCreateController } from './user.create.controller';
 import { usersFindController } from './user.find.controller';
+import { userUpdateController } from './user.update.controller';
 
 class UserController extends UtilController {
     constructor() {
@@ -10,6 +11,9 @@ class UserController extends UtilController {
     }
     create(body): Promise<IUsers> {
         return userCreateController.create(body);
+    }
+    update(body): Promise<IUsers> {
+        return userUpdateController.update({...body,company:body.company._id, _id: body.decoded._id});
     }
     find(body): Promise<IUsers[]> {
         return usersFindController.findAll(body);

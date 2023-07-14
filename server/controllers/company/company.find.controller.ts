@@ -7,6 +7,15 @@ export class CompanyFindController extends UtilController{
     constructor() {
         super();
     }
+    findByName(body): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            CompanyModel.findOne({ name: body.name }).then((company) => {
+                resolve(company);
+            }).catch((err) => {
+                reject(err);
+            });
+        })
+    }
     findAll(body): Promise<any[]> {
         return new Promise(async (resolve, reject) => {
             const options = {
