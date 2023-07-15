@@ -56,7 +56,7 @@ export class AddAgentComponent implements OnInit {
     console.log(this.addAgentForm);
     this.userService.updateUser(this.addAgentForm.value.agentName, this.addAgentForm.value.companyName).subscribe((res) => {
       console.log(res);
-      
+      this.route.navigate(['/response'])
     })
   }
 
