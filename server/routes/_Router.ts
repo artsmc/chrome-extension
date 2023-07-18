@@ -4,6 +4,7 @@ import { AuthRouter } from './auth.routes';
 import { UserRouter } from './user.routes';
 import { CompanyRouter } from './company.routes';
 import { RolesRouter } from './roles.routes';
+import { ResponseRouter } from './reponse.routes';
 
 // Assign router to the express.Router() instance
 const router: Router = Router();
@@ -35,6 +36,7 @@ router.use('/auth', APILimiter, AuthRouter);
 router.use('/user', APILimiter, UserRouter);
 router.use('/company', APILimiter, CompanyRouter);
 router.use('/role', APILimiter, RolesRouter);
+router.use('/response', APILimiter, ResponseRouter);
 
 
 export const ExpressRouter: Router = router;
