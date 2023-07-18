@@ -13,7 +13,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, Subject, throwError } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IUserState } from '../shared/user';
 
 @Injectable({
@@ -26,18 +26,47 @@ export class UserService {
     'Access-Control-Allow-Origin': '*',
   });
 
-  private userSubject: BehaviorSubject<IUserState | null>;
-  public user: Observable<IUserState | null>;
+  private userSubject!: BehaviorSubject<IUserState | null>;
+  // public user: Observable<IUserState | null>;
   loggedIn$: ReplaySubject<boolean> = new ReplaySubject(1);
   constructor(
     public http: HttpClient,
-    private router: Router,
+    private route: Router,
+    private router: ActivatedRoute
   ) {
-    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
-    this.user = this.userSubject.asObservable();
+    
+    // this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('token')!));
+    // this.userSubject = new BehaviorSubject(localStorage.getItem('token'));
+    // this.user = this.userSubject.asObservable();
   }
-  public get userValue() {
-    return this.userSubject.value;
+
+  // private getUserData(): void {
+  //   this.router.queryParams
+  //     .subscribe(params => {
+  //       const queryParams = Object.values(params)
+  //       const token = queryParams[0]
+  //       if(token !== undefined){
+  //         localStorage.setItem('token', token)
+  //       }
+  //       if (token) {
+  //         this.route.navigate(['/signup']);
+  //         this.authToken().subscribe((res) => {
+  //           console.log(res.jwt);
+  //           localStorage.setItem('token', res)
+  //           this.setUserValue(res)
+            
+  //         })
+  //       }
+  //     })
+  // }
+
+  public getUserValue(): any {
+    // this.getUserData()
+    return this.userSubject;
+  }
+
+  public setUserValue(userData: IUserState) {
+    this.userSubject.next(userData);
   }
 
   public isLoggedIn(): ReplaySubject<boolean>{
@@ -81,11 +110,26 @@ export class UserService {
       .post(url,  payload)
       .pipe(catchError(this.handleError));
   }
+
+  setResponse(tone: string, emoji: string, charLimit: number, custInq: string): Observable<any> {
+    console.log('values', tone, emoji, charLimit, custInq);
+    
+    const url = `${this.baseUrl}/reponse/agent-request`
+    const payload = {
+      tone: tone,
+      emojiAllowed: emoji,
+      characterLimit: charLimit,
+      customerInquery: custInq
+    }
+    return this.http
+      .post(url,  payload)
+      .pipe(catchError(this.handleError));
+  }
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
     this.userSubject.next(null);
-    this.router.navigate(['/']);
+    this.route.navigate(['/']);
   }
 
 //   verifyEmail(email: string | null): Observable<string{

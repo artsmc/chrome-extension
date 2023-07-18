@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 export class AddAgentComponent implements OnInit {
   public addAgentForm!: FormGroup;
   private subscriptions: Subscription[] = [];
+  public submitted = false
+  public isAgentSection = true
 
   constructor(
     private fromBuilder: FormBuilder,
@@ -23,14 +25,17 @@ export class AddAgentComponent implements OnInit {
       .subscribe(params => {
         const queryParams = Object.values(params)
         const token = queryParams[0]
+        console.log(token);
+        
         if(token !== undefined){
           localStorage.setItem('token', token)
         }
         if (token) {
-          this.route.navigate(['/signup']);
           this.userService.authToken().subscribe((res) => {
             console.log(res.jwt);
             localStorage.setItem('token', res.jwt)
+            this.route.navigate(['/signup']);
+            this.userService.setUserValue(res)
             
           })
         }
@@ -44,18 +49,30 @@ export class AddAgentComponent implements OnInit {
       // }
   }
 
+  // convenience getter for easy access to form fields
+
+  get f() {
+    console.log(this.addAgentForm.controls);
+    
+    return this.addAgentForm.controls;
+  }
+
   private initializeAddAgentForm(): void {
     this.addAgentForm = this.fromBuilder.group({
-      companyName: [null, Validators.required],
+      companyName: ['', Validators.required],
       // email: [null, Validators.compose([Validators.required, Validators.email])],
       agentName: [null, Validators.required]
     })
   }
 
   public signup(): void {
-    console.log(this.addAgentForm);
+    this.submitted = true;
+    if (this.addAgentForm.invalid) {
+      return;
+    }
     this.userService.updateUser(this.addAgentForm.value.agentName, this.addAgentForm.value.companyName).subscribe((res) => {
-      console.log(res);
+    //   console.log(res);
+      this.isAgentSection = false
       this.route.navigate(['/response'])
     })
   }

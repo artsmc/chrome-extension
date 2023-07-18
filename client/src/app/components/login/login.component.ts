@@ -9,9 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
-  public isSuccess = false;
-  public isErr = false;
-  public submitted = false
+  public submitted = false;
+  public isLoginSection = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,29 +35,18 @@ export class LoginComponent implements OnInit {
   // convenience getter for easy access to form fields
 
   get f() {
-    console.log(this.loginForm.controls);
-    
     return this.loginForm.controls;
   }
 
   public login(): void {
-    console.log(this.loginForm);
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
     this.userService.login(this.loginForm.value.email).subscribe((res: any) => {
       console.log(res);
-      
+      this.isLoginSection = false
     })
-    // console.log(this.loginForm);
-    // if(this.loginForm.value.email === 'test@gmail.com') {
-    //   this.isSuccess = true;
-    //   this.isErr = false;
-    // } else {
-    //   this.isSuccess = false;
-    //   this.isErr = true
-    // }
   }
 
 }
