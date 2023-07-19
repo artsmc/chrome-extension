@@ -1,0 +1,69 @@
+<div class="message-container">
+    <ng-container *ngIf="isAgentSection">
+        <div class="col-md-12">
+            <h2 class="text-danger col-md-6 mb-4">Add Agent</h2>
+        </div>
+        <form [formGroup]="addAgentForm">
+            <div class="row">
+                <div class="col-md-12 d-flex text-center">
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <div class="d-flex justify-content-center">
+                            <input type="text" formControlName="companyName" class="form-control max-width-250"
+                                id="companyName" aria-describedby="Company Name" placeholder="Company #">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12 d-flex mt-4 text-center">
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <div class="d-flex justify-content-center">
+                            <input type="text" formControlName="agentName" class="form-control max-width-250"
+                                id="agentName" aria-describedby="Agent Name" placeholder="Agent Name">
+                        </div>
+                    </div>
+                </div>
+                <!--Error Company name-->
+                <div class="col-md-12 d-flex text-center mt-4">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
+                        <div *ngIf="f['companyName'].touched && f['companyName'].invalid" class="alert alert-danger">
+                            <div *ngIf="f['companyName'].errors && f['companyName'].errors['required']">Company Name is
+                                required.</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Error Agent name-->
+                <div class="col-md-12 d-flex text-center mt-4">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
+                        <div *ngIf="f['agentName'].touched && f['agentName'].invalid" class="alert alert-danger">
+                            <div *ngIf="f['agentName'].errors && f['agentName'].errors['required']">Agent Name is
+                                required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 col-xs-12 col-sm-12 mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger" (click)="signup()">
+                            Add Agent
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex text-end">
+                    <div class="col-md-12 col-xs-12 col-sm-12 mt-3">
+                        <a class="loginLink" routerLink="/login">Login</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-container *ngIf="!isAgentSection">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-danger col-md-6">Success</h2>
+            </div>
+            <div class="col-md-12 d-flex succ-text">
+                We sent you a welcome email to get started with QAScore.com
+            </div>
+        </div>
+    </ng-container>
+</div>

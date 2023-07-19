@@ -1,4 +1,19 @@
-<app-message></app-message>
+
+
+  
+<!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Click</button> -->
+<div class="offcanvas offcanvas-end offcanvas1 offcanvas-end1 justify-content-center d-flex" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <button class="btn btn-danger btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Click</button>
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!--Old Code-->
+<!-- <app-message></app-message>
 
 <div class="zendesk-garden">
   <h1>Welcome to the Zendesk Comment Extension</h1>
@@ -6,13 +21,13 @@
 
   <div class="message-container">
     <h2>Customer Message:</h2>
-    <!-- <p>{{ customerMessage }}</p> -->
+    <p>{{ customerMessage }}</p>
   </div>
 
   <div class="response-container">
     <h2>AI Response:</h2>
-    <!-- <p>{{ aiResponse }}</p> -->
+    <p>{{ aiResponse }}</p>
   </div>
 
-  <!-- <button (click)="sendResponse()">Send Response</button> -->
-</div>
+  <button (click)="sendResponse()">Send Response</button>
+</div> -->

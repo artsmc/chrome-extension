@@ -34,6 +34,7 @@
     "@zendeskgarden/eslint-config": "^32.0.0",
     "@zendeskgarden/stylelint-config": "^19.0.0",
     "@zendeskgarden/svg-icons": "^6.33.0",
+    "bootstrap": "^5.3.0",
     "ngx-bootstrap": "^10.2.0",
     "ngx-zendesk-webwidget": "^3.0.2",
     "rxjs": "~7.8.0",

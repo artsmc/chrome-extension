@@ -7,6 +7,11 @@ import { MessageComponent } from './components/message/message.component';
 import { ZendeskService } from './services/zendesk.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AgentReponseModule } from './components/agent-reponse/agent-reponse.module';
+import { AddAgentModule } from './components/add-agent/add-agent.module';
+import { LoginModule } from './components/login/login.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
   declarations: [
@@ -17,9 +22,18 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    AgentReponseModule,
+    AddAgentModule,
+    LoginModule,
+    HttpClientModule
   ],
-  providers: [ZendeskService],
+  providers: [ZendeskService,
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

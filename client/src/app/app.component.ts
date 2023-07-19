@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ZendeskService } from './services/zendesk.service';
 
 @Component({
@@ -9,8 +9,12 @@ import { ZendeskService } from './services/zendesk.service';
 export class AppComponent {
   title = 'Website Comment Chrome Extension';
   messages: any[] = [];
+  @ViewChild("offcanvasRight") offcanvasRight: any;
+  private offcanvasElement: any
+  public isOffcanvasOpen = false;
 
-  constructor(private zendeskService: ZendeskService) {}
+  constructor(private zendeskService: ZendeskService,
+    ) {}
 
   ngOnInit() {
     this.getZendeskMessages();
@@ -28,4 +32,21 @@ export class AppComponent {
       // this.zendeskService.insertReply(response).subscribe();
     // });
   }
+
+  // openOffCanvas(): void {
+  //   let canvas = document.getElementById('offcanvasRight')
+  //   // canvas?.setAttribute("class", "democlass");
+  //   // canvas.hide
+  //   this.isOffcanvasOpen = true;
+  //   const offcanvas = this.offcanvasRight?.nativeElement;
+  //   // const offcanvasModal = new bootstrap.Offcanvas(offcanvas);
+  //   // offcanvasModal.show();
+  //   console.log(offcanvas), this.offcanvasRight;
+    
+  //   offcanvas.show()
+  // }
+
+  // public toggleOffcanvas(): void {
+  //   this.isOffcanvasOpen = !this.isOffcanvasOpen;
+  // }
 }
