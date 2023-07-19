@@ -20,8 +20,7 @@ class OpenAIService extends UtilService {
         super();
     }
     public async BuildCustomCustomerResponse(response:IResponse, options: IOpenAICompletionDefault) {
-        const summary = (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
-        return `${summary}`;
+        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
     private promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
