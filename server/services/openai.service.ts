@@ -20,8 +20,7 @@ class OpenAIService extends UtilService {
         super();
     }
     public async BuildCustomCustomerResponse(response:IResponse, options: IOpenAICompletionDefault) {
-        const summary = (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
-        return `${summary}`;
+        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
     private promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
@@ -45,10 +44,10 @@ class OpenAIService extends UtilService {
     }
     private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, characterLimit: number}): {role:string,content:string}[] {
         return [
-            {"role": "system", "content": "You are a RFC8259 compliant JSON response bot"},
+            {"role": "system", "content": "you are a customer care representative."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": "Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.: {meesage:'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'}"},
+            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
             {"role":"system", "content": `You are allowed to use emojis: ${rules.emojiAllowed}`},
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
