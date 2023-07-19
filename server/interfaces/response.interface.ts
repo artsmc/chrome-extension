@@ -7,7 +7,9 @@ export interface IResponse extends Document {
   characterLimit: number;
   customerInquery: string;
   responseCreated: string;
+  feelingsAllowed: boolean;
   responseFinalized: string;
+  agentContext: string;
   user: string;
   created: string;
   is_active?: boolean;

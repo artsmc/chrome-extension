@@ -6,6 +6,7 @@ export let responseSchema: Schema = new Schema(
   {
     tone:{ type: String, default: 'formal' },
     emojiAllowed:{ type: String, default:'🫡😔☹️🧐🤓😊🤔💖' },
+    feelingsAllowed: { type: Boolean, default: true},
     characterLimit: { type: Number, default: 300},
     customerInquery: { type: String, required: true},
     responseCreated:{ type: String },

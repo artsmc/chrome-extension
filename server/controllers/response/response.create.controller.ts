@@ -1,5 +1,8 @@
 import { ICompanies } from "../../interfaces/companies.interface";
+import { IResponse } from "../../interfaces/response.interface";
 import { CompanyModel } from "../../models/companies.model";
+import { ResponseModel } from "../../models/response.model";
+import { openAIService } from "../../services/openai.service";
 import { UtilController } from "../util.controller";
 
 
@@ -8,33 +11,26 @@ export class ResponseCreateController extends UtilController {
     constructor() {
         super();
     }
-    findOrCreate(body): Promise<ICompanies> {
+    create(body): Promise<IResponse> {
         return new Promise(async (resolve, reject) => {
-            CompanyModel.findOne({ name: body.name }).then((company) => {
-                if (company && company._id) {
-                    resolve(company);
-                } else {
-                    const newDoc = new CompanyModel({
-                        ...body
-                    });
-                    newDoc.save().then((company) => {
-                        resolve(newDoc);
+            const newDoc = new ResponseModel({
+                ...body,
+                ...{user: body.decode.user._id}
+            });
+            newDoc.save().then((doc) => {
+                openAIService.BuildCustomCustomerResponse({
+                    ...body
+                },{model:'gpt-3.5-turbo-16k'}).then((response) => {
+                    ResponseModel.findByIdAndUpdate(doc._id, {
+                        responseCreated: response
+                    }).then((ready) => {
+                        resolve(doc);
                     }).catch((err) => {
                         reject(err);
                     });
-                }
-            }).catch((err) => {
-                reject(err);
-            });
-        });
-    }
-    create(body): Promise<ICompanies> {
-        return new Promise(async (resolve, reject) => {
-            const newDoc = new CompanyModel({
-                ...body
-            });
-            newDoc.save().then((user) => {
-                resolve(newDoc);
+                }).catch((err) => {
+                    reject(err);
+                });
             }).catch((err) => {
                 reject(err);
             });

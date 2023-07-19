@@ -1,3 +1,4 @@
+import { IResponse } from '../interfaces/response.interface';
 import { IOpenAICompletion, IOpenAICompletionDefault } from './../interfaces/openai.interface';
 import { UtilService } from './util.service';
 import axios from 'axios';
@@ -16,17 +17,46 @@ class OpenAIService extends UtilService {
     constructor() {
         super();
     }
-    public async BuildCustomCustomerResponse(prompt: string, options: IOpenAICompletionDefault, topic: string, quality?: string) {
-        const summary = (await this.OpenAIChatRequest(this.promptCustomSummary(prompt, topic), options, quality)).choices[0].message.content;
+    public async BuildCustomCustomerResponse(response:IResponse, options: IOpenAICompletionDefault) {
+        const summary = (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
         return `${summary}`;
     }
-    private promptCustomSummary(customAsk: string, memory: string): {role:string,content:string}[]  {
-        const script = customAsk!==undefined? `Using the information below Generate a promotion of the episode with the following criteria "${customAsk}"`:`Generate a promotion of the episode with the following:`;
-        return this.promptGPT(script, memory, 'PROMO');
+    private promptReponse(response: IResponse): {role:string,content:string}[]  {
+        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
+        return this.promptGPT(script, {
+            tone: response.tone,
+            emojiAllowed: response.emojiAllowed,
+            characterLimit: response.characterLimit,
+            agentContext: response.agentContext,
+            feelingsAllowed: response.feelingsAllowed
+        });
+    }
+    private promptGPT(prompt: string , rules: {tone:string, emojiAllowed:string, agentContext: string, feelingsAllowed: boolean, characterLimit: number}): {role:string,content:string}[] {
+        const script = `${prompt}:\n`;
+        return this.systemSettingsGPT(script, {
+            tone: rules.tone,
+            emojiAllowed: rules.emojiAllowed,
+            characterLimit: rules.characterLimit,
+            agentContext: rules.agentContext,
+            feelingsAllowed: rules.feelingsAllowed
+        });
+    }
+    private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, characterLimit: number}): {role:string,content:string}[] {
+        return [
+            {"role": "system", "content": "You are a RFC8259 compliant JSON response bot"},
+            {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
+            {"role": "user", "content": `${script}`},
+            {"role": "system", "content": "Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.: {meesage:'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'}"},
+            {"role":"system", "content": `You are allowed to use emojis: ${rules.emojiAllowed}`},
+            {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
+            {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
+            {"role": "system", "content": "When it comes to writing content, two factors are crucial, “perplexity” and “burstiness.” Perplexity measures the complexity of text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or complex sentences alongside shorter ones. AI sentences tend to be more uniform. Therefore, when writing the following content I am going to ask you to create, I need it to have a low amount of perplexity and a great amount of burstiness."},
+
+        ]
     }
     private OpenAIChatRequest(messages: {role:string,content:string}[],options?:IOpenAICompletionDefault, quality?: string): Promise<{ choices: [{ message:{role:string, content: string}, finish_reason: string; }]; }> {
         return new Promise((resolve, reject) => {
-            const modelId = quality ? quality : 'gpt-3.5-turbo-16k';
+            const modelId = quality ? quality : 'gpt-3.5-turbo';
             const settings: IOpenAICompletionDefault = {
                 model: modelId
             };
@@ -35,24 +65,9 @@ class OpenAIService extends UtilService {
                 resolve(result.data);
             }).catch(error => {
                 console.log({ error: error.response['data'] });
-                logger.info({ openAI: 'error in openAI' });
-                logger.error(JSON.stringify({ error }));
                 reject({ error });
             });
         });
-    }
-    private promptGPT(prompt: string, memory:string, ask?:string): {role:string,content:string}[] {
-        const script = ask===undefined? `${prompt}:\n ${memory}\n`: `${prompt}:\n ${memory}\n${ask}:\n`;
-        return this.systemSettingsGPT(script);
-    }
-    private systemSettingsGPT(script: string, settings?:any): {role:string,content:string}[] {
-        return [
-            {"role": "system", "content": "You are a RFC8259 compliant JSON response bot"},
-            {"role": "user", "content": `${script}`},
-            {"role": "system", "content": "Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation.: {meesage:'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'}"},
-            {"role": "system", "content": "When it comes to writing content, two factors are crucial, “perplexity” and “burstiness.” Perplexity measures the complexity of text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or complex sentences alongside shorter ones. AI sentences tend to be more uniform. Therefore, when writing the following content I am going to ask you to create, I need it to have a low amount of perplexity and a great amount of burstiness."},
-
-        ]
     }
 }
 

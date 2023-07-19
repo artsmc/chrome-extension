@@ -5,6 +5,7 @@ import { UserRouter } from './user.routes';
 import { CompanyRouter } from './company.routes';
 import { RolesRouter } from './roles.routes';
 import { ResponseRouter } from './reponse.routes';
+import { middlewareController } from '../controllers/middlware.controller';
 
 // Assign router to the express.Router() instance
 const router: Router = Router();
@@ -34,9 +35,9 @@ router.get('/test', (req: Request, res: Response) => {
 });
 router.use('/auth', APILimiter, AuthRouter);
 router.use('/user', APILimiter, UserRouter);
-router.use('/company', APILimiter, CompanyRouter);
-router.use('/role', APILimiter, RolesRouter);
-router.use('/response', APILimiter, ResponseRouter);
+router.use('/company', APILimiter, middlewareController.isAuth, CompanyRouter);
+router.use('/role', APILimiter, middlewareController.isAuth, RolesRouter);
+router.use('/response', APILimiter, middlewareController.isAuth, ResponseRouter);
 
 
 export const ExpressRouter: Router = router;
