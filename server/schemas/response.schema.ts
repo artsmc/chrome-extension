@@ -23,7 +23,7 @@ export let responseSchema: Schema = new Schema(
   {
     versionKey: false,
     strict: true,
-    collection: 'reponses',
+    collection: 'responses',
   },
 );
 
