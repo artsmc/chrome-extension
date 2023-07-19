@@ -3,7 +3,9 @@ import { IOpenAICompletion, IOpenAICompletionDefault } from './../interfaces/ope
 import { UtilService } from './util.service';
 import axios from 'axios';
 import { string } from 'joi';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 const APIKey = process.env.OPEN_AI_KEY;
 const OpenAIOrg = process.env.OPEN_AI_ORG;
 const openAi = axios.create({
