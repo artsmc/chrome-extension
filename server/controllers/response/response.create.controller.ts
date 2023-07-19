@@ -21,10 +21,9 @@ export class ResponseCreateController extends UtilController {
                 openAIService.BuildCustomCustomerResponse({
                     ...body
                 },{model:'gpt-3.5-turbo-16k'}).then((response) => {
-                    ResponseModel.findByIdAndUpdate(doc._id, {
-                        responseCreated: response
-                    }).then((ready) => {
-                        resolve({...doc,...{responseCreated:  response}});
+                    doc.responseCreated = response;
+                    doc.save().then((response) => {
+                        resolve(response);
                     }).catch((err) => {
                         reject(err);
                     });
