@@ -121,9 +121,11 @@ export class UserService {
     const url = `${this.baseUrl}/response/agent-request`
     const payload = {
       tone: tone,
+      feelings: true,
       emojiAllowed: emoji,
       characterLimit: charLimit,
-      customerInquery: custInq
+      customerInquery: custInq,
+      agentContext: ""
     }
     return this.http
       .post(url,  payload)
