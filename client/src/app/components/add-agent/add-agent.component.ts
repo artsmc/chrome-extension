@@ -37,6 +37,8 @@ export class AddAgentComponent implements OnInit {
             this.route.navigate(['/signup']);
             this.userService.setUserValue(res)
             
+          }, (error) => {
+            this.route.navigate(['/login']);
           })
         }
       })
