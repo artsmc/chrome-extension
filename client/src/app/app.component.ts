@@ -20,24 +20,18 @@ export class AppComponent {
     private userService: UserService
   ) { }
 
-  ngOnInit() {
-    this.getZendeskMessages();
-    setTimeout(() => {
-      //   console.log('dvdf', this.route.url);
-      // }, 1000)
-
-      if (this.route.url.includes('signup') || localStorage.getItem('panelOpen') === 'true') {
-        // offcanvasRight
-        const crossIcon = document.querySelector('.offcanvas');
-        if (crossIcon) {
-          // crossIcon.removeAttribute('tabindex');
-          // crossIcon.setAttribute('aria-label','Close')
-          crossIcon.classList.add('show')
-          localStorage.setItem('panelOpen', 'ture');
-        }
-      }
-    }, 1000)
-    // }
+public ngOnInit(): void {
+    // @ts-ignore
+    chrome.tabs.executeScript({
+      code: `
+      (function(){
+      const iframe = document.createElement('iframe');
+      iframe.src = chrome.runtime.getURL('index.html');
+      iframe.style.cssText = 'position:fixed;top:0;left:0;display:block;' +
+        'width:300px;height:100%;z-index:1000;';
+      document.body.appendChild(iframe);
+    })(); `
+    });
   }
 
   ngAfterViewInit(): void {

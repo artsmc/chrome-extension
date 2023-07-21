@@ -28,6 +28,7 @@ export class UserService {
 
   public isPanelOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   // isPanelOpen$: Observable<boolean> = this.isPanelOpen.asObservable();
+   url: string = "";
 
   private userSubject!: BehaviorSubject<IUserState | null>;
   // public user: Observable<IUserState | null>;
@@ -37,32 +38,13 @@ export class UserService {
     private route: Router,
     private router: ActivatedRoute
   ) {
-    
+    console.log(this.router.url);
   
     // this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('token')!));
     // this.userSubject = new BehaviorSubject(localStorage.getItem('token'));
     // this.user = this.userSubject.asObservable();
   }
 
-  // private getUserData(): void {
-  //   this.router.queryParams
-  //     .subscribe(params => {
-  //       const queryParams = Object.values(params)
-  //       const token = queryParams[0]
-  //       if(token !== undefined){
-  //         localStorage.setItem('token', token)
-  //       }
-  //       if (token) {
-  //         this.route.navigate(['/signup']);
-  //         this.authToken().subscribe((res) => {
-  //           console.log(res.jwt);
-  //           localStorage.setItem('token', res)
-  //           this.setUserValue(res)
-            
-  //         })
-  //       }
-  //     })
-  // }
 
   public getUserValue(): any {
     // this.getUserData()
@@ -77,15 +59,7 @@ export class UserService {
     this.loggedIn$.next(!!this.userSubject.value);
     return this.loggedIn$;
   }
-  // login(token: string | null) {
-  //   // return this.http.get<any>(`${this.baseUrl}/auth/magiclogin auth/callback?token=${token}`).pipe(map(user => {
-  //   return this.http.get<any>(`${this.baseUrl}/auth/magiclogin=${token}`).pipe(map(user => {
-  //       // store user details and jwt token in local storage to keep user logged in between page refreshes
-  //       localStorage.setItem('user', JSON.stringify(user));
-  //       this.userSubject.next(user);
-  //       return user;
-  //     }));
-  // }
+
 
   authToken(): Observable<any> {
     const token = localStorage.getItem('token')
@@ -96,7 +70,9 @@ export class UserService {
   login(email: string): Observable <any> {
     const url = `${this.baseUrl}/auth/magiclogin`;
     const payload = {
-      destination : email
+      destination : email,
+      //send refferer url
+      source: this.router.url
     }
     return this.http
       .post(url,  payload)
