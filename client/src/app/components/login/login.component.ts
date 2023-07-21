@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,13 +14,21 @@ export class LoginComponent implements OnInit {
   public isLoginSection = true;
 
   constructor(
+    private router : Router,
     private formBuilder: FormBuilder,
     private userService: UserService
-  ) {}
+  ) {
+     const user = this.userService.getUserValue();
+        // const user = true
+        if (user) {
+            // logged in so return true
+            this.router.navigate(['/response']);
+        } 
+  }
 
   ngOnInit(): void {
     this.initializeLoginForm()
-      
+    console.log({url: window.location});
   }
 
   /**

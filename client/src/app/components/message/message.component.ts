@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ZendeskService } from 'src/app/services/zendesk.service';
 
 @Component({
@@ -10,6 +11,7 @@ export class MessageComponent implements OnInit {
   public messages: any[] = [];
   openaiResponse = 'anc'
   constructor(
+    private router: Router,
     private zendeskService: ZendeskService
     ) { }
 

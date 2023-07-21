@@ -12,6 +12,7 @@ import { AddAgentModule } from './components/add-agent/add-agent.module';
 import { LoginModule } from './components/login/login.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './error.interceptor';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -20,13 +21,15 @@ import { ErrorInterceptor } from './error.interceptor';
   ],
   imports: [
     BrowserModule,
+    FontAwesomeModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     AgentReponseModule,
     AddAgentModule,
     LoginModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [ZendeskService,
     { 

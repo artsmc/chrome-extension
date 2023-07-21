@@ -1,5 +1,3 @@
-console.log("side-panel script loaded");
-
 chrome.runtime.onMessage.addListener(function(msg, sender){
     if(msg == "toggle"){
         console.log("message received");
@@ -14,15 +12,17 @@ iframe.style.border = "none";
 iframe.style.width = "0px";
 iframe.style.position = "fixed";
 iframe.style.top = "0px";
-iframe.style.right = "5px";
+iframe.style.right = "0px";
 iframe.style.zIndex = "9000000000000000000";
-iframe.src = chrome.runtime.getURL("index.html")
+// in the window.location.hash replace the first # character with /
+const hashConverter = window.location.hash.replace("#", "#/");
+iframe.src = chrome.runtime.getURL("index.html"+hashConverter)
 
 document.body.appendChild(iframe);
 
 function toggle(){
     if(iframe.style.width == "0px"){
-        iframe.style.width="400px";
+        iframe.style.width="350px";
     }
     else{
         iframe.style.width="0px";

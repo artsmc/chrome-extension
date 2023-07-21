@@ -1,19 +1,4 @@
-.offcanvas, .offcanvas1 {
-    font-size: 20px;
-    &:hover {
-        font-size: 20px;
-    }
-    &.show {
-        visibility: inherit !important;
-    }
-    
-}
-.offcanvas-end {
-    // font-size: 20px;
-    right: 6px !important;
-    border-left: 6px solid #ff0000 !important;
-    visibility: inherit !important;
-}
+
 
 .btn-toggle {
     position: absolute;
@@ -23,10 +8,3 @@
     margin-bottom: auto;
 }
 
-// .offcanvas {
-//     .offcanvas-end {
-//         right: 6px !important;
-//         border-left: 6px solid #ff0000 !important;
-//         visibility: inherit !important;
-//     }
-// }

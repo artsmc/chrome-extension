@@ -4,6 +4,7 @@ import { AgentResponseComponent } from './agent-response.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgentResponseRoutingModule } from './agent-response-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -15,6 +16,7 @@ import { AgentResponseRoutingModule } from './agent-response-routing.module';
     CommonModule,
     BsDropdownModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     AgentResponseRoutingModule
   ],
   exports: [

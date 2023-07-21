@@ -37,7 +37,7 @@ public ngOnInit(): void {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    console.log('dvdf', this.route.url);
+    console.log('LOCATION', this.route.url);
   }
 
   getZendeskMessages() {
@@ -53,22 +53,6 @@ public ngOnInit(): void {
     // });
   }
 
-  // openOffCanvas(): void {
-  //   let canvas = document.getElementById('offcanvasRight')
-  //   // canvas?.setAttribute("class", "democlass");
-  //   // canvas.hide
-  //   this.isOffcanvasOpen = true;
-  //   const offcanvas = this.offcanvasRight?.nativeElement;
-  //   // const offcanvasModal = new bootstrap.Offcanvas(offcanvas);
-  //   // offcanvasModal.show();
-  //   console.log(offcanvas), this.offcanvasRight;
-
-  //   offcanvas.show()
-  // }
-
-  // public toggleOffcanvas(): void {
-  //   this.isOffcanvasOpen = !this.isOffcanvasOpen;
-  // }
 
   public setState(): void {
     // console.log(localStorage.getItem('panelOpen'));
@@ -81,11 +65,6 @@ public ngOnInit(): void {
       // this.userService.isPanelOpen.next(true);
       this.userService.isPanelOpen
     }
-    // this.userService.isPanelOpen$
-    // if (val === "true") {
-    //   localStorage.setItem('panelOpen', 'false');
-    // } else {
-    //   localStorage.setItem('panelOpen', 'ture');
-    // }
+
   }
 }

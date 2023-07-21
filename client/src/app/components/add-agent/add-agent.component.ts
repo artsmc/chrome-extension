@@ -25,8 +25,13 @@ export class AddAgentComponent implements OnInit {
       .subscribe(params => {
         const queryParams = Object.values(params)
         const token = queryParams[0]
-        console.log(token);
-        
+        const user = this.userService.getUserValue();
+        console.log({user});
+        // const user = true
+        // if (user) {
+        //     // logged in so return true
+        //     this.route.navigate(['/response']);
+        // } 
         if(token !== undefined){
           localStorage.setItem('token', token)
         }

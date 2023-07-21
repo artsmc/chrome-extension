@@ -10,7 +10,7 @@ export const magicLogin = new MagicLoginStrategy({
   // Used to encrypt the authentication token. Needs to be long, unique and (duh) secret.
   secret: process.env.MAGIC_LINK_SECRET,
   // The authentication callback URL
-  callbackUrl: "/signup",
+  callbackUrl: "#signup",
 
   // Called with th e generated magic link so you can send it to the user
   // "destination" is what you POST-ed from the client

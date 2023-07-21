@@ -13,9 +13,8 @@
                     </button>
                     <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
                         aria-labelledby="button-basic">
-                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Tone 1')">Tone</a></li>
-                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Tone 1')">Tone 1</a></li>
-                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Tone 1')">Tone 2</a></li>
+                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Pleasent')">Pleasent</a></li>
+                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Firm')">Firm</a></li>
                     </ul>
                 </div>
             </div>
@@ -41,23 +40,28 @@
                     </button>
                     <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
                         aria-labelledby="button-basic">
-                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings('Feeling 1')">Feeling 1</a></li>
-                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings('Feeling 2')">Feeling 2</a></li>
-                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings('Feeling 3')">Feeling 3</a></li>
+                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings(true)">Yes</a></li>
+                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings(false)">No</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+        <div class="col-md-12 ">
+           
+        </div>
         <div class="col-md-12 d-flex mt-4 text-center">
             <!-- <div class="col-xs-6 col-sm-6"> -->
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" formControlName="responseCreated"  id="exampleFormControlTextarea1" rows="3"></textarea>
             <!-- </div> -->
         </div>
         <div class="col-md-12 d-flex text-center">
             <div class="col-xs-12 col-sm-12 col-md-12 mt-3">
-                <button type="button" class="btn btn-danger" (click)="generateResponse()">
-                    Generate Response
-                </button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-success"><fa-icon [icon]="faRotateRight"></fa-icon></button>
+                    <button type="button" class="btn btn-danger" (click)="generateResponse()">
+                        Generate Response
+                    </button>
+                </div>
             </div>
         </div>
     </div>

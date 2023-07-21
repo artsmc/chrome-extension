@@ -48,7 +48,7 @@ export class UserService {
 
   public getUserValue(): any {
     // this.getUserData()
-    return this.userSubject;
+    return localStorage.getItem('token');
   }
 
   public setUserValue(userData: IUserState) {
@@ -70,9 +70,7 @@ export class UserService {
   login(email: string): Observable <any> {
     const url = `${this.baseUrl}/auth/magiclogin`;
     const payload = {
-      destination : email,
-      //send refferer url
-      source: this.router.url
+      destination : email
     }
     return this.http
       .post(url,  payload)
