@@ -26,6 +26,9 @@ export class UserService {
     'Access-Control-Allow-Origin': '*',
   });
 
+  public isPanelOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  // isPanelOpen$: Observable<boolean> = this.isPanelOpen.asObservable();
+
   private userSubject!: BehaviorSubject<IUserState | null>;
   // public user: Observable<IUserState | null>;
   loggedIn$: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -35,6 +38,7 @@ export class UserService {
     private router: ActivatedRoute
   ) {
     
+  
     // this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('token')!));
     // this.userSubject = new BehaviorSubject(localStorage.getItem('token'));
     // this.user = this.userSubject.asObservable();
@@ -114,12 +118,14 @@ export class UserService {
   setResponse(tone: string, emoji: string, charLimit: number, custInq: string): Observable<any> {
     console.log('values', tone, emoji, charLimit, custInq);
     
-    const url = `${this.baseUrl}/reponse/agent-request`
+    const url = `${this.baseUrl}/response/agent-request`
     const payload = {
       tone: tone,
+      feelings: true,
       emojiAllowed: emoji,
       characterLimit: charLimit,
-      customerInquery: custInq
+      customerInquery: custInq,
+      agentContext: ""
     }
     return this.http
       .post(url,  payload)

@@ -3,9 +3,11 @@
   
 <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Click</button> -->
 <div class="offcanvas offcanvas-end offcanvas1 offcanvas-end1 justify-content-center d-flex" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <button class="btn btn-danger btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Click</button>
+  <button class="btn btn-danger btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" (click)="setState()">
+    <i class="bi bi-list"></i>
+  </button>
   <div class="offcanvas-header">
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <!-- <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
   </div>
   <div class="offcanvas-body">
     <router-outlet></router-outlet>
