@@ -1,10 +1,9 @@
 import * as Joi from 'joi';
 
-export const userValidationSchema = Joi.object({
-    profile_image: Joi.string().base64().optional(),
-    company_name: Joi.string().allow('').optional(),
-    company_description: Joi.string().allow('').optional(),
-});
-export const userEmailValidationSchema = Joi.object({
-    email: Joi.string().email().required(),
+export const registerValidationSchema = Joi.object({
+  full_name: Joi.string().allow('').optional(),
+  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required(),
 });

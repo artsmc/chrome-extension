@@ -6,6 +6,7 @@ import passport from "passport";
 import * as jwt from 'jsonwebtoken';
 import { jwtSecret } from '../_config/config';
 import { authController } from '../controllers/auth.controller';
+import { middlewareController } from '../controllers/middlware.controller';
 const router: Router = Router();
 export const passAuth = (req: Request, res: Response, next: () => void) => {
     if (req.headers['authorization']) {
@@ -30,7 +31,7 @@ router.get('/test', (req: Request, res: Response) => {
 router.post('/login', (req: Request, res: Response) => {
 
 });
-router.post('create', (req: Request, res: Response) => {
+router.post('/create', middlewareController.userValidation, (req: Request, res: Response) => {
   authController.createUser({...req.body, 
     user_agent: req.headers['user-agent'],
     ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
@@ -41,13 +42,13 @@ router.post('create', (req: Request, res: Response) => {
       res.status(500).json(err);
   });
 });
-router.post('verify', (req: Request, res: Response) => {
+router.post('/verify', (req: Request, res: Response) => {
 
 });
-router.post('change-password', (req: Request, res: Response) => {
+router.post('/change-password', (req: Request, res: Response) => {
 
 });
-router.get('delete', (req: Request, res: Response) => {
+router.get('/delete', (req: Request, res: Response) => {
 
 });
 

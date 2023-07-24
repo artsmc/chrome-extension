@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { UtilController } from './util.controller';
 import { jwtSecret } from '../_config/config';
 import {companyController } from './company/company.controller';
+import { registerValidationSchema } from '../validation/auth.validation';
 
 class MiddlewareController extends UtilController  {
   constructor() {
@@ -50,6 +51,18 @@ class MiddlewareController extends UtilController  {
     }).catch((err: any) => {
         res.status(500).json(err);
     });
+  }
+  userValidation(req: Request, res: Response, next: () => void) {
+    const validation = registerValidationSchema.validateAsync(req.body);
+    validation
+      .then((result) => {
+        next();
+      })
+      .catch((err) => {
+        return res
+          .status(400)
+          .send(Boom.badRequest('invalid query', err.details));
+      });
   }
 
 }
