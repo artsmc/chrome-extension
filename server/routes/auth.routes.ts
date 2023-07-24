@@ -4,8 +4,8 @@ import { Request, Response, Router } from 'express';
 // @ts-ignore
 import passport from "passport";
 import * as jwt from 'jsonwebtoken';
-import { magicLogin } from '../controllers/auth.controller';
 import { jwtSecret } from '../_config/config';
+import { authController } from '../controllers/auth.controller';
 const router: Router = Router();
 export const passAuth = (req: Request, res: Response, next: () => void) => {
     if (req.headers['authorization']) {
@@ -27,26 +27,30 @@ export const passAuth = (req: Request, res: Response, next: () => void) => {
 router.get('/test', (req: Request, res: Response) => {
   res.status(200).json(req.headers);
 });
-router.post("/magiclogin", magicLogin.send);
+router.post('/login', (req: Request, res: Response) => {
 
-router.get('/callback', (req: Request, res: Response, next) => {
-  passport.authenticate('magiclogin', (err, user)=>{
-  if (err) { return next(err) }
-    if (!user) { return res.status(401).json({err:'no valid user'}) }
-    const jwtToken = jwt.sign({
-      user
-    }, jwtSecret, {
-      expiresIn: 1209600000, //14 days
-    });
-    user.jwt = jwtToken;
-    const returnUser = {...user._doc, jwt: jwtToken}
-    res.status(200).json(returnUser);
-  })(req, res);
+});
+router.post('create', (req: Request, res: Response) => {
+  authController.createUser({...req.body, 
+    user_agent: req.headers['user-agent'],
+    ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+    referrer: req.headers['referrer'] || req.headers['referer']
+  }).then((user: any) => {
+    res.status(200).json(user);
+  }).catch((err: any) => {
+      res.status(500).json(err);
+  });
+});
+router.post('verify', (req: Request, res: Response) => {
+
+});
+router.post('change-password', (req: Request, res: Response) => {
+
+});
+router.get('delete', (req: Request, res: Response) => {
+
 });
 
-router.get('/test-auth', passAuth, (req: Request, res: Response) => {
-  res.status(200).json({auth: true, jwtToken: req.body.authorization});
-});
 // @ts-ignore
 
 export const AuthRouter: Router = router;
