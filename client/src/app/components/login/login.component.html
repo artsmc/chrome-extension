@@ -3,42 +3,38 @@
 <div class="message-container">
     <ng-container *ngIf="isLoginSection">
         <div class="col-md-12">
-            <h2 class="text-danger col-md-6 mb-4">Login</h2>
+            <h2 class="heading col-md-6 mb-4">Login</h2>
         </div>
         <form [formGroup]="loginForm">
             <div class="row">
-                <div class="col-md-12 d-flex text-center">
-                    <div class="col-xs-12 col-md-12 col-sm-12">
-                        <div class="d-flex justify-content-center">
-                            <input formControlName="email" type="email" class="form-control max-width-250" id="email"
-                                aria-describedby="emailHelp" [ngClass]="{ 'text-danger': submitted && f['email'].errors }"
-                                placeholder="Email Address">
-                            <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
-                        </div>
+                <div class="col-xs-12 col-md-12 col-sm-12">
+                    <div class="d-flex justify-content-center">
+                        <input formControlName="email" type="email" class="form-control max-width-250" id="email"
+                            aria-describedby="emailHelp" [ngClass]="{ 'text-danger': submitted && f['email'].errors }"
+                            placeholder="Email Address">
+                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
-    
                 </div>
                 <!--Error-->
-                <div class="col-md-12 d-flex text-center mt-4">
-                    <div class="col-xs-12 col-md-12 col-sm-12">
-                        <div *ngIf="f['email'].touched && f['email'].invalid" class="alert alert-danger">
-                            <div *ngIf="f['email'].errors && f['email'].errors['required']">email is required.</div>
-                            <div *ngIf="f['email'].errors && f['email'].errors['email']">You did not supply a valid email
-                                address.</div>
-                        </div>
+                <div class="col-xs-12 col-md-12 col-sm-12 mt-4">
+                    <div *ngIf="f['email'].touched && f['email'].invalid" class="alert alert-danger">
+                        <div *ngIf="f['email'].errors && f['email'].errors['required']">email is required.</div>
+                        <div *ngIf="f['email'].errors && f['email'].errors['email']">You did not supply a valid email
+                            address.</div>
                     </div>
                 </div>
-                <div class="col-md-12 d-flex text-center">
-                    <div class="col-xs-12 col-md-12 col-sm-12">
-                        <button type="button" class="btn btn-danger" (click)="login()">
-                            Login with Magic Link
-                        </button>
+                <div class="col-xs-12 col-md-12 col-sm-12">
+                    <div class="d-flex justify-content-center">
+                        <input formControlName="password" type="password" class="form-control max-width-250"
+                            id="password" aria-describedby="emailHelp"
+                            [ngClass]="{ 'text-danger': submitted && f['password'].errors }" placeholder="Password">
+                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
                 </div>
-                <div class="col-md-12 d-flex text-end">
-                    <div class="col-xs-12 col-sm-12 mt-3">
-                        <a class="loginLink" [routerLink]="['/signup']">Back</a>
-                    </div>
+                <div class="col-xs-12 col-md-12 col-sm-12 mt-4">
+                    <button type="button" class="btn" (click)="login()">
+                        Login
+                    </button>
                 </div>
             </div>
         </form>

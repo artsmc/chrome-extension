@@ -24,6 +24,9 @@ export let userSchema: Schema = new Schema(
     is_system: { type: Boolean },
     created_at: Date,
     modified_at: Date,
+    user_id: { type: String },
+    nickname: { type: String },
+    password: { type: String }
   },
   {
     versionKey: false,
