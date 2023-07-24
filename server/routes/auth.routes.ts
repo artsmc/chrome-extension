@@ -29,7 +29,13 @@ router.get('/test', (req: Request, res: Response) => {
   res.status(200).json(req.headers);
 });
 router.post('/login', (req: Request, res: Response) => {
-
+  authController.loginUser(req.body).then((user: any) => {
+    res.status(200).json(user);
+  }
+  ).catch((err: any) => {
+    res.status(500).json(err);
+  }
+  );
 });
 router.post('/create', middlewareController.userValidation, (req: Request, res: Response) => {
   authController.createUser({...req.body, 
@@ -42,8 +48,14 @@ router.post('/create', middlewareController.userValidation, (req: Request, res: 
       res.status(500).json(err);
   });
 });
-router.post('/verify', (req: Request, res: Response) => {
-
+router.post('/verify', middlewareController.isAuth, (req: Request, res: Response) => {
+  authController.reissueToken(req.body.decode.user).then((user: any) => {
+    res.status(200).json(user);
+  }
+  ).catch((err: any) => {
+    res.status(500).json(err);
+  }
+  );
 });
 router.post('/change-password', (req: Request, res: Response) => {
 

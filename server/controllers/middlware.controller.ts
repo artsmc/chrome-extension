@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { UtilController } from './util.controller';
 import { jwtSecret } from '../_config/config';
 import {companyController } from './company/company.controller';
-import { registerValidationSchema } from '../validation/auth.validation';
+import { registerValidationSchema } from '../validation/user.validation';
 
 class MiddlewareController extends UtilController  {
   constructor() {
@@ -59,6 +59,7 @@ class MiddlewareController extends UtilController  {
         next();
       })
       .catch((err) => {
+        console.log(err)
         return res
           .status(400)
           .send(Boom.badRequest('invalid query', err.details));
