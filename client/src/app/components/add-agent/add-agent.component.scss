@@ -1,6 +1,3 @@
-.btn {
-    width: 50%;
-}
 
 .loginLink {
     text-decoration: none;
@@ -11,4 +8,19 @@
 .succ-text {
     font-weight: 500;
     font-size: 20px;
+}
+
+
+input {
+    border: 2px solid #4e81e9;
+}
+
+.heading {
+    color: #000000;
+}
+
+.btn {
+    width: 50%;
+    background-color: #4e81e9;
+    color: #fff;
 }
