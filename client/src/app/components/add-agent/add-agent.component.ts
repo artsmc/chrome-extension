@@ -21,32 +21,6 @@ export class AddAgentComponent implements OnInit {
     private route: Router,
     private userService: UserService
   ) {
-    this.router.queryParams
-      .subscribe(params => {
-        const queryParams = Object.values(params)
-        const token = queryParams[0]
-        const user = this.userService.getUserValue();
-        console.log({user});
-        // const user = true
-        // if (user) {
-        //     // logged in so return true
-        //     this.route.navigate(['/response']);
-        // } 
-        if(token !== undefined){
-          localStorage.setItem('token', token)
-        }
-        if (token) {
-          this.userService.authToken().subscribe((res) => {
-            console.log(res.jwt);
-            localStorage.setItem('token', res.jwt)
-            this.route.navigate(['/signup']);
-            this.userService.setUserValue(res)
-            
-          }, (error) => {
-            this.route.navigate(['/login']);
-          })
-        }
-      })
   }
 
   ngOnInit(): void {
@@ -82,6 +56,7 @@ export class AddAgentComponent implements OnInit {
       this.isAgentSection = false
       this.route.navigate(['/response'])
     })
+    // this.route.navigate(['/response'])
   }
 
 }

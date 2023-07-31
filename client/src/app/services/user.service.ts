@@ -67,10 +67,11 @@ export class UserService {
     return this.http.get(url).pipe(catchError(this.handleError));
   }
 
-  login(email: string): Observable <any> {
-    const url = `${this.baseUrl}/auth/magiclogin`;
+  login(email: string, password: string): Observable <any> {
+    const url = `${this.baseUrl}/auth/login`;
     const payload = {
-      destination : email
+      email : email,
+      password: password
     }
     return this.http
       .post(url,  payload)
@@ -110,6 +111,19 @@ export class UserService {
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.route.navigate(['/']);
+  }
+
+  createUser(email: string, password: string, fullName: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const url =`${this.baseUrl}/auth/create`;
+    const payload  = {
+      email: email,
+      password: password,
+      full_name: fullName
+    }
+    return this.http
+      .post(url,  payload)
+      .pipe(catchError(this.handleError));
   }
 
 //   verifyEmail(email: string | null): Observable<string{

@@ -51,4 +51,9 @@ export class AgentResponseComponent implements OnInit {
     this.toneSelectedValue = tone
   }
 
+  public refresh(): void {
+    console.log('refresh');
+    
+  }
+
 }

@@ -1,69 +1,68 @@
 <div class="message-container">
     <div class="col-md-12 mb-3">
-    <h2 class="text-danger">Agent Response</h2>
+        <h2 class="text-danger">Agent Response</h2>
     </div>
     <form [formGroup]="agentResponseForm">
-    <div class="row">
-        <div class="col-md-12 d-flex text-center">
-            <div class="col-md-6 col-xs-6 col-sm6">
-                <div class="btn-group" dropdown>
-                    <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
-                        aria-controls="dropdown-basic">
-                        {{toneSelectedValue}} <span class="caret"></span>
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
-                        aria-labelledby="button-basic">
-                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Pleasent')">Pleasent</a></li>
-                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Firm')">Firm</a></li>
-                    </ul>
+        <div class="row">
+            <div class="col-md-12 d-flex text-center">
+                <div class="col-md-6 col-xs-6 col-sm6">
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="button"
+                            class="btn btn-outline-dark dropdown-toggle" aria-controls="dropdown-basic">
+                            {{toneSelectedValue}} <span class="caret"></span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                            aria-labelledby="button-basic">
+                            <li role="menuitem"><a class="dropdown-item" (click)="getTone('Pleasent')">Pleasent</a></li>
+                            <li role="menuitem"><a class="dropdown-item" (click)="getTone('Firm')">Firm</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm6">
+                    <div class="d-flex justify-content-center">
+                        <input type="text" formControlName="charLimit" class="form-control max-width-250" id="charLimit"
+                            aria-describedby="Character Limit" placeholder="Character limit">
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xs-6 col-sm6">
-                <div class="d-flex justify-content-center">
-                    <input type="text" formControlName="charLimit" class="form-control max-width-250" id="charLimit"
-                        aria-describedby="Character Limit" placeholder="Character limit">
+            <div class="col-md-12 d-flex mt-4 text-center">
+                <div class="col-md-6 col-xs-6 col-sm6">
+                    <div class="d-flex justify-content-center">
+                        <input type="text" formControlName="emoji" class="form-control max-width-250" id="emoji"
+                            aria-describedby="Emoji" placeholder="Emoji Allowed 😉">
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm6">
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="button"
+                            class="btn btn-outline-dark dropdown-toggle" aria-controls="dropdown-basic">
+                            {{feelingSelectedValue}} <span class="caret"></span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                            aria-labelledby="button-basic">
+                            <li role="menuitem"><a dropdownItem class="dropdown-item"
+                                    (click)="getFeelings(true)">Yes</a></li>
+                            <li role="menuitem"><a dropdownItem class="dropdown-item"
+                                    (click)="getFeelings(false)">No</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 d-flex mt-4 text-center">
-            <div class="col-md-6 col-xs-6 col-sm6">
-                <div class="d-flex justify-content-center">
-                    <input type="text" formControlName="emoji" class="form-control max-width-250" id="emoji"
-                        aria-describedby="Emoji" placeholder="Emoji Allowed 😉">
-                </div>
+            <div class="col-md-12 ">
+
             </div>
-            <div class="col-md-6 col-xs-6 col-sm6">
-                <div class="btn-group" dropdown>
-                    <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
-                        aria-controls="dropdown-basic">
-                        {{feelingSelectedValue}} <span class="caret"></span>
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
-                        aria-labelledby="button-basic">
-                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings(true)">Yes</a></li>
-                        <li role="menuitem"><a dropdownItem class="dropdown-item" (click)="getFeelings(false)">No</a></li>
-                    </ul>
-                </div>
+            <div class="col-md-12 d-flex mt-4 text-center">
+                <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
+                    rows="10"></textarea>
+                <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon>
             </div>
-        </div>
-        <div class="col-md-12 ">
-           
-        </div>
-        <div class="col-md-12 d-flex mt-4 text-center">
-            <!-- <div class="col-xs-6 col-sm-6"> -->
-                <textarea class="form-control" formControlName="responseCreated"  id="exampleFormControlTextarea1" rows="3"></textarea>
-            <!-- </div> -->
-        </div>
-        <div class="col-md-12 d-flex text-center">
-            <div class="col-xs-12 col-sm-12 col-md-12 mt-3">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-3 text-center">
                 <div class="btn-group" role="group">
-                    <button class="btn btn-success"><fa-icon [icon]="faRotateRight"></fa-icon></button>
-                    <button type="button" class="btn btn-danger" (click)="generateResponse()">
+                    <button type="button" class="btn" (click)="generateResponse()">
                         Generate Response
                     </button>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
