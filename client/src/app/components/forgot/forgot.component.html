@@ -1,14 +1,14 @@
 <div class="message-container">
     <ng-container *ngIf="isLoginSection">
         <div class="col-md-12">
-            <h2 class="">Log - in</h2>
-            <h5>Enter your details to log in to your account. Sign-up <a [routerLink]="['/sign-up']" routerLinkActive="router-link-active" >here</a></h5>
+            <h2 class="">Forgot Password</h2>
+            <h5>A link to the reset password page will be sent to the email address you used to sign up. <a [routerLink]="['/login']" routerLinkActive="router-link-active" >Login</a></h5>
         </div>
         <form [formGroup]="loginForm">
             <div class="row">
                 <div class="col-xs-11">
                     <div class="d-flex justify-content-center">
-                        <label>Email *</label>
+                        <label>Email</label>
                         <input formControlName="email" type="email" class="form-control max-width-250" id="email"
                             aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fLogin['email'].errors }"
@@ -27,28 +27,9 @@
                             address.</div>
                     </div>
                 </div>
-                <div class="col-xs-11">
-                    <div class="d-flex justify-content-center">
-                        <label>Password *</label>
-                        <input formControlName="password" type="password" class="form-control max-width-250"
-                            id="password" aria-describedby="emailHelp"
-                            [ngClass]="{ 'text-danger': submitted && fLogin['password'].errors }"
-                            placeholder="Password">
-                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
-                    </div>
-                </div>
-                <div class="col-xs-11 mt-4">
-                    <div *ngIf="fLogin['password'].touched && fLogin['password'].invalid" class="alert alert-danger">
-                        <div *ngIf="fLogin['password'].errors && fLogin['password'].errors['required']">password is
-                            required.</div>
-                    </div>
-                </div>
-                <div class="col-xs-11">
-                    <p>Forgot password? <a [routerLink]="['/forgot']">Click here to reset</a></p>
-                </div>
                 <div class="col-xs-12">
                     <button type="button" class="btn" (click)="login()">
-                        Login
+                        Reset password
                     </button>
                 </div>
             </div>

@@ -13,7 +13,19 @@ const routes: Routes = [
     path: 'signup',
     // canActivate: [AuthGuard],
     loadChildren: () =>
-    import('./components/add-agent/add-agent.module').then((m) => m.AddAgentModule),
+    import('./components/sign-up/sign-up.module').then((m) => m.SignupModule)
+  },
+  {
+    path: 'sign-up',
+    // canActivate: [AuthGuard],
+    loadChildren: () =>
+    import('./components/sign-up/sign-up.module').then((m) => m.SignupModule)
+  },
+  {
+    path: 'forgot',
+    // canActivate: [AuthGuard],
+    loadChildren: () =>
+    import('./components/forgot/forgot.module').then((m) => m.ForgotModule)
   },
   {
     path: 'login',

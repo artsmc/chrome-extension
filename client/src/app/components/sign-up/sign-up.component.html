@@ -1,0 +1,84 @@
+<!--Signup-->
+
+<div class="message-container">
+    <ng-container *ngIf="isLoginSection">
+        <div class="col-md-12">
+            <h2 class="">Welcome!</h2>
+            <h5>Start your free trial today by signing up below or click here to <a [routerLink]="['/login']" routerLinkActive="router-link-active" >log in.</a></h5>
+        </div>
+        <form [formGroup]="signupForm">
+            <div class="row">
+                <div class="col-xs-11">
+                    <div class="d-flex justify-content-center">
+                        <label>Full name *</label>
+                        <input formControlName="fullName" type="text" class="form-control max-width-250" id="fullName"
+                            aria-describedby="fullNameHelp"
+                            [ngClass]="{ 'text-danger': submitted && fSignup['fullName'].errors }"
+                            placeholder="Full Name">
+                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
+                    </div>
+                    <div class="col-xs-11 mt-4">
+                        <div *ngIf="fSignup['fullName'].touched && fSignup['fullName'].invalid"
+                            class="alert alert-danger">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-11">
+                    <div class="d-flex justify-content-center">
+                        <label>Email *</label>
+                        <input formControlName="email" type="email" class="form-control max-width-250" id="email"
+                            aria-describedby="emailHelp"
+                            [ngClass]="{ 'text-danger': submitted && fSignup['email'].errors }"
+                            placeholder="Email Address">
+                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
+                    </div>
+                </div>
+                <!--Error-->
+                <div class="col-xs-11 mt-4">
+                    <div *ngIf="fSignup['email'].touched && fSignup['email'].invalid" class="alert alert-danger">
+                        <div *ngIf="fSignup['email'].errors && fSignup['email'].errors['required']">email is required.
+                        </div>
+                        <div *ngIf="fSignup['email'].errors && fSignup['email'].errors['email']">You did not supply a
+                            valid
+                            email
+                            address.</div>
+                    </div>
+                </div>
+                <div class="col-xs-11">
+                    <div class="d-flex justify-content-center">
+                        <label>Password *</label>
+                        <input formControlName="password" type="password" class="form-control max-width-250"
+                            id="password" aria-describedby="emailHelp"
+                            [ngClass]="{ 'text-danger': submitted && fSignup['password'].errors }"
+                            placeholder="Password">
+                    </div>
+                    <div class="col-xs-11 mt-4">
+                        <div *ngIf="fSignup['password'].touched && fSignup['password'].invalid"
+                            class="alert alert-danger">
+                            <div *ngIf="fSignup['password'].errors && fSignup['password'].errors['required']">password
+                                is required.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-11">
+                    <h5>By signing up you agree to our <a>Terms and Conditions</a> of use and <a>Privacy Policy</a></h5>
+                </div>
+                <div class="col-xs-12">
+                    <button type="button" class="btn" (click)="signup()">
+                        Sign up
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <ng-container *ngIf="!isLoginSection">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-danger col-md-6">Success</h2>
+            </div>
+            <div class="col-md-12 d-flex succ-text">
+                We sent you a link to your email to login to your dashboard
+            </div>
+        </div>
+    </ng-container>
+</div>
