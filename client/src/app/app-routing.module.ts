@@ -16,6 +16,11 @@ const routes: Routes = [
     import('./components/sign-up/sign-up.module').then((m) => m.SignupModule)
   },
   {
+    path: 'reset-password',
+    loadChildren: () => 
+    import('./components/new-password/new-password.module').then((m) => m.NewPasswordModule)
+  },
+  {
     path: 'sign-up',
     // canActivate: [AuthGuard],
     loadChildren: () =>

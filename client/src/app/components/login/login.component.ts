@@ -10,7 +10,6 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
-  public signupForm!: FormGroup;
   public submitted = false;
   public isLoginSection = true;
 
@@ -32,7 +31,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeLoginForm()
-    this.initializesSignupForm()
     console.log({url: window.location});
   }
 
@@ -46,27 +44,10 @@ export class LoginComponent implements OnInit {
       password: [null, Validators.required],
     });
   }
-
-  /**
-   * @description: Initializing a signup form using reactive forms.
-   */
-
-  private initializesSignupForm(): void {
-    this.signupForm = this.formBuilder.group({
-      email: [null, Validators.compose([Validators.required, Validators.email])],
-      password: [null, Validators.required],
-      fullName: [null, Validators.required]
-    });
-  }
-
   // convenience getter for easy access to form fields
 
   get fLogin() {
     return this.loginForm.controls;
-  }
-
-  get fSignup() {
-    return this.signupForm.controls;
   }
 
 
@@ -82,20 +63,7 @@ export class LoginComponent implements OnInit {
       console.log(res);
       localStorage.setItem('token', res?.token)
       // this.isLoginSection = false
-      this.router.navigate(['/signup']);
-    })
-  }
-
-  public signup(): void {
-    console.log(this.signupForm);
-    this.submitted = true;
-    if (this.signupForm.invalid) {
-      return;
-    }
-    this.userService.createUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.fullName).subscribe((user: any) => {
-      console.log('userrrs', user);
-      const loginSection = document.getElementById('ex1-tab-1')
-      
+      this.router.navigate(['/response']);
     })
   }
 
