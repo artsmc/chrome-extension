@@ -117,5 +117,38 @@ class AuthController extends UtilController {
         });
       });
     }
+    public async forgotPassword(email: string, location:string): Promise<{message:string}> {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserModel.findOne({ email });
+
+            if (!user) {
+                reject('User not found');
+                return;
+            }
+            const resetToken = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '15m' });
+            // Save the token to the user model in DB for later verification
+            user.passwordResetToken = resetToken;
+            user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // token valid for 15 mins
+            await user.save();
+            // Email user the reset link containing the token
+            const resetURL = `${location}/reset-password?token=${resetToken}`;
+            try {
+                await emailController.sendMessage('forgot-password', user.email, 'Reset Your Password', {
+                    to: user.email,
+                    subject: 'Password Reset Request',
+                    text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+                    Please click on the following link, or paste this into your browser to complete the process within the next 15 minutes:
+                    ${resetURL}`
+                });
+                resolve({ message: 'Password reset link sent to email.' });
+            } catch (err) {
+                user.passwordResetToken = undefined;
+                user.passwordResetExpires = undefined;
+                await user.save();
+
+                reject('There was an error sending the email.');
+            }
+        });
+    }
 }
 export const authController = new AuthController();

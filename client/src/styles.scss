@@ -1,6 +1,7 @@
 html { 
     position: relative; 
     min-height: 500px;
+    min-width: 420px;
     background: transparent;
     padding:15px;
 }
@@ -11,6 +12,7 @@ body {
     overflow-x: auto;
     background: transparent;
     font-size: 14px;
+    min-width: 420px;
 } 
 h2 {
     font-family: 'Roboto Flex', 'Roboto', sans-serif;

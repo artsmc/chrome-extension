@@ -57,6 +57,14 @@ router.post('/verify', middlewareController.isAuth, (req: Request, res: Response
   }
   );
 });
+router.post('/forgot-password', (req: Request, res: Response) => {
+  const header= req.headers['referrer'];
+  authController.forgotPassword(req.body, header.toString()).then((state: any) => {
+    res.status(200).json(state);
+  } ).catch((err: any) =>
+    res.status(500).json(err)
+  );
+});
 router.post('/change-password', (req: Request, res: Response) => {
   authController.changePassword(req.body).then((user: any) => {
     res.status(200).json(user);
