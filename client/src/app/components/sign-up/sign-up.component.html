@@ -14,7 +14,7 @@
                         <input formControlName="fullName" type="text" class="form-control max-width-250" id="fullName"
                             aria-describedby="fullNameHelp"
                             [ngClass]="{ 'text-danger': submitted && fSignup['fullName'].errors }"
-                            placeholder="Full Name">
+                            placeholder="Enter your full name">
                         <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
                     <div class="col-xs-11 mt-4">
@@ -29,7 +29,7 @@
                         <input formControlName="email" type="email" class="form-control max-width-250" id="email"
                             aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fSignup['email'].errors }"
-                            placeholder="Email Address">
+                            placeholder="Enter you email">
                         <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         <input formControlName="password" type="password" class="form-control max-width-250"
                             id="password" aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fSignup['password'].errors }"
-                            placeholder="Password">
+                            placeholder="Enter your Password">
                     </div>
                     <div class="col-xs-11 mt-4">
                         <div *ngIf="fSignup['password'].touched && fSignup['password'].invalid"
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-xs-12">
                     <button type="button" class="btn" (click)="signup()">
-                        Sign up
+                        Start free trial
                     </button>
                 </div>
             </div>

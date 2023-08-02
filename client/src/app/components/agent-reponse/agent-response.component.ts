@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faCircleChevronLeft, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 @Component({
   selector: 'app-agent-response',
   templateUrl: './agent-response.component.html',
@@ -10,13 +11,22 @@ import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 })
 export class AgentResponseComponent implements OnInit {
   public agentResponseForm!: FormGroup;
-  public toneSelectedValue = 'Select Tone'
+  public toneSelectedValue = 'Response tone'
   public feelingSelectedValue: string| boolean   = 'Feeling Allowed';
   faRotateRight = faRotateRight;
+  faCircleChevronLeft = faCircleChevronLeft
+  faChevronCircleLeft = faChevronCircleLeft
+  faArrowAltCircleLeft = faArrowAltCircleLeft
+  faChevronUp = faChevronUp
+  faChevronDown = faChevronDown
+  faArrowsRotate = faArrowsRotate
+  toggle = false
+  isResponseGenerated = false
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
+    private elementRef:ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +49,7 @@ export class AgentResponseComponent implements OnInit {
       console.log(response);
       this.agentResponseForm.controls['responseCreated'].setValue('');
       this.agentResponseForm.controls['responseCreated'].setValue(response.responseCreated);
+      this.isResponseGenerated = true
     })
     
   }
@@ -54,6 +65,17 @@ export class AgentResponseComponent implements OnInit {
   public refresh(): void {
     console.log('refresh');
     
+  }
+
+  public openDropdown(): void {
+    const el = document.getElementById('drop-down-list')
+      if (el?.style.display === "none" || el?.style.display === "") {
+        this.toggle = true
+        this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'block';
+      } else {
+        this.toggle = false
+        this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'none';
+      }
   }
 
 }

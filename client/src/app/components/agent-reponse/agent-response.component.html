@@ -6,8 +6,30 @@
     <form [formGroup]="agentResponseForm">
         <div class="row">
             <div class="col-xs-12">
-                <div class="dropdown-input">
-                    <div class="select-box">
+                <!-- <div class="btn-group w-100" dropdown>
+                    <button id="button-basic" dropdownToggle type="button"
+                        class="btn btn-outline-dark dropdown-toggle" aria-controls="dropdown-basic">
+                        {{toneSelectedValue}} <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Pleasent')">Pleasent</a></li>
+                        <li role="menuitem"><a class="dropdown-item" (click)="getTone('Firm')">Firm</a></li>
+                    </ul>
+                </div> -->
+
+                <div class="drop-down1" (click)="openDropdown()">
+                    <span>{{toneSelectedValue}}</span>
+                    <fa-icon *ngIf="!toggle" [icon]="faChevronDown"></fa-icon>
+                    <fa-icon *ngIf="toggle" [icon]="faChevronUp"></fa-icon>
+                    
+                    <ul id="drop-down-list" class="drop-down-list">
+                        <li (click)="getTone('Pleasent')">Pleasent</li>
+                        <li (click)="getTone('Firm')">Firm</li>
+                    </ul>
+                </div>
+                <!-- <div class="dropdown-input">
+                    <div class="select-box w-100">
                         <div class="select-box__current" tabindex="1">
                             <div class="select-box__value">
                                 <input class="select-box__input" type="radio" id="0" value="1" name="Ben" checked="checked" />
@@ -49,19 +71,63 @@
                             </li>
                         </ul>
                     </div>
+                </div> -->
+            </div>
+            <!-- <div class="col-xs-11">
+                <div class="d-flex justify-content-center">
+                    <input formControlName="email" type="email" class="form-control max-width-250" id="email"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter your email">
+                        <input formControlName="email" type="email" class="form-control max-width-250" id="email"
+                        aria-describedby="emailHelp"
+                        placeholder="Enter your email">
+                </div>
+            </div> -->
+            <div class="col-md-12 d-flex m-top-20">
+                <div class="col-md-6 col-xs-6 col-sm6 emoji">
+                        <input type="text" formControlName="emoji" class="form-control max-width-250" id="emoji"
+                            aria-describedby="Emoji" placeholder="Emoji Allowed">
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm6 char-limit">
+                        <input type="text" formControlName="charLimit" class="form-control max-width-250" id="emoji"
+                            aria-describedby="Emoji" placeholder="Character limit">
                 </div>
             </div>
-            <div class="col-md-12 d-flex mt-4 text-center">
+            <div class="col-md-12 d-flex m-top-20">
                 <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
-                    rows="10"></textarea>
-                <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon>
+                    rows="15"></textarea>
+                <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
             </div>
             <div class="col-xs-12 col-sm-12 mt-3 text-center">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn" (click)="generateResponse()">
-                        Generate Response
-                    </button>
-                </div>
+                <ng-container *ngIf="!isResponseGenerated">
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn" (click)="generateResponse()">
+                            <fa-icon class="" [icon]="faArrowAltCircleLeft"></fa-icon>
+                            <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
+                            Generate
+                        </button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="isResponseGenerated">
+                    <div class="btn-group w-100 d-flex" role="group">
+                        <div class="col-md-6">
+                            <button type="button" class="btn" (click)="generateResponse()">
+                                <fa-icon class="" [icon]="faArrowAltCircleLeft"></fa-icon>
+                                <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
+                                Insert
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-rotate" (click)="generateResponse()">
+                                <fa-icon class="" [icon]="faArrowsRotate"></fa-icon>
+                                <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
+                                re-generate
+                            </button>
+                        </div>
+                        
+                        
+                    </div>
+                </ng-container>
             </div>
         </div>
     </form>

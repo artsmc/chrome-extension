@@ -12,7 +12,7 @@
                         <input formControlName="email" type="email" class="form-control max-width-250" id="email"
                             aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fLogin['email'].errors }"
-                            placeholder="Email Address">
+                            placeholder="Enter your email">
                         <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                         <input formControlName="password" type="password" class="form-control max-width-250"
                             id="password" aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fLogin['password'].errors }"
-                            placeholder="Password">
+                            placeholder="Enter your Password">
                         <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-xs-12">
                     <button type="button" class="btn" (click)="login()">
-                        Login
+                        Continue
                     </button>
                 </div>
             </div>

@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-forgot',
-  templateUrl: './forgot.component.html',
-  styleUrls: ['./forgot.component.scss']
+  selector: 'app-new-password',
+  templateUrl: './new-password.component.html',
+  styleUrls: ['./new-password.component.scss']
 })
-export class ForgotComponent implements OnInit {
-  public forgotPasswordForm!: FormGroup;
+export class NewPasswordComponent implements OnInit {
+  public newPasswordForm!: FormGroup;
   public submitted = false;
-  public isPasswordReset = false;
+  // public isSuccess = true;
 
   constructor(
     private router : Router,
@@ -30,32 +30,31 @@ export class ForgotComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeForgotPasswordForm()
+    this.initializeNewPasswordForm()
     console.log({url: window.location});
   }
 
   /**
-   * @description: Initializing a login form using reactive forms.
+   * @description: Initializing a new password form using reactive forms.
    */
 
-  private initializeForgotPasswordForm(): void {
-    this.forgotPasswordForm = this.formBuilder.group({
-      email: [null, Validators.compose([Validators.required, Validators.email])]
+  private initializeNewPasswordForm(): void {
+    this.newPasswordForm = this.formBuilder.group({
+      password: [null, Validators.required],
+      confirmPassword: [null, Validators.required]
     });
   }
 
 
   // convenience getter for easy access to form fields
 
-  get fForgotPassword() {
-    return this.forgotPasswordForm.controls;
+  get fNewPassword() {
+    return this.newPasswordForm.controls;
   }
 
-  public forgotPassword(): void {
-    console.log(this.forgotPasswordForm);
-    // On Success
-    this.isPasswordReset = true
-    // this.router.navigate(['/reset-password']);
+  public resetPassword(): void {
+    console.log(this.newPasswordForm);
+    // this.isSuccess = true
+    
   }
-
 }
