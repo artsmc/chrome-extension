@@ -8,12 +8,13 @@ import { ExpressRouter } from './routes/_Router';
 import * as multer from 'multer';
 import * as express from 'express';
 import * as dotenv from 'dotenv';
-
+import * as cors from 'cors';
 dotenv.config();
 const app = express();
 const upload = multer();
 // setup the logger
 app.use(status());
+app.use(cors());
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json({ limit: '200mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '200MB' }));
