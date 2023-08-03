@@ -111,20 +111,13 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  setResponse(tone: string, emoji: string, charLimit: number, custInq: string): Observable<any> {
-    console.log('values', tone, emoji, charLimit, custInq);
-    
+  setResponse(form:{tone: string, emojiAllowed: string, characterLimit: number, customerInquery: string}): Observable<any> {
+    const token = localStorage.getItem('token')
     const url = `${this.baseUrl}/response/agent-request`
-    const payload = {
-      tone: tone,
-      feelings: true,
-      emojiAllowed: emoji,
-      characterLimit: charLimit,
-      customerInquery: custInq,
-      agentContext: ""
-    }
     return this.http
-      .post(url,  payload)
+      .post(url, form, {headers:{
+        authorization: `Bearer ${token}`
+      }})
       .pipe(catchError(this.handleError));
   }
   logout() {

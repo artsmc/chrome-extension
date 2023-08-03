@@ -34,6 +34,7 @@ import { RouterModule } from '@angular/router';
     FontAwesomeModule
   ],
   providers: [ZendeskService, 
+    { provide: Window, useValue: window },
     { 
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
