@@ -57,8 +57,16 @@
                             class="alert alert-danger">
                             <div *ngIf="fSignup['password'].errors && fSignup['password'].errors['required']">password
                                 is required.</div>
+                           
                         </div>
                     </div>
+                    <div class="col-xs-11 mt-4">
+                    <div *ngIf="isErr">
+                        <span>password must be 3-30 characters</span>
+                        <span>use upper and lowercase and only numbers 0-9</span>
+                        <span>no special characters</span>
+                    </div>
+                </div>
                 </div>
                 <div class="col-xs-11">
                     <h5>By signing up you agree to our <a>Terms and Conditions</a> of use and <a>Privacy Policy</a></h5>

@@ -46,6 +46,9 @@
                 <div class="col-xs-11">
                     <p>Forgot password? <a [routerLink]="['/forgot']">Click here to reset</a></p>
                 </div>
+                <div *ngIf="isErr">
+                    <span>The application has encountered an unknown error. Reload this page</span>
+                </div>
                 <div class="col-xs-12">
                     <button type="button" class="btn" (click)="login()">
                         Continue

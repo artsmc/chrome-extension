@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   public submitted = false;
   public isLoginSection = true;
+  public isErr = false;
 
   constructor(
     private router : Router,
@@ -53,6 +54,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res?.token)
       // this.isLoginSection = false
       this.router.navigate(['/response']);
+    }, (err)=> {
+      this.isErr = true
     })
   }
 

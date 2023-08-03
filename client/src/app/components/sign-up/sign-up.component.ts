@@ -12,6 +12,7 @@ export class SignUpComponent implements OnInit {
   public signupForm!: FormGroup;
   public submitted = false;
   public isLoginSection = true;
+  public isErr = false;
 
   constructor(
     private router : Router,
@@ -51,6 +52,8 @@ export class SignUpComponent implements OnInit {
     this.userService.createUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.fullName).subscribe((user: any) => {
       const loginSection = document.getElementById('ex1-tab-1')
       this.router.navigate(['/login']);
+    }, (err)=> {
+      this.isErr = true
     })
   }
 
