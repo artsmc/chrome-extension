@@ -47,16 +47,14 @@
                         <ng-container *ngIf="isResponseGenerated">
                             <div class="btn-group w-100 d-flex" role="group">
                                 <div class="col-xs-6">
-                                    <button type="button" class="btn" (click)="generateResponse()">
+                                    <button type="button" class="btn" (click)="insertResponse()">
                                         <fa-icon class="" [icon]="faArrowAltCircleLeft"></fa-icon>
-                                        <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
                                         Insert
                                     </button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button type="button" class="btn btn-rotate" (click)="generateResponse()">
                                         <fa-icon class="" [icon]="faArrowsRotate"></fa-icon>
-                                        <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
                                         re-generate
                                     </button>
                                 </div>

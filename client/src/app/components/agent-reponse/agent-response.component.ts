@@ -40,8 +40,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     this.window.onmessage = function(e) {
 
-        if (e.data && typeof e.data === 'string') {
-          CustomerData.message = e.data;
+        if (e.data && e.data.send && typeof e.data.send === 'string') {
+          CustomerData.message = e.data.send;
           console.log(CustomerData);
         }
     };
@@ -70,9 +70,12 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.agentResponseForm.controls['responseCreated'].setValue(response.responseCreated);
       this.isResponseGenerated = true
     })
-    
   }
-
+  public insertResponse(): void {
+    if(this.window && this.window.top && this.window.top.postMessage){
+      this.window.top.postMessage({recieve: this.agentResponseForm.controls['responseCreated'].value}, '*');
+    }
+  }
   public getFeelings(feeling: boolean) {
     this.feelingSelectedValue = feeling
   }

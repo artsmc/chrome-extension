@@ -19,6 +19,15 @@ iframe.style.boxShadow = "0px 10px 60px -30px rgba(0, 0, 0, 0.3)";
 const hashConverter = window.location.hash.replace("#", "#/");
 iframe.src = chrome.runtime.getURL("index.html"+hashConverter);
 const docFrame = document.body.appendChild(iframe);
+window.onmessage = function(e) {
+    if (e.data && e.data.recieve) {
+      InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
+        sdk.Compose.registerComposeViewHandler(function(composeView){
+          composeView.insertTextIntoBodyAtCursor(e.data.recieve);
+        });
+      });
+    }
+};
 InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
   sdk.Compose.registerComposeViewHandler(function(composeView){
     console.log({composeView, id: composeView.getThreadID()})
@@ -28,7 +37,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
     composeView.ensureAppButtonToolbarsAreClosed();
     composeView.on('bodyChanged', function(event) {
       console.log( {event});
-      docFrame.contentWindow.postMessage(composeView.getTextContent(), '*');
+      docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
     });
     composeView.on('cancel', function(event) {
       console.log( {event});
@@ -56,7 +65,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
             trimmed[i].click();
           }
         }
-        docFrame.contentWindow.postMessage(composeView.getTextContent(), '*');
+        docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
         toggle();
         // event.composeView.insertTextIntoBodyAtCursor('Hello World!');
       },
@@ -67,11 +76,13 @@ function toggle(state){
     if(state && state == "open"){
       if(iframe.style.width == "0px"){
         iframe.style.width="420px";
+        return;
       }
     }
     if(state && state == "close"){
       if(iframe.style.width == "420px"){
         iframe.style.width="0px";
+        return;
       }
     }
     if(iframe.style.width == "0px"){
