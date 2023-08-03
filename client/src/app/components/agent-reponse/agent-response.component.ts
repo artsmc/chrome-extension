@@ -1,16 +1,18 @@
-import { AfterViewInit, Component, ElementRef, OnInit, Injectable, Inject } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faCircleChevronLeft, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-
+let CustomerData = {
+  message:''
+}
 @Component({
   selector: 'app-agent-response',
   templateUrl: './agent-response.component.html',
   styleUrls: ['./agent-response.component.scss']
 })
-export class AgentResponseComponent implements OnInit, AfterViewInit {
+export class AgentResponseComponent implements OnInit, AfterContentInit {
   public agentResponseForm!: FormGroup;
   public toneSelectedValue = 'Response tone'
   public feelingSelectedValue: string| boolean   = 'Feeling Allowed';
@@ -28,33 +30,41 @@ export class AgentResponseComponent implements OnInit, AfterViewInit {
     private formbuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private elementRef:ElementRef
+    private elementRef:ElementRef,
+    private window: Window
   ) {}
 
   ngOnInit(): void {
       this.initializeAgentResponseForm()
   }
-  ngAfterViewInit(): void {
-   window.onmessage = function(e) {
-        console.log(e)
-        if (e.data == 'hello') {
-            console.log('It works!');
+  ngAfterContentInit(): void {
+    this.window.onmessage = function(e) {
+
+        if (e.data && typeof e.data === 'string') {
+          CustomerData.message = e.data;
+          console.log(CustomerData);
         }
     };
   }
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
+      tone: [null, Validators.required],
       customerInquery:[''],
       responseCreated:[''],
       agentContext:[''],
-      charLimit: [null, Validators.required],
-      emoji: [null, Validators.required]
+      characterLimit: [null, Validators.required],
+      emojiAllowed: [null, Validators.required]
     })
   }
 
   public generateResponse(): void {
-    this.userService.setResponse(this.toneSelectedValue, this.agentResponseForm.value.emoji, this.agentResponseForm.value.charLimit, this.toneSelectedValue).subscribe((response: any) => {
+    this.agentResponseForm.patchValue({
+      customerInquery: CustomerData.message,
+      tone: this.toneSelectedValue
+    })
+    console.log(this.agentResponseForm.value)
+    this.userService.setResponse(this.agentResponseForm.value).subscribe((response: any) => {
       console.log(response);
       this.agentResponseForm.controls['responseCreated'].setValue('');
       this.agentResponseForm.controls['responseCreated'].setValue(response.responseCreated);

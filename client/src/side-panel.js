@@ -23,15 +23,39 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
   sdk.Compose.registerComposeViewHandler(function(composeView){
     console.log({composeView, id: composeView.getThreadID()})
     // a compose view has come into existence, do something with it!
-    composeView.forceRecipientRowsOpen();//bodyChanged
+    composeView.forceRecipientRowsOpen();
+    composeView.ensureFormattingToolbarIsHidden();
+    composeView.ensureAppButtonToolbarsAreClosed();
     composeView.on('bodyChanged', function(event) {
       console.log( {event});
       docFrame.contentWindow.postMessage(composeView.getTextContent(), '*');
+    });
+    composeView.on('cancel', function(event) {
+      console.log( {event});
+      toggle('close');
+    });
+    composeView.on('discard', function(event) {
+      console.log( {event});
+      toggle('close');
+    });
+    composeView.on('fullscreenChanged', function(event) {
+      console.log( {event});
+      toggle('close');
+    });
+    composeView.on('sendCanceled', function(event) {
+      console.log( {event});
+      toggle('close');
     });
     composeView.addButton({
       title: "AI",
       iconUrl: 'https://png.pngitem.com/pimgs/s/509-5099390_check-green-check-list-icon-hd-png-download.png',
       onClick: function(event) {
+        const trimmed = document.querySelectorAll("[data-tooltip='Show trimmed content']");
+        for (let i = 0; i < trimmed.length; i++) {
+          if(i === trimmed.length - 1) {
+            trimmed[i].click();
+          }
+        }
         docFrame.contentWindow.postMessage(composeView.getTextContent(), '*');
         toggle();
         // event.composeView.insertTextIntoBodyAtCursor('Hello World!');
@@ -39,7 +63,17 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
     });
   });
 });
-function toggle(){
+function toggle(state){
+    if(state && state == "open"){
+      if(iframe.style.width == "0px"){
+        iframe.style.width="420px";
+      }
+    }
+    if(state && state == "close"){
+      if(iframe.style.width == "420px"){
+        iframe.style.width="0px";
+      }
+    }
     if(iframe.style.width == "0px"){
         iframe.style.width="420px";
     }

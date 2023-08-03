@@ -20,6 +20,7 @@ class MiddlewareController extends UtilController  {
     res.status(200).json('Complete');
   }
   isAuth (req: Request, res: Response, next: () => void) {
+    console.log(req.headers)
     if (req.headers['authorization'] ) {
         const jwtToken = (req.headers.authorization).split(' ');
         jwt.verify(jwtToken[1], jwtSecret, (err, decoded) => {

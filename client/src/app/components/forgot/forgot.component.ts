@@ -71,7 +71,6 @@ export class ForgotComponent implements OnInit {
   public verifyCode(): void {
     this.userService.verifyPassword(this.verifyPasswordForm.value).subscribe(
       response => {
-        localStorage.setItem('token', response?.token)
         this.route.navigate(['/reset-password', { token: response.token }]);
         this.errorMessage = null;
       }, fail => {

@@ -28,7 +28,6 @@ export class AppComponent {
      const user = this.userService.getUserValue();
      if(user) {
       this.userService.verify().subscribe((response) => {
-        localStorage.setItem('token', response?.token);
         this.route.navigate(['/response']);
       }, fail => {
         this.userService.logout();
@@ -62,17 +61,4 @@ export class AppComponent {
   getZendeskMessages() {
   }
 
-
-
-  public setState(): void {
-    if (this.userService.isPanelOpen) {
-      localStorage.setItem('panelOpen', 'false');
-      this.userService.isPanelOpen.next(false)
-    } else{
-      localStorage.setItem('panelOpen', 'true');
-      // this.userService.isPanelOpen.next(true);
-      this.userService.isPanelOpen
-    }
-
-  }
 }
