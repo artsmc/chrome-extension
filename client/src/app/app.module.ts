@@ -13,6 +13,7 @@ import { LoginModule } from './components/login/login.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorInterceptor } from './error.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     FontAwesomeModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -31,7 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     FontAwesomeModule
   ],
-  providers: [ZendeskService,
+  providers: [ZendeskService, 
     { 
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,

@@ -21,6 +21,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
   exports: [
     AgentResponseComponent
-  ]
+  ],
 })
 export class AgentReponseModule { }

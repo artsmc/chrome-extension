@@ -20,18 +20,10 @@ export class NewPasswordComponent implements OnInit {
     private route: Router
   ) {
      const user = this.userService.getUserValue();
-     console.log('user', user);
-     
-        // const user = true
-        // if (user) {
-        //     // logged in so return true
-        //     this.router.navigate(['/response']);
-        // } 
   }
 
   ngOnInit(): void {
-    this.initializeNewPasswordForm()
-    console.log({url: window.location});
+    this.initializeNewPasswordForm();
   }
 
   /**
@@ -53,8 +45,9 @@ export class NewPasswordComponent implements OnInit {
   }
 
   public resetPassword(): void {
-    console.log(this.newPasswordForm);
-    // this.isSuccess = true
-    
+    this.userService.setPassword(this.newPasswordForm.value).subscribe((response) => {
+      console.log(response);
+      this.route.navigate(['/response']);
+    });
   }
 }

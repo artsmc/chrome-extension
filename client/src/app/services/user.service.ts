@@ -38,11 +38,6 @@ export class UserService {
     private route: Router,
     private router: ActivatedRoute
   ) {
-    console.log(this.router.url);
-  
-    // this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('token')!));
-    // this.userSubject = new BehaviorSubject(localStorage.getItem('token'));
-    // this.user = this.userSubject.asObservable();
   }
 
 
@@ -66,6 +61,11 @@ export class UserService {
     const url = `${this.baseUrl}/auth/callback?token=${token}`
     return this.http.get(url).pipe(catchError(this.handleError));
   }
+  verify(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const url = `${this.baseUrl}/auth/verify`;
+    return this.http.get(url).pipe(catchError(this.handleError));
+  }
 
   login(email: string, password: string): Observable <any> {
     const url = `${this.baseUrl}/auth/login`;
@@ -77,7 +77,28 @@ export class UserService {
       .post(url,  payload)
       .pipe(catchError(this.handleError));
   }
-
+  forgotPassword(email: string, location: string): Observable <any> {
+    const url = `${this.baseUrl}/auth/forgot-password`;
+    const payload = {
+      email,
+      location
+    }
+    return this.http
+      .post(url,  payload)
+      .pipe(catchError(this.handleError));
+  }
+  verifyPassword(form:{email: string, resetNumber: number}): Observable <any> {
+    const url = `${this.baseUrl}/auth/verify-reset`;
+    return this.http
+      .post(url,  form)
+      .pipe(catchError(this.handleError));
+  }
+  setPassword(form:{password: string}): Observable <any> {
+    const url = `${this.baseUrl}/auth/change-password`;
+    return this.http
+      .post(url,  form)
+      .pipe(catchError(this.handleError));
+  }
   updateUser(agentName: string, companyName: string): Observable<any> {
     const token = localStorage.getItem('token')
     const url = `${this.baseUrl}/user/update-my-account`

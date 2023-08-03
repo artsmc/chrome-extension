@@ -30,7 +30,7 @@
               "src/assets",
               "src/manifest.json",
               "src/side-panel.js",
-              "src/background.js"
+              "src/inboxsdk.js"
             ],
             "styles": [
               "src/styles.scss"

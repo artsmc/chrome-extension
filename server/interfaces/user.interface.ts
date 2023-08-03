@@ -15,7 +15,7 @@ export interface IUsers extends Document {
   created: string;
   is_active?: boolean;
   is_system?: boolean;
-  passwordResetToken:string;
+  passwordResetNumber:number;
   passwordResetExpires:number;
 }
 

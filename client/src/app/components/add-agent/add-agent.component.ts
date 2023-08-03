@@ -33,8 +33,6 @@ export class AddAgentComponent implements OnInit {
   // convenience getter for easy access to form fields
 
   get f() {
-    console.log(this.addAgentForm.controls);
-    
     return this.addAgentForm.controls;
   }
 

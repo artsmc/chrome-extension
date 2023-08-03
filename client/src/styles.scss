@@ -1,18 +1,16 @@
 html { 
     position: relative; 
     min-height: 500px;
-    min-width: 420px;
+    min-width: 100%;
     background: transparent;
-    padding:15px;
 }
 body { 
     margin: 0; 
     font-family: 'Roboto Flex','Roboto', sans-serif;
-    overflow-y: hidden; 
-    overflow-x: auto;
+    overflow: auto; 
+    overflow-x: hidden; 
     background: transparent;
     font-size: 14px;
-    min-width: 420px;
 } 
 h2 {
     font-family: 'Roboto Flex', 'Roboto', sans-serif;

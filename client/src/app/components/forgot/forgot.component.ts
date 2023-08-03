@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { response } from 'express';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,9 +11,11 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ForgotComponent implements OnInit {
   public forgotPasswordForm!: FormGroup;
+  public verifyPasswordForm!: FormGroup;
   public submitted = false;
   public isPasswordReset = false;
-
+  public email = '';
+  public errorMessage:null| string = null;
   constructor(
     private router : Router,
     private formBuilder: FormBuilder,
@@ -20,18 +23,10 @@ export class ForgotComponent implements OnInit {
     private route: Router
   ) {
      const user = this.userService.getUserValue();
-     console.log('user', user);
-     
-        // const user = true
-        // if (user) {
-        //     // logged in so return true
-        //     this.router.navigate(['/response']);
-        // } 
   }
 
   ngOnInit(): void {
-    this.initializeForgotPasswordForm()
-    console.log({url: window.location});
+    this.initializeForgotPasswordForm();
   }
 
   /**
@@ -43,6 +38,12 @@ export class ForgotComponent implements OnInit {
       email: [null, Validators.compose([Validators.required, Validators.email])]
     });
   }
+  private initializeVerifyPasswordForm(): void {
+    this.verifyPasswordForm = this.formBuilder.group({
+      email: [null, Validators.compose([Validators.required, Validators.email])],
+      resetNumber: [null, Validators.compose([Validators.required, Validators.min(6)])]
+    });
+  }
 
 
   // convenience getter for easy access to form fields
@@ -50,12 +51,34 @@ export class ForgotComponent implements OnInit {
   get fForgotPassword() {
     return this.forgotPasswordForm.controls;
   }
+  get fverifyPassword() {
+    return this.verifyPasswordForm.controls;
+  }
 
   public forgotPassword(): void {
-    console.log(this.forgotPasswordForm);
-    // On Success
-    this.isPasswordReset = true
-    // this.router.navigate(['/reset-password']);
+    this.email = this.forgotPasswordForm.value.email;
+    this.userService.forgotPassword(this.email, window.location.href).subscribe(
+      (response: any) => {
+        this.isPasswordReset = true;
+        this.initializeVerifyPasswordForm();
+        this.verifyPasswordForm.controls['email'].setValue(this.email);
+        this.errorMessage = null;
+      }, fail => {
+        this.errorMessage = fail;
+      }
+    );
   }
+  public verifyCode(): void {
+    this.userService.verifyPassword(this.verifyPasswordForm.value).subscribe(
+      response => {
+        localStorage.setItem('token', response?.token)
+        this.route.navigate(['/reset-password', { token: response.token }]);
+        this.errorMessage = null;
+      }, fail => {
+        this.errorMessage = fail;
+      });
+
+  } 
+  
 
 }

@@ -4,11 +4,6 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  // {
-  //   path: 'signup',
-  //   component: AddAgentModule,
-  //   // canActivate: [AuthGuard],
-  // },
   {
     path: 'signup',
     // canActivate: [AuthGuard],
@@ -17,6 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'reset-password',
+    canActivate: [AuthGuard],
     loadChildren: () => 
     import('./components/new-password/new-password.module').then((m) => m.NewPasswordModule)
   },
@@ -40,13 +36,13 @@ const routes: Routes = [
   },
   {
     path: 'response',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () =>
     import('./components/agent-reponse/agent-reponse.module').then((m) => m.AgentReponseModule)
   },
   // { path: '', component: AddAgentComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' }
   // { path: 'signup', component: AddAgentComponent }
   // { path: '', redirectTo: 'signup' },
 ];

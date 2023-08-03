@@ -24,7 +24,7 @@ export let userSchema: Schema = new Schema(
     browser: { type: String },
     system: { type: String },
     device: { type: String },
-    passwordResetToken:{ type: String },
+    passwordResetNumber:{ type: Number },
     passwordResetExpires:{ type: Number },
     is_active: { type: Boolean },
     is_system: { type: Boolean },

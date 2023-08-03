@@ -1,32 +1,17 @@
 {
-  "manifest_version": 3,
-  "name": "Angular QA Score ZenDesk AI",
-  "short_name": "angular qa score zend",
-  "version": "2.0.0",
-  "description": "Angular QA Score ZenDesk AI",
-  "host_permissions": [
-    "https://*/*",
-    "http://*/*"
+  "manifest_version": 2,
+  "name": "AI Email Assistant by Callcenter.ai",
+  "version": "1.0",
+  "permissions": [
+    "https://mail.google.com/",
+    "https://inbox.google.com/"
   ],
-  "background": {
-        "service_worker": "background.js"
-  },
-  "content_scripts": [
+  "content_scripts" : [
     {
-      "matches": [
-          "https://*/*",
-          "http://*/*"
-      ],
-      "js": ["side-panel.js"]
+      "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
+      "js": ["inboxsdk.js", "side-panel.js"],
+      "run_at": "document_end"
     }
   ],
-  
-  "action": {},
-  
-  "web_accessible_resources": [
-    {
-      "resources": ["index.html", "index.html/*"],
-      "matches": ["https://*/*", "http://*/*"]
-    }
-  ]
+  "web_accessible_resources": ["index.html", "index.html/*"]
 }

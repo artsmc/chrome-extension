@@ -2,6 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { ZendeskService } from './services/zendesk.service';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
+// // @ts-ignore
+// import * as $ from 'jquery';
+// // @ts-ignore
+// import * as GmailFactory  from 'gmail-js';
 
 @Component({
   selector: 'app-root',
@@ -14,49 +18,53 @@ export class AppComponent {
   @ViewChild("offcanvasRight") offcanvasRight: any;
   private offcanvasElement: any
   public isOffcanvasOpen = false;
-
+  // public _gmailjs = new GmailFactory.Gmail($);
   constructor(private zendeskService: ZendeskService,
     private route: Router,
     private userService: UserService
   ) { }
 
-public ngOnInit(): void {
-    // @ts-ignore
-    chrome.tabs.executeScript({
-      code: `
-      (function(){
-      const iframe = document.createElement('iframe');
-      iframe.src = chrome.runtime.getURL('index.html');
-      iframe.style.cssText = 'position:fixed;top:0;left:0;display:block;' +
-        'width:300px;height:100%;z-index:1000;';
-      document.body.appendChild(iframe);
-    })(); `
-    });
+  public ngOnInit(): void {
+     const user = this.userService.getUserValue();
+     if(user) {
+      this.userService.verify().subscribe((response) => {
+        localStorage.setItem('token', response?.token);
+        this.route.navigate(['/response']);
+      }, fail => {
+        this.userService.logout();
+        this.route.navigate(['/']);
+      });
+    }
   }
 
   ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    console.log('LOCATION', this.route.url);
   }
+//   startExtension(gmail:any): void {
+//     console.log("Extension loading...");
+//     (<any>window).gmail = gmail;
+
+//     gmail.observe.on("load", () => {
+//         const userEmail = gmail.get.user_email();
+//         console.log("Hello, " + userEmail + ". This is your extension talking!");
+
+//         gmail.observe.on("view_email", (domEmail: any) => {
+//             console.log("Looking at email:", domEmail);
+//             const emailData = gmail.new.get.email_data(domEmail);
+//             console.log("Email data:", emailData);
+//         });
+
+//         gmail.observe.on("compose", (compose: any) => {
+//             console.log("New compose window is opened!", compose);
+//         });
+//     });
+// }
 
   getZendeskMessages() {
-    // this.zendeskService.getMessages().subscribe((data: any[]) => {
-    //   this.messages = data;
-    // });
   }
 
-  sendOpenAIResponse(message: string) {
-    // this.zendeskService.sendResponse(message).subscribe((response: any) => {
-    // Insert the OpenAI response into the Zendesk reply
-    // this.zendeskService.insertReply(response).subscribe();
-    // });
-  }
 
 
   public setState(): void {
-    // console.log(localStorage.getItem('panelOpen'));
-    // const val = localStorage.getItem('panelOpen')
     if (this.userService.isPanelOpen) {
       localStorage.setItem('panelOpen', 'false');
       this.userService.isPanelOpen.next(false)

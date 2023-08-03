@@ -1,6 +1,6 @@
 <div class="message-container">
     <ng-container *ngIf="isLoginSection">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <h2 class="">Log - in</h2>
             <h5>Enter your details to log in to your account. Sign-up <a [routerLink]="['/sign-up']" routerLinkActive="router-link-active" >here</a></h5>
         </div>
@@ -56,10 +56,10 @@
     </ng-container>
     <ng-container *ngIf="!isLoginSection">
         <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-danger col-md-6">Success</h2>
+            <div class="col-xs-12">
+                <h2 class="text-danger col-xs-6">Success</h2>
             </div>
-            <div class="col-md-12 d-flex succ-text">
+            <div class="col-xs-12 d-flex succ-text">
                 We sent you a link to your email to login to your dashboard
             </div>
         </div>

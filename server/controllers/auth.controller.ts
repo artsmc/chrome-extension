@@ -7,6 +7,7 @@ import { UserModel } from '../models/user.model';
 import { emailController } from './email.controller';
 export const mailgun = new Mailgun({ apiKey: process.env.MG_API_KEY, domain: process.env.MG_DOMAIN });
 import { jwtSecret } from '../_config/config';
+import { IUsers } from '../interfaces/user.interface';
 
 class AuthController extends UtilController {
     constructor() {
@@ -25,7 +26,7 @@ class AuthController extends UtilController {
             // Store hash in your password DB.
             const state = new UserModel(userData);
             state.save().then((user) => {
-              emailController.sendMessage('PodTitle-ConfirmEmail', user.email, 'PodTitle-ConfirmEmail', {});
+              emailController.sendMessage('angel-new-user', user.email, 'angel-new-user', {});
               jwt.sign({ user }, jwtSecret, { expiresIn: '7d' }, (err, token) => {
                 if (err) {
                   console.log({ err });
@@ -83,9 +84,10 @@ class AuthController extends UtilController {
         });
       });
     }
-    public async changePassword(userData: {user_id: string; password:string;}): Promise<{}> {
+    public async changePassword(userData: {decode:{user:IUsers}; password:string;}): Promise<{}> {
       return new Promise((resolve, reject) => {
-        UserModel.findOne({ _id: userData.user_id }).then((user: any) => {
+        console.log(userData)
+        UserModel.findOne({ _id: userData.decode.user._id }).then((user: any) => {
           bcrypt.genSalt(10, (err, salt) => {
             if (err) {
               console.log({ err });
@@ -96,7 +98,7 @@ class AuthController extends UtilController {
               user.password = hash; 
               // Store hash in your password DB.
               user.save().then((user) => {
-                emailController.sendMessage('PhoneAngel-Password', user.email, 'PhoneAngel-Password', {});
+                emailController.sendMessage('angel-forgot-success', user.email, 'angel-forgot-success', {});
                 jwt.sign({ user }, jwtSecret, { expiresIn: '7d' }, (err, token) => {
                   if (err) {
                     console.log({ err });
@@ -117,37 +119,66 @@ class AuthController extends UtilController {
         });
       });
     }
-    public async forgotPassword(email: string, location:string): Promise<{message:string}> {
+    public async forgotPassword(data:{email: string, location:string}): Promise<{message:string}> {
         return new Promise(async (resolve, reject) => {
-            const user = await UserModel.findOne({ email });
-
+            const user = await UserModel.findOne({ email: data.email });
+    
             if (!user) {
                 reject('User not found');
                 return;
             }
-            const resetToken = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '15m' });
-            // Save the token to the user model in DB for later verification
-            user.passwordResetToken = resetToken;
-            user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // token valid for 15 mins
+    
+            // Generate a 6 digit reset number
+            const resetNumber = Math.floor(100000 + Math.random() * 900000); 
+    
+            // Save the reset number and its expiry to the user model in DB for later verification
+            user.passwordResetNumber = resetNumber;
+            user.passwordResetExpires = Date.now() + 15 * 60 * 1000; // reset number valid for 15 mins
             await user.save();
-            // Email user the reset link containing the token
-            const resetURL = `${location}/reset-password?token=${resetToken}`;
+    
             try {
-                await emailController.sendMessage('forgot-password', user.email, 'Reset Your Password', {
-                    to: user.email,
-                    subject: 'Password Reset Request',
-                    text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
-                    Please click on the following link, or paste this into your browser to complete the process within the next 15 minutes:
-                    ${resetURL}`
+                emailController.sendMessage('angel-forgot-password', user.email, 'angel-forgot-password', {
+                  'reset-number': `${resetNumber}`
                 });
-                resolve({ message: 'Password reset link sent to email.' });
+                resolve({ message: 'A 6-digit password reset number sent to email.' });
             } catch (err) {
-                user.passwordResetToken = undefined;
+                user.passwordResetNumber = undefined;
                 user.passwordResetExpires = undefined;
                 await user.save();
-
+    
                 reject('There was an error sending the email.');
             }
+        });
+    }
+    // new method below
+    public async verifyPasswordResetNumber(data:{email: string, resetNumber:number}): Promise<{token:string}> {
+        return new Promise(async (resolve, reject) => {
+            const user = await UserModel.findOne({ email: data.email });
+    
+            if (!user) {
+                reject('User not found');
+                return;
+            }
+    
+            if (user.passwordResetNumber !== data.resetNumber) {
+                reject('Invalid reset number');
+                return;
+            }
+    
+            if (user.passwordResetExpires < Date.now()) {
+                reject('Reset number expired');
+                return;
+            }
+            user.passwordResetNumber = undefined;
+            user.passwordResetExpires = undefined;
+            await user.save();
+            jwt.sign({ user }, jwtSecret, { expiresIn: '7d' }, (err, token) => {
+                  if (err) {
+                    console.log({ err });
+                    reject(err);
+                  }
+                  resolve({ ...user.toObject(), token });
+                });
         });
     }
 }

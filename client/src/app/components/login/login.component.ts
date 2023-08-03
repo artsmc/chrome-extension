@@ -20,18 +20,10 @@ export class LoginComponent implements OnInit {
     private route: Router
   ) {
      const user = this.userService.getUserValue();
-     console.log('user', user);
-     
-        // const user = true
-        // if (user) {
-        //     // logged in so return true
-        //     this.router.navigate(['/response']);
-        // } 
   }
 
   ngOnInit(): void {
-    this.initializeLoginForm()
-    console.log({url: window.location});
+    this.initializeLoginForm();
   }
 
   /**
@@ -52,9 +44,6 @@ export class LoginComponent implements OnInit {
 
 
   public login(): void {
-    console.log(this.loginForm);
-    
-    // this.route.navigate(['/signup']);
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;

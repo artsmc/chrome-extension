@@ -2,7 +2,7 @@
 
 <div class="message-container">
     <ng-container *ngIf="isLoginSection">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <h2 class="">Welcome!</h2>
             <h5>Start your free trial today by signing up below or click here to <a [routerLink]="['/login']" routerLinkActive="router-link-active" >log in.</a></h5>
         </div>
@@ -73,10 +73,10 @@
     </ng-container>
     <ng-container *ngIf="!isLoginSection">
         <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-danger col-md-6">Success</h2>
+            <div class="col-xs-12">
+                <h2 class="text-danger col-xs-6">Success</h2>
             </div>
-            <div class="col-md-12 d-flex succ-text">
+            <div class="col-xs-12 d-flex succ-text">
                 We sent you a link to your email to login to your dashboard
             </div>
         </div>

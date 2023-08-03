@@ -20,18 +20,10 @@ export class SignUpComponent implements OnInit {
     private route: Router
   ) {
      const user = this.userService.getUserValue();
-     console.log('user', user);
-     
-        // const user = true
-        // if (user) {
-        //     // logged in so return true
-        //     this.router.navigate(['/response']);
-        // } 
   }
 
   ngOnInit(): void {
-    this.initializesSignupForm()
-    console.log({url: window.location});
+    this.initializesSignupForm();
   }
 
   /**
@@ -57,7 +49,6 @@ export class SignUpComponent implements OnInit {
       return;
     }
     this.userService.createUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.fullName).subscribe((user: any) => {
-      console.log('userrrs', user);
       const loginSection = document.getElementById('ex1-tab-1')
       this.router.navigate(['/login']);
     })
