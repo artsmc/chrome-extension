@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "AI Email Assistant by Callcenter.ai",
+  "version": "1.0",
+  "host_permissions": [
+    "https://mail.google.com/",
+    "https://inbox.google.com/"
+  ],
+   "icons": {
+    "16": "/assets/16-mail.png",
+    "32": "/assets/32-mail.png",
+    "48": "/assets/48-mail.png",
+    "128": "/assets/128-mail.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources":[
+    {
+      "resources":  ["index.html", "index.html/*"],
+      "matches": ["https://mail.google.com/*", "https://inbox.google.com/*"],
+      "use_dynamic_url": true
+    }
+  ]
+}

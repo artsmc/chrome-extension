@@ -29,16 +29,28 @@
                                 aria-describedby="Emoji" placeholder="Character limit">
                         </div>
                     </div>
-                    <div class="col-xs-12 d-flex m-top-20">
-                        <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
-                            rows="15"></textarea>
-                        <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
+                    <div class="col-xs-12">
+                        <div class="d-flex single-flex">
+                            <label>Suggested reply</label>
+                            <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
+                                rows="15"></textarea>
+                            <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
+                        </div>
                     </div>
+                    <ng-container *ngIf="isResponseGenerated">
+                        <div class="col-xs-12">
+                            <div class="d-flex single-flex">
+                                <label>Add More Details</label>
+                                <input formControlName="agentContext" type="text" class="form-control" id="context"
+                                    placeholder="Add additional details to improve the response.">
+                            </div>
+                        </div>
+                    </ng-container>
                     <div class="col-xs-12 text-center">
                         <ng-container *ngIf="!isResponseGenerated">
                             <div class="btn-group w-100" role="group">
                                 <button type="button" class="btn" (click)="generateResponse()">
-                                    <fa-icon class="" [icon]="faArrowAltCircleLeft"></fa-icon>
+                                    <fa-icon class="" [icon]="faCircleChevronLeft"></fa-icon>
                                     <!-- <i class="fa-light fa-circle-chevron-left"></i> -->
                                     Generate
                                 </button>
@@ -48,7 +60,7 @@
                             <div class="btn-group w-100 d-flex" role="group">
                                 <div class="col-xs-6">
                                     <button type="button" class="btn" (click)="insertResponse()">
-                                        <fa-icon class="" [icon]="faArrowAltCircleLeft"></fa-icon>
+                                        <fa-icon class="" [icon]="faReply"></fa-icon>
                                         Insert
                                     </button>
                                 </div>

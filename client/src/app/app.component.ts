@@ -21,7 +21,8 @@ export class AppComponent {
   // public _gmailjs = new GmailFactory.Gmail($);
   constructor(private zendeskService: ZendeskService,
     private route: Router,
-    private userService: UserService
+    private userService: UserService,
+    private window: Window
   ) { }
 
   public ngOnInit(): void {
@@ -38,26 +39,11 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
   }
-//   startExtension(gmail:any): void {
-//     console.log("Extension loading...");
-//     (<any>window).gmail = gmail;
-
-//     gmail.observe.on("load", () => {
-//         const userEmail = gmail.get.user_email();
-//         console.log("Hello, " + userEmail + ". This is your extension talking!");
-
-//         gmail.observe.on("view_email", (domEmail: any) => {
-//             console.log("Looking at email:", domEmail);
-//             const emailData = gmail.new.get.email_data(domEmail);
-//             console.log("Email data:", emailData);
-//         });
-
-//         gmail.observe.on("compose", (compose: any) => {
-//             console.log("New compose window is opened!", compose);
-//         });
-//     });
-// }
-
+  public toggle(): void {
+    if(this.window && this.window.top && this.window.top.postMessage){
+      this.window.top.postMessage({system: 'close'}, '*');
+    }
+  }
   getZendeskMessages() {
   }
 

@@ -1,11 +1,22 @@
 .w-100 {
     width: 100%;
 }
-
+.single-flex{
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+}
+label{
+    width: 100%;
+    text-align: left;
+}
 textarea {
     border: 2px solid #4e81e9;
     min-width: 98%;
     border-radius: 6px;
+    font-size: 18px;
+    font-family: 'Roboto Flex';
+    font-weight: 400;
 }
 
 .emoji {

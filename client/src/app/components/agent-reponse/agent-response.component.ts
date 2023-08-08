@@ -2,8 +2,8 @@ import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject } f
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faCircleChevronLeft, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
-import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
+import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft} from '@fortawesome/free-regular-svg-icons';
 let CustomerData = {
   message:''
 }
@@ -17,12 +17,13 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   public toneSelectedValue = 'Response tone'
   public feelingSelectedValue: string| boolean   = 'Feeling Allowed';
   faRotateRight = faRotateRight;
-  faCircleChevronLeft = faCircleChevronLeft
-  faChevronCircleLeft = faChevronCircleLeft
-  faArrowAltCircleLeft = faArrowAltCircleLeft
-  faChevronUp = faChevronUp
-  faChevronDown = faChevronDown
-  faArrowsRotate = faArrowsRotate
+  faCircleChevronLeft = faCircleChevronLeft;
+  faChevronCircleLeft = faCircleChevronLeft;
+  faArrowAltCircleLeft = faArrowAltCircleLeft;
+  faChevronUp = faChevronUp;
+  faChevronDown = faChevronDown;
+  faArrowsRotate = faArrowsRotate;
+  faReply = faReply;
   toggle = false
   isResponseGenerated = false
   
@@ -74,6 +75,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   public insertResponse(): void {
     if(this.window && this.window.top && this.window.top.postMessage){
       this.window.top.postMessage({recieve: this.agentResponseForm.controls['responseCreated'].value}, '*');
+      // reset all values on agentResponseForm
+      this.agentResponseForm.controls['responseCreated'].setValue('');
     }
   }
   public getFeelings(feeling: boolean) {

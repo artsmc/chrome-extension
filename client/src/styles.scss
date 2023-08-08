@@ -4,6 +4,11 @@ html {
     min-width: 100%;
     background: transparent;
 }
+.window, .test-window{
+    max-width: 420px;
+    position: relative;
+    
+}
 body { 
     margin: 0; 
     font-family: 'Roboto Flex','Roboto', sans-serif;
@@ -508,7 +513,7 @@ input {
 
 @media only screen and (min-width:48em) {
     .container {
-        width: 49rem
+        width: 420px;
     }
 
     .col-sm,
@@ -739,7 +744,7 @@ input {
 
 @media only screen and (min-width:64em) {
     .container {
-        width: 65rem
+        width: 420px;
     }
 
     .col-md,
@@ -970,7 +975,7 @@ input {
 
 @media only screen and (min-width:75em) {
     .container {
-        width: 76rem
+        width: 420px;
     }
 
     .col-lg,
