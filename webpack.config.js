@@ -165,7 +165,7 @@ const config = smp.wrap({
       ]
     }),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(dotenv.config().parsed)
+      'process.env': JSON.stringify(process.env)
     }),
     new CompressionPlugin({
       algorithm: 'gzip',
