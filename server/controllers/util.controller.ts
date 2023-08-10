@@ -7,7 +7,6 @@ import * as slug from 'slug';
 import { awsOpts } from './../_config/config';
 import { UserModel } from '../models/user.model';
 
-const parser = new Parser();
 const token = (size?: number) => {
   const generator = new Tokgen({ chars: '0-9a-f', length: size || 12 });
   return generator.generate();
