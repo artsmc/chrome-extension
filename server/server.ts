@@ -7,9 +7,7 @@ import * as status from 'express-status-monitor';
 import { ExpressRouter } from './routes/_Router';
 import * as multer from 'multer';
 import * as express from 'express';
-import * as dotenv from 'dotenv';
 import * as cors from 'cors';
-dotenv.config();
 const app = express();
 const upload = multer();
 // setup the logger
