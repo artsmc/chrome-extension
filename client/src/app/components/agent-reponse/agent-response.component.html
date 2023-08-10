@@ -29,14 +29,6 @@
                                 aria-describedby="Emoji" placeholder="Character limit">
                         </div>
                     </div>
-                    <div class="col-xs-12">
-                        <div class="d-flex single-flex">
-                            <label>Suggested reply</label>
-                            <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
-                                rows="15"></textarea>
-                            <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
-                        </div>
-                    </div>
                     <ng-container *ngIf="isResponseGenerated">
                         <div class="col-xs-12">
                             <div class="d-flex single-flex">
@@ -46,6 +38,14 @@
                             </div>
                         </div>
                     </ng-container>
+                    <div class="col-xs-12">
+                        <div class="d-flex single-flex">
+                            <label>Suggested reply</label>
+                            <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
+                                rows="15"></textarea>
+                            <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
+                        </div>
+                    </div>
                     <div class="col-xs-12 text-center">
                         <ng-container *ngIf="!isResponseGenerated">
                             <div class="btn-group w-100" role="group">

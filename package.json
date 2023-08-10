@@ -18,11 +18,11 @@
     "build-test": "ENV_CONFIG=testing webpack --config webpack.config.js",
     "build-prod": "ENV_CONFIG=production webpack --config webpack.config.js",
     "build": "webpack --config webpack.config.js --mode=development",
-    "start": "npm-run-all --parallel watch:serve watch:client",
+    "start": "npm-run-all --parallel watch:serve",
     "watch": "nodemon -e ts -w ./server -x npm run watch:server",
     "watch:server": "npm run build && node ./dist/server/server.js --PORT 3000",
     "watch:serve": "npm run watch",
-    "watch:client": "cd ./client/ && ng build --watch "
+    "watch:client": "cd ./client/ && ng build --watch"
   },
   "jest": {
     "verbose": true,
