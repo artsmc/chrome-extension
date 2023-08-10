@@ -165,14 +165,14 @@ const config = smp.wrap({
       ]
     }),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env)
+      'process.env': JSON.stringify(dotenv.config().parsed)
     }),
     new CompressionPlugin({
       algorithm: 'gzip',
     }),
   ],
 });
-
+console.log(JSON.stringify(dotenv.config().parsed))
 const serverConfig = Object.assign({}, config, {
   entry: {
     server: './server/server.ts',
