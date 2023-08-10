@@ -14,19 +14,9 @@
     "node": "16.16.0",
     "npm": "9.6.2"
   },
-  "scripts": {
-    "heroku-prebuild": "npm install --dev",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "test": "nyc mocha",
-    "precommit": "lint-staged",
-    "build-test": "ENV_CONFIG=testing webpack --config webpack.config.js",
-    "build-prod": "ENV_CONFIG=production webpack --config webpack.config.js",
-    "build": "webpack --config webpack.config.js --mode=development",
-    "start": "npm run build && node ./dist/server/server.js --PORT 3000",
-    "watch": "nodemon -e ts -w ./server -x npm run watch:server",
-    "watch:server": "npm run build && node ./dist/server/server.js --PORT 3000",
-    "watch:serve": "npm run watch",
-    "watch:client": "cd ./client/ && ng build --watch"
+   "scripts": {
+    "build": "npm install",
+    "start": "nodemon --optimize_for_size --max_old_space_size=920 --gc_interval=100  ./dist/server/server.js"
   },
   "jest": {
     "verbose": true,
