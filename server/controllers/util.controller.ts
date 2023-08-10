@@ -1,6 +1,5 @@
 import * as Tokgen from 'tokgen';
 import * as rp from 'request-promise';
-import * as Parser from 'rss-parser';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as aws from 'aws-sdk';
