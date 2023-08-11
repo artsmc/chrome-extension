@@ -1,26 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "AI Email Assistant by Callcenter.ai",
+  "name": "AI ZenDesk Assistant by Callcenter.ai",
   "version": "1.0",
-  "action": {},
   "host_permissions": [
-    "*://mail.google.com/*"
+    "*://*.zendesk.com/*"
   ],
+  "permissions":["tabs"],
    "icons": {
     "16": "/assets/16-mail.png",
     "32": "/assets/32-mail.png",
     "48": "/assets/48-mail.png",
     "128": "/assets/128-mail.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": [
-            "*://mail.google.com/*"
+            "*://*.zendesk.com/*"
         ],
       "js": ["content.js"],
       "run_at": "document_end"
     }
   ],
+  "action": {},
   "web_accessible_resources":[
    {
         "resources": ["index.html", "index.html/*", "pageWorld.js"],

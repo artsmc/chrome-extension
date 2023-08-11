@@ -4,8 +4,7 @@
   "version": "1.0",
   "action": {},
   "host_permissions": [
-    "https://mail.google.com/",
-    "https://inbox.google.com/"
+    "*://mail.google.com/*"
   ],
    "icons": {
     "16": "/assets/16-mail.png",
@@ -16,8 +15,7 @@
   "content_scripts": [
     {
       "matches": [
-            "https://*/*",
-            "http://*/*"
+            "*://mail.google.com/*"
         ],
       "js": ["content.js"],
       "run_at": "document_end"
