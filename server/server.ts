@@ -8,6 +8,7 @@ import { ExpressRouter } from './routes/_Router';
 import * as multer from 'multer';
 import * as express from 'express';
 import * as cors from 'cors';
+import * as hbs from 'express-handlebars';
 const app = express();
 const upload = multer();
 // setup the logger
@@ -34,6 +35,34 @@ app.use((req, res, next)  => {
   console.log(req.originalUrl);
   next();
 });
+app.engine('hbs', hbs({ extname: '.hbs' }));
+app.set('views', path.join('./dist/server/views'));
+app.set('view engine', 'hbs');
+app.set('trust proxy', true);
+app.get('/terms', (req, res, next) => {
+    res.render('terms');
+});
+app.get('*.js', (req, res, next) => {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    res.set('Content-Type', 'text/javascript');
+    res.sendFile(req.url, { maxAge: '10000', dotfiles: 'allow', root: './dist/server/public/assets' });
+});
+app.get('*.otf', (req, res, next) => {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    res.set('Content-Type', 'font/opentype');
+    res.sendFile(req.url, { maxAge: '10000', dotfiles: 'allow', root: './dist/server/public/assets' });
+});
+
+app.get('*.css', (req, res, next) => {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    res.set('Content-Type', 'text/css');
+    res.sendFile(req.url, { maxAge: '10000', dotfiles: 'allow', root: './dist/server/public/assets' });
+});
+app.use(express.static('./dist/server/public/assets', { maxAge: '10000', dotfiles: 'allow' }));
+
 // ROUTE /APP/api
 app.use(`/api/v1`, ExpressRouter);
 app.listen(app.get('port'), () => {
