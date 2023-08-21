@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as morgan from 'morgan';
 import * as path from 'path';
 import * as status from 'express-status-monitor';
-
+import helmet from "helmet";
 import { ExpressRouter } from './routes/_Router';
 import * as multer from 'multer';
 import * as express from 'express';
@@ -18,18 +18,14 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json({ limit: '200mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '200MB' }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH',
-  );
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Content-Type, Accept, X-Requested-With, Session, authorization, x-api-key',
-  );
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  // Pass to next layer of middleware
-  next();
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Accept, X-Requested-With, Session, WWW-Authenticate, x-api-key'
+    );
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
 });
 app.use((req, res, next)  => {
   console.log(req.originalUrl);
@@ -39,6 +35,20 @@ app.engine('hbs', hbs({ extname: '.hbs' }));
 app.set('views', path.join('./dist/server/views'));
 app.set('view engine', 'hbs');
 app.set('trust proxy', true);
+app.use(helmet());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "default-src": ["'self'"],
+      "connect-src": ["'self'", "'unsafe-inline'"],
+      "img-src": ["'self'", "data:"],
+      "style-src-elem": ["'self'", "data:"],
+      "script-src": ["'unsafe-inline'", "'self'"],
+      "object-src": ["'none'"],
+    },
+  })
+);
 app.get('/terms', (req, res, next) => {
     res.render('terms');
 });
@@ -73,7 +83,7 @@ app.listen(app.get('port'), () => {
   );
   console.log('Press CTRL-C to stop\n');
 });
-app.use(`/`, express.static('./client/dist/client/'));
+
 export default app;
 
 
