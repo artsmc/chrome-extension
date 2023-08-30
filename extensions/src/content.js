@@ -59,7 +59,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
       toggle('close');
     });
     composeView.addButton({
-      title: "AI Email Assistant by Callcenter.ai",
+      title: "AI Email Assistant by Callcentre.ai",
       iconUrl: 'https://s3.us-east-2.amazonaws.com/email.melville.app/angels/16-mail.png',
       onClick: function(event) {
         const trimmed = document.querySelectorAll("[data-tooltip='Show trimmed content']");

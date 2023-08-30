@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   public submitted = false;
   public isLoginSection = true;
-
+  public error: string|null = null;
   constructor(
     private router : Router,
     private formBuilder: FormBuilder,
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
   public login(): void {
     this.submitted = true;
     if (this.loginForm.invalid) {
+      console.log(this.loginForm)
       return;
     }
     this.userService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe((res: any) => {
@@ -53,7 +54,10 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res?.token)
       // this.isLoginSection = false
       this.router.navigate(['/response']);
-    })
+    }, (err) => {
+      console.log(this.loginForm)
+      this.error = err;
+    });
   }
 
 }
