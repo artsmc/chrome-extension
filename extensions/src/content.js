@@ -26,7 +26,6 @@ const docFrame = document.body.appendChild(iframe);
 
 // Handle messages from the iframe
 window.onmessage = function(e) {
-  console.log(e.data)
     if (e.data && e.data.recieve) {
       InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
         sdk.Compose.registerComposeViewHandler(function(composeView){

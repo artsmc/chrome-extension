@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { faArrowAltCircleLeft} from '@fortawesome/free-regular-svg-icons';
+import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 let CustomerData = {
-  message:''
+  message: ''
 }
 @Component({
   selector: 'app-agent-response',
@@ -15,7 +15,7 @@ let CustomerData = {
 export class AgentResponseComponent implements OnInit, AfterContentInit {
   public agentResponseForm!: FormGroup;
   public toneSelectedValue = 'Response tone'
-  public feelingSelectedValue: string| boolean   = 'Feeling Allowed';
+  public feelingSelectedValue: string | boolean = 'Feeling Allowed';
   faRotateRight = faRotateRight;
   faCircleChevronLeft = faCircleChevronLeft;
   faChevronCircleLeft = faCircleChevronLeft;
@@ -26,46 +26,46 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   faReply = faReply;
   toggle = false
   isResponseGenerated = false
-  
+  isLoading = false;
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private elementRef:ElementRef,
+    private elementRef: ElementRef,
     private window: Window
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-      this.initializeAgentResponseForm()
+    this.initializeAgentResponseForm()
   }
   ngAfterContentInit(): void {
-    this.window.onmessage = function(e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          CustomerData.message = e.data.send;
-          console.log(CustomerData);
-        }
+    this.window.onmessage = function (e) {
+      if (e.data && e.data.send && typeof e.data.send === 'string') {
+        CustomerData.message = e.data.send;
+        console.log(CustomerData);
+      }
     };
   }
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
       tone: [null, Validators.required],
-      customerInquery:[''],
-      responseCreated:[''],
-      agentContext:[''],
+      customerInquery: [''],
+      responseCreated: [''],
+      agentContext: [''],
       characterLimit: [null, Validators.required],
       emojiAllowed: [null, Validators.required]
     })
   }
 
   public generateResponse(): void {
-    if(this.window && this.window.top && this.window.top.postMessage){
-      this.window.top.postMessage({getTextContent: ''}, '*');
-      this.window.onmessage = function(e) {
-          if (e.data && e.data.send && typeof e.data.send === 'string') {
-            CustomerData.message = e.data.send;
-            console.log(CustomerData);
-          }
+    if (this.window && this.window.top && this.window.top.postMessage) {
+      this.window.top.postMessage({ getTextContent: '' }, '*');
+      this.window.onmessage = function (e) {
+        if (e.data && e.data.send && typeof e.data.send === 'string') {
+          CustomerData.message = e.data.send;
+          console.log(CustomerData);
+        }
       };
     }
     this.agentResponseForm.patchValue({
@@ -73,16 +73,28 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       tone: this.toneSelectedValue
     })
     console.log(this.agentResponseForm.value)
+    this.isLoading = true;
     this.userService.setResponse(this.agentResponseForm.value).subscribe((response: any) => {
-      console.log(response);
+      this.isLoading = false;
+      const message = response.split('\n\n').map((item: string) => {
+        let itm = item;
+        if(!item.includes('data: ') || !item.includes('data:')){
+          itm = 'data: \n';
+        } 
+        itm = itm.replace('data: ', '').replace(',  ', ', ').replace('  ', '\n').replace('  ', '\n').replace('\n', '\n\n');
+        return itm;
+      }).join('').split('&nbsp;').join('\n\n');
       this.agentResponseForm.controls['responseCreated'].setValue('');
-      this.agentResponseForm.controls['responseCreated'].setValue(response.responseCreated);
+      this.agentResponseForm.controls['responseCreated'].setValue(message);
       this.isResponseGenerated = true
+    }, error => {
+      console.log(error);
+      this.isLoading = false;
     })
   }
   public insertResponse(): void {
-    if(this.window && this.window.top && this.window.top.postMessage){
-      this.window.top.postMessage({recieve: this.agentResponseForm.controls['responseCreated'].value}, '*');
+    if (this.window && this.window.top && this.window.top.postMessage) {
+      this.window.top.postMessage({ recieve: this.agentResponseForm.controls['responseCreated'].value }, '*');
       // reset all values on agentResponseForm
       this.agentResponseForm.controls['responseCreated'].setValue('');
     }
@@ -96,26 +108,26 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public refresh(): void {
-     if(this.window && this.window.top && this.window.top.postMessage){
-      this.window.top.postMessage({getTextContent: ''}, '*');
-      this.window.onmessage = function(e) {
-          if (e.data && e.data.send && typeof e.data.send === 'string') {
-            CustomerData.message = e.data.send;
-            console.log(CustomerData);
-          }
+    if (this.window && this.window.top && this.window.top.postMessage) {
+      this.window.top.postMessage({ getTextContent: '' }, '*');
+      this.window.onmessage = function (e) {
+        if (e.data && e.data.send && typeof e.data.send === 'string') {
+          CustomerData.message = e.data.send;
+          console.log(CustomerData);
+        }
       };
     }
   }
 
   public openDropdown(): void {
     const el = document.getElementById('drop-down-list')
-      if (el?.style.display === "none" || el?.style.display === "") {
-        this.toggle = true
-        this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'block';
-      } else {
-        this.toggle = false
-        this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'none';
-      }
+    if (el?.style.display === "none" || el?.style.display === "") {
+      this.toggle = true
+      this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'block';
+    } else {
+      this.toggle = false
+      this.elementRef.nativeElement.querySelector('.drop-down-list').style.display = 'none';
+    }
   }
 
 }

@@ -118,7 +118,8 @@ export class UserService {
     return this.http
       .post(url, form, {headers:{
         authorization: `Bearer ${token}`
-      }})
+      }, responseType: 'text',
+      observe: 'body'})
       .pipe(catchError(this.handleError));
   }
   logout() {

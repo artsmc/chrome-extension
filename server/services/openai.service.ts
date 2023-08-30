@@ -3,14 +3,20 @@ import { IOpenAICompletion, IOpenAICompletionDefault } from './../interfaces/ope
 import { UtilService } from './util.service';
 import axios from 'axios';
 import { string } from 'joi';
-
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+    organization: process.env.OPEN_AI_ORG,
+    apiKey: process.env.OPEN_AI_KEY,
+});
 const APIKey = process.env.OPEN_AI_KEY;
 const OpenAIOrg = process.env.OPEN_AI_ORG;
+const openai = new OpenAIApi(configuration);
 const openAi = axios.create({
     baseURL: 'https://api.openai.com/v1/',
     headers: {
         Authorization: `Bearer ${APIKey}`,
         'content-type': 'application/json',
+        responseType: 'stream' 
     },
 });
 class OpenAIService extends UtilService {
@@ -20,7 +26,11 @@ class OpenAIService extends UtilService {
     public async BuildCustomCustomerResponse(response:IResponse, options: IOpenAICompletionDefault) {
         return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
-    private promptReponse(response: IResponse): {role:string,content:string}[]  {
+    // stream response back to function calling this method
+    public async BuildCustomCustomerResponseStream(response:IResponse, options: IOpenAICompletionDefault) {
+        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+    }
+    public promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
         return this.promptGPT(script, {
             tone: response.tone,
@@ -54,11 +64,12 @@ class OpenAIService extends UtilService {
 
         ]
     }
+    
     private OpenAIChatRequest(messages: {role:string,content:string}[],options?:IOpenAICompletionDefault, quality?: string): Promise<{ choices: [{ message:{role:string, content: string}, finish_reason: string; }]; }> {
         return new Promise((resolve, reject) => {
             const modelId = quality ? quality : 'gpt-3.5-turbo';
             const settings: IOpenAICompletionDefault = {
-                model: modelId
+                model: modelId,
             };
             openAi.post(`/chat/completions`, { ...this.extendDefaults(options, settings), ...{ messages } }
             ).then(result => {
