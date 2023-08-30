@@ -4,8 +4,8 @@ import { Schema } from 'mongoose';
 
 export let responseSchema: Schema = new Schema(
   {
-    tone:{ type: String, default: 'formal' },
-    emojiAllowed:{ type: String, default:'🫡😔☹️🧐🤓😊🤔💖' },
+    tone:{ type: String,required: true/*, default: 'formal'*/ },
+    emojiAllowed:{ type: String, required: true/*, default:'🫡😔☹️🧐🤓😊'*/ },
     feelingsAllowed: { type: Boolean, default: true},
     characterLimit: { type: Number, default: 300},
     customerInquery: { type: String, required: true},

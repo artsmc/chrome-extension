@@ -34,7 +34,14 @@ input[type=text] {
     width: 85% !important;
     height: 10px;
 }
-
+.success {
+    color: green;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
 .d-flex {
     display: flex;
 }

@@ -40,7 +40,6 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
   ngAfterContentInit(): void {
     this.window.onmessage = function(e) {
-
         if (e.data && e.data.send && typeof e.data.send === 'string') {
           CustomerData.message = e.data.send;
           console.log(CustomerData);
@@ -60,6 +59,15 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public generateResponse(): void {
+    if(this.window && this.window.top && this.window.top.postMessage){
+      this.window.top.postMessage({getTextContent: ''}, '*');
+      this.window.onmessage = function(e) {
+          if (e.data && e.data.send && typeof e.data.send === 'string') {
+            CustomerData.message = e.data.send;
+            console.log(CustomerData);
+          }
+      };
+    }
     this.agentResponseForm.patchValue({
       customerInquery: CustomerData.message,
       tone: this.toneSelectedValue
@@ -88,8 +96,15 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public refresh(): void {
-    console.log('refresh');
-    
+     if(this.window && this.window.top && this.window.top.postMessage){
+      this.window.top.postMessage({getTextContent: ''}, '*');
+      this.window.onmessage = function(e) {
+          if (e.data && e.data.send && typeof e.data.send === 'string') {
+            CustomerData.message = e.data.send;
+            console.log(CustomerData);
+          }
+      };
+    }
   }
 
   public openDropdown(): void {

@@ -40,7 +40,7 @@
                     </ng-container>
                     <div class="col-xs-12">
                         <div class="d-flex single-flex">
-                            <label>Suggested reply</label>
+                            <div  class="label"><label>Suggested reply</label><fa-icon (click)="refresh()" class="success" [icon]="faArrowsRotate"></fa-icon></div>
                             <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1"
                                 rows="15"></textarea>
                             <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->

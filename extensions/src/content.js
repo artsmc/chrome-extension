@@ -26,10 +26,18 @@ const docFrame = document.body.appendChild(iframe);
 
 // Handle messages from the iframe
 window.onmessage = function(e) {
+  console.log(e.data)
     if (e.data && e.data.recieve) {
       InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
         sdk.Compose.registerComposeViewHandler(function(composeView){
           composeView.insertTextIntoBodyAtCursor(e.data.recieve);
+        });
+      });
+    }
+    if(e.data && e.data.getTextContent) {
+      InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
+        sdk.Compose.registerComposeViewHandler(function(composeView){
+          docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
         });
       });
     }
@@ -44,11 +52,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
     toggle('close');  
   });
   sdk.Compose.registerComposeViewHandler(function(composeView){
-    console.log({composeView, id: composeView.getThreadID()})
     // a compose view has come into existence, do something with it!
-    composeView.forceRecipientRowsOpen();
-    composeView.ensureFormattingToolbarIsHidden();
-    composeView.ensureAppButtonToolbarsAreClosed();
     composeView.on('bodyChanged', function(event) {
       docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
     });
@@ -70,7 +74,6 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
         }
         docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
         toggle();
-        // event.composeView.insertTextIntoBodyAtCursor('Hello World!');
       },
     });
   });
