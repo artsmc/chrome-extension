@@ -12,7 +12,7 @@ export class SignUpComponent implements OnInit {
   public signupForm!: FormGroup;
   public submitted = false;
   public isLoginSection = true;
-
+  public errors: string[]|null = null;
   constructor(
     private router : Router,
     private formBuilder: FormBuilder,
@@ -23,6 +23,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.errors = null;
     this.initializesSignupForm();
   }
 
@@ -43,6 +44,7 @@ export class SignUpComponent implements OnInit {
   }
 
   public signup(): void {
+    this.errors = null;
     console.log(this.signupForm);
     this.submitted = true;
     if (this.signupForm.invalid) {
@@ -51,7 +53,14 @@ export class SignUpComponent implements OnInit {
     this.userService.createUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.fullName).subscribe((user: any) => {
       const loginSection = document.getElementById('ex1-tab-1')
       this.router.navigate(['/login']);
-    })
+    }, (err) => {
+      this.errors = [];
+      err.data.forEach((error: any) => {
+        if(this.errors) {
+          this.errors.push(error.message);
+        }
+      });
+    });
   }
 
 }

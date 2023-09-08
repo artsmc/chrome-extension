@@ -34,7 +34,14 @@ input[type=text] {
     width: 85% !important;
     height: 10px;
 }
-
+.success {
+    color: green;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
 .d-flex {
     display: flex;
 }
@@ -78,4 +85,42 @@ input[type=text] {
 .btn-rotate {
     background: white;
     color: #2D5DE7;
+}
+.square-load{
+    position: relative;
+    width: 100%;
+    min-height: 130px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+}
+.spinner {
+    position: absolute;
+    margin:auto;
+    left:0;right:0;top:0;bottom:0;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    animation: spinner-plncf9 4s infinite;
+}
+
+.spinner::before,
+.spinner::after {
+    content: "";
+    grid-area: 1/1;
+    border: 9px solid;
+    border-radius: 50%;
+    border-color: #474bff #474bff #0000 #0000;
+    mix-blend-mode: darken;
+    animation: spinner-plncf9 1s infinite linear;
+}
+
+.spinner::after {
+    border-color: #0000 #0000 #dbdcef #dbdcef;
+    animation-direction: reverse;
+}
+
+@keyframes spinner-plncf9 {
+    100% {
+        transform: rotate(1turn);
+    }
 }

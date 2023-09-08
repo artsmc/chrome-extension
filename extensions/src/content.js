@@ -33,6 +33,13 @@ window.onmessage = function(e) {
         });
       });
     }
+    if(e.data && e.data.getTextContent) {
+      InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
+        sdk.Compose.registerComposeViewHandler(function(composeView){
+          docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
+        });
+      });
+    }
     if(e.data && e.data.system) {
       toggle(e.data.system)
     }
@@ -44,11 +51,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
     toggle('close');  
   });
   sdk.Compose.registerComposeViewHandler(function(composeView){
-    console.log({composeView, id: composeView.getThreadID()})
     // a compose view has come into existence, do something with it!
-    composeView.forceRecipientRowsOpen();
-    composeView.ensureFormattingToolbarIsHidden();
-    composeView.ensureAppButtonToolbarsAreClosed();
     composeView.on('bodyChanged', function(event) {
       docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
     });
@@ -59,7 +62,7 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
       toggle('close');
     });
     composeView.addButton({
-      title: "AI Email Assistant by Callcenter.ai",
+      title: "AI Email Assistant by Callcentre.ai",
       iconUrl: 'https://s3.us-east-2.amazonaws.com/email.melville.app/angels/16-mail.png',
       onClick: function(event) {
         const trimmed = document.querySelectorAll("[data-tooltip='Show trimmed content']");
@@ -70,7 +73,6 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
         }
         docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
         toggle();
-        // event.composeView.insertTextIntoBodyAtCursor('Hello World!');
       },
     });
   });

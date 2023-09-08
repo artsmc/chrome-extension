@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AI ZenDesk Assistant by Callcenter.ai",
+  "name": "AI ZenDesk Assistant by Callcentre.ai",
   "version": "1.0",
   "host_permissions": [
     "*://*.zendesk.com/*"

@@ -13,10 +13,13 @@
     "node": "16.16.0",
     "npm": "9.6.2"
   },
-   "scripts": {
+  "scripts": {
     "heroku-prebuild": "npm install & npm install -D",
-    "build": "webpack --config webpack.config.js --mode=development",
-    "start": "nodemon --optimize_for_size --max_old_space_size=920 --gc_interval=100  ./dist/server/server.js"
+    "build-local": "webpack --config webpack.config.dev.js --mode=development",
+    "build": "webpack --config webpack.config.js --mode=production",
+    "start": "nodemon --optimize_for_size --max_old_space_size=920 --watch --gc_interval=100  ./dist/server/server.js",
+    "start:local": "nodemon -e ts -w ./server --build-optimizer=true --aot=true --max_old_space_size=8192 -x npm run watch:server",
+    "watch:server": "npm run build-local && node ./dist/server/server.js"
   },
   "jest": {
     "verbose": true,
@@ -49,6 +52,7 @@
     "aws-transcription-to-vtt": "^1.0.3",
     "axios": "^0.24.0",
     "bcrypt": "^5.1.0",
+    "openai": "^3.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "boom": "^7.3.0",
@@ -65,6 +69,7 @@
     "file-chunked": "^1.0.4",
     "gmail-js": "^1.1.10",
     "handlebars": "^4.7.7",
+    "helmet": "^7.0.0",
     "http": "0.0.0",
     "https": "^1.0.0",
     "image-to-base64": "^2.2.0",

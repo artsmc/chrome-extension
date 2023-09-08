@@ -67,6 +67,9 @@
                     <button type="button" class="btn" (click)="signup()">
                         Start free trial
                     </button>
+                    <div class="error-msg" *ngIf="errors && submitted">
+                        <span *ngFor="let error of errors; let i = index">{{error}} </span>
+                    </div>
                 </div>
             </div>
         </form>

@@ -5,7 +5,7 @@
 
 .counter {
   display: block;
-  background-color: #4700d6;
+  background-color: #be0e0e;
   width: 100%;
   height: 60px;
   position: fixed;
@@ -71,7 +71,7 @@ li.not-active .heading-6 {
 }
 
 .container {
-  padding: 60px 2px;
+  padding: 60px 40px;
 }
 
 .container .text-block-3 {
@@ -126,7 +126,7 @@ li.not-active .heading-6 {
   position: relative;
   display: block;
   color: #fff;
-  background-color: #4700d6;
+  background-color: #be0e0e;
   padding: 1px 5px;
   border-radius: 4px 4px 0px 0px;
 }
@@ -146,7 +146,7 @@ li.not-active .heading-6 {
 }
 
 .embed-container {
-  border: 1px solid #4700d6;
+  border: 1px solid #be0e0e;
   border-radius: 0px 0px 2px 2px;
 }
 
@@ -179,7 +179,7 @@ li.not-active .heading-6 {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #4700d6;
+  background-color: #be0e0e;
 }
 
 .cover.section {
@@ -201,7 +201,7 @@ button[type="submit"] {
   -ms-flex-item-align: start;
   align-self: flex-start;
   border-radius: 6px !important;
-  background-color: #4700d6 !important;
+  background-color: #be0e0e !important;
   font-size: 14px !important;
   transition: 0.3s;
 }
@@ -283,7 +283,7 @@ p.paragraph-4 {
 
 .footer a {
   text-decoration: none;
-  color: #4700d6;
+  color: #be0e0e;
 }
 
 .w-form-loading,
@@ -359,6 +359,7 @@ p.paragraph-4 {
   top: 0px;
   width: 100%;
   right: 0px;
+  color:#fff;
 }
 
 .form-container.hero {
@@ -452,7 +453,7 @@ div.link-block.w-inline-block>div.paste:after {
 span.paste-btn {
   top: 5px !important;
   right: 5px !important;
-  background-color: #4700d6;
+  background-color: #be0e0e;
   color: #fff;
   padding: 10px;
   width: 30px;
@@ -544,8 +545,8 @@ button.calc-btn {
 }
 
 .calc-btn:hover {
-  color: #4700D6;
-  border: 1px solid #4700D6;
+  color: #be0e0e;
+  border: 1px solid #be0e0e;
 }
 
 .calc-btn:active {
@@ -553,12 +554,12 @@ button.calc-btn {
 }
 
 .calc-btn:hover {
-  color: #4700D6;
-  border: 1px solid #4700D6;
+  color: #be0e0e;
+  border: 1px solid #be0e0e;
 }
 
 .calc-btn.active {
-  border: 1px solid #4700D6;
+  border: 1px solid #be0e0e;
   box-shadow: 2px 2px 0px rgba(158, 120, 235, .4);
 }
 
@@ -697,7 +698,7 @@ h2.thin {
   z-index: 1;
   background-color: #fff;
   font-size: 12px;
-  border: 1px solid #4700D6;
+  border: 1px solid #be0e0e;
   color: #2d2d2d;
   font-weight: 400;
   box-shadow: 2px 2px 0px rgba(158, 120, 235, .4);
@@ -717,7 +718,7 @@ h2.thin {
   background-color: #7444D5;
   color: #fff;
   font-size: 12px;
-  border: 1px solid #4700D6;
+  border: 1px solid #be0e0e;
   font-weight: 400;
   box-shadow: 2px 2px 0px rgba(158, 120, 235, .4);
 }

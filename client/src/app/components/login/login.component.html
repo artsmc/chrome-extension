@@ -13,7 +13,9 @@
                             aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fLogin['email'].errors }"
                             placeholder="Enter your email">
-                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
+                        <div class="error-msg" *ngIf="loginForm.get('email')?.invalid && submitted">
+                            <span> Email is required</span>
+                        </div>
                     </div>
                 </div>
                 <!--Error-->
@@ -34,11 +36,13 @@
                             id="password" aria-describedby="emailHelp"
                             [ngClass]="{ 'text-danger': submitted && fLogin['password'].errors }"
                             placeholder="Enter your Password">
-                        <!-- <span *ngIf="formControls['email'].errors.email"></span> -->
+                        <div class="error-msg" *ngIf="loginForm.get('password')?.invalid && submitted">
+                            <span> Valid password is required</span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-11 mt-4">
-                    <div *ngIf="fLogin['password'].touched && fLogin['password'].invalid" class="alert alert-danger">
+                    <div *ngIf=" fLogin['password'].invalid" class="alert alert-danger">
                         <div *ngIf="fLogin['password'].errors && fLogin['password'].errors['required']">password is
                             required.</div>
                     </div>
@@ -50,6 +54,9 @@
                     <button type="button" class="btn" (click)="login()">
                         Continue
                     </button>
+                    <div class="error-msg" *ngIf="error && submitted">
+                        <span> {{error}}</span>
+                    </div>
                 </div>
             </div>
         </form>

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "AI Email Assistant by Callcenter.ai",
-  "version": "1.0",
+  "name": "AI Email Assistant by Callcentre.ai",
+  "version": "1.1",
   "action": {},
   "host_permissions": [
     "*://mail.google.com/*"
