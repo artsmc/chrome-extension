@@ -8,6 +8,8 @@ uploads/*
 /_deploys/*
 extensions/app
 extensions/app/*
+extensions-zen/app
+extensions-zen/app/*
 _deploys/*
 _logs/*
 _build/*
@@ -68,3 +70,5 @@ dist
 
 # next.js build output
 .next
+extensions/app/content.js
+extensions/app/manifest.json
