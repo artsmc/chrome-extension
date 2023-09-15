@@ -55,6 +55,8 @@ class OpenAIService extends UtilService {
             {"role": "system", "content": "you are a customer care representative."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
             {"role": "user", "content": `${script}`},
+            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]."`},
+            {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
             {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: the response should be limited to ${rules.characterLimit} characters`},
