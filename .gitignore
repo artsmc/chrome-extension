@@ -68,3 +68,5 @@ dist
 
 # next.js build output
 .next
+extensions/app.zip
+extensions-zen/app.zip
