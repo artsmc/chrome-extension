@@ -48,6 +48,7 @@ window.onmessage = function(e) {
 // Load Application inside gmail
 InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
   sdk.Router.handleAllRoutes( (RouteView) => {
+    docFrame.contentWindow.postMessage({clear:true}, '*');
     toggle('close');  
   });
   sdk.Compose.registerComposeViewHandler(function(composeView){
@@ -56,9 +57,11 @@ InboxSDK.load(2, 'sdk_CallcentreAI_e1ee58f410').then(function(sdk){
       docFrame.contentWindow.postMessage({send:composeView.getTextContent()}, '*');
     });
     composeView.on('cancel', function(event) {
+      docFrame.contentWindow.postMessage({clear:true}, '*');
       toggle('close');
     });
     composeView.on('discard', function(event) {
+      docFrame.contentWindow.postMessage({clear:true}, '*');
       toggle('close');
     });
     composeView.addButton({

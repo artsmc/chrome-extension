@@ -5,7 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 let CustomerData = {
-  message: ''
+  message: '',
+  reset: false
 }
 @Component({
   selector: 'app-agent-response',
@@ -36,7 +37,18 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   ) { }
 
   ngOnInit(): void {
-    this.initializeAgentResponseForm()
+    this.initializeAgentResponseForm();
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          if (CustomerData.reset) {
+            this.resetPage();
+            CustomerData.reset = false;
+          }
+          this.agentResponseForm.controls['customerInquery'].setValue(CustomerData.message);
+        }
+      });
+    });
   }
   ngAfterContentInit(): void {
     this.window.onmessage = function (e) {
@@ -44,7 +56,11 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
         CustomerData.message = e.data.send;
         console.log(CustomerData);
       }
+      if (e.data && e.data.clear) {
+        CustomerData.reset = true;
+      }
     };
+    //create a vanilla js observer that watches for changes to the CustomerData object
   }
 
   private initializeAgentResponseForm(): void {
@@ -57,7 +73,12 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       emojiAllowed: [null]
     })
   }
-
+  resetPage(): void {
+    this.agentResponseForm.reset();
+    this.isLoading = false;
+    this.toneSelectedValue = 'Response tone';
+    this.isResponseGenerated = false;
+  }
   public generateResponse(): void {
     this.agentResponseForm.markAsDirty();
     if (this.window && this.window.top && this.window.top.postMessage) {
