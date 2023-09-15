@@ -18,6 +18,9 @@
                                 <li (click)="getTone('Firm')">Firm</li>
                             </ul>
                         </div>
+                        <div class="error-msg" *ngIf="agentResponseForm.get('tone')?.invalid && agentResponseForm.dirty">
+                            <span>Tone is required</span>
+                        </div>
                     </div>
                     <div class="col-xs-12 d-flex m-top-20">
                         <div class="col-xs-6 col-xs-6 emoji">
@@ -35,6 +38,11 @@
                                 <label>Add More Details</label>
                                 <input formControlName="agentContext" type="text" class="form-control" id="context"
                                     placeholder="Add additional details to improve the response.">
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="error-msg" *ngIf="agentResponseForm.get('characterLimit')?.invalid && agentResponseForm.dirty">
+                                <span> Must supply character limit</span>
                             </div>
                         </div>
                     </ng-container>

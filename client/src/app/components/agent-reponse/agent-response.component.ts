@@ -49,16 +49,17 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
-      tone: [null, Validators.required],
+      tone: [null, [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
       customerInquery: [''],
       responseCreated: [''],
       agentContext: [''],
       characterLimit: [null, Validators.required],
-      emojiAllowed: [null, Validators.required]
+      emojiAllowed: [null]
     })
   }
 
   public generateResponse(): void {
+    this.agentResponseForm.markAsDirty();
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ getTextContent: '' }, '*');
       this.window.onmessage = function (e) {
@@ -71,7 +72,11 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
     this.agentResponseForm.patchValue({
       customerInquery: CustomerData.message,
       tone: this.toneSelectedValue
-    })
+    });
+    if (this.agentResponseForm.invalid) {
+      console.log(this.agentResponseForm)
+      return;
+    }
     console.log(this.agentResponseForm.value)
     this.isLoading = true;
     this.userService.setResponse(this.agentResponseForm.value).subscribe((response: any) => {
@@ -104,7 +109,10 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public getTone(tone: string) {
-    this.toneSelectedValue = tone
+    this.toneSelectedValue = tone;
+    this.agentResponseForm.controls['tone'].setValue(tone);
+    this.agentResponseForm.touched;
+    this.agentResponseForm.markAsDirty();
   }
 
   public refresh(): void {

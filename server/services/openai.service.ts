@@ -55,19 +55,20 @@ class OpenAIService extends UtilService {
             {"role": "system", "content": "you are a customer care representative."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
             {"role": "user", "content": `${script}`},
+            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]."`},
+            {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
             {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: the response should be limited to ${rules.characterLimit} characters`},
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
             {"role": "system", "content": "When it comes to writing content, two factors are crucial, “perplexity” and “burstiness.” Perplexity measures the complexity of text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or complex sentences alongside shorter ones. AI sentences tend to be more uniform. Therefore, when writing the following content I am going to ask you to create, I need it to have a low amount of perplexity and a great amount of burstiness."},
-
         ]
     }
     
     private OpenAIChatRequest(messages: {role:string,content:string}[],options?:IOpenAICompletionDefault, quality?: string): Promise<{ choices: [{ message:{role:string, content: string}, finish_reason: string; }]; }> {
         return new Promise((resolve, reject) => {
-            const modelId = quality ? quality : 'gpt-3.5-turbo';
+            const modelId = quality ? quality : 'gpt-4';
             const settings: IOpenAICompletionDefault = {
                 model: modelId,
             };

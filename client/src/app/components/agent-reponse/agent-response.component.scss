@@ -124,3 +124,11 @@ input[type=text] {
         transform: rotate(1turn);
     }
 }
+.error-msg {
+    border: 1px solid red;
+    background-color: rgb(249, 194, 194);
+    padding: 10px;
+    border-radius: 4px;
+    color: darkred;
+    margin-top: 10px;
+}
