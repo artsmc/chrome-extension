@@ -27,7 +27,7 @@
   "action": {},
   "web_accessible_resources":[
    {
-        "resources": ["index.html", "index.html/*", "pageWorld.js"],
+        "resources": ["index.html", "index.html/*", "pageWorld.js", "https://s3.us-east-2.amazonaws.com/*", "/assets/16-mail.png"],
         "matches": ["https://*/*", "http://*/*"]
       }
   ]

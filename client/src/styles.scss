@@ -209,6 +209,10 @@ input {
         line-height: 21px;
         letter-spacing: 0em;
         text-align: center;
+        
+        &.goal {
+            background-color: #59a263 !important;
+        }
     }
 
     .btn:disabled {

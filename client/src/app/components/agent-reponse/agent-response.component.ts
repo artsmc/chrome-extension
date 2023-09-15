@@ -2,7 +2,7 @@ import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject } f
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsRotate, faCopy, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 let CustomerData = {
   message: ''
@@ -24,7 +24,9 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   faChevronDown = faChevronDown;
   faArrowsRotate = faArrowsRotate;
   faReply = faReply;
-  toggle = false
+  faCopy = faCopy;
+  toggle = false;
+  copied = false;
   isResponseGenerated = false
   isLoading = false;
   constructor(
@@ -49,16 +51,18 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
-      tone: [null, Validators.required],
+      tone: [null, [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
       customerInquery: [''],
       responseCreated: [''],
       agentContext: [''],
       characterLimit: [null, Validators.required],
-      emojiAllowed: [null, Validators.required]
+      emojiAllowed: [null]
     })
   }
 
   public generateResponse(): void {
+  this.agentResponseForm.markAsDirty();
+  this.copied = false;
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ getTextContent: '' }, '*');
       this.window.onmessage = function (e) {
@@ -72,7 +76,10 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       customerInquery: CustomerData.message,
       tone: this.toneSelectedValue
     })
-    console.log(this.agentResponseForm.value)
+    if (this.agentResponseForm.invalid) {
+      console.log(this.agentResponseForm)
+      return;
+    }
     this.isLoading = true;
     this.userService.setResponse(this.agentResponseForm.value).subscribe((response: any) => {
       this.isLoading = false;
@@ -95,8 +102,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   public insertResponse(): void {
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ recieve: this.agentResponseForm.controls['responseCreated'].value }, '*');
-      // reset all values on agentResponseForm
-      this.agentResponseForm.controls['responseCreated'].setValue('');
+      this.copied = true;
     }
   }
   public getFeelings(feeling: boolean) {
@@ -104,7 +110,10 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public getTone(tone: string) {
-    this.toneSelectedValue = tone
+    this.toneSelectedValue = tone;
+    this.agentResponseForm.controls['tone'].setValue(tone);
+    this.agentResponseForm.touched;
+    this.agentResponseForm.markAsDirty();
   }
 
   public refresh(): void {
