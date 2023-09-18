@@ -1,3 +1,5 @@
+const hashConverter = window.location.hash.replace("#", "#/");
+const iFrameSrc = chrome.runtime.getURL("index.html" + hashConverter);
 // console.log('start application')
 let initiated = false;
 let callCount = 0;
@@ -32,9 +34,9 @@ function addLocationObserver(callback) {
   observer.observe(document.body, config)
 }
 function observerCallback() {
-
-  if (window.location.href.startsWith('https://artsmclabsllchelp.zendesk.com/agent/tickets/')) {
-    initContentScript()
+  if (window.location.href.includes('/agent/tickets/')) {
+    console.log('contenet ready', window.location.href)
+    initContentScript();
   }
 }
 addLocationObserver(observerCallback)
@@ -52,11 +54,9 @@ function startBeforePageReady() {
 
 }
 function startOnPageReady() {
-  window.onload = (event) => {
-    if (document.readyState === "complete") {
-      initiated = false;
+  initiated = false;
       callCount++;
-      if(callCount <= 4) {
+      if(callCount <= 8) {
         let intervalId = setInterval(() => {
           // Assumes insertIconintoToolbar() returns true when successful
           if(insertIconintoToolbar()) {
@@ -65,8 +65,6 @@ function startOnPageReady() {
         }, 1000); 
         callCount = 0;
       }
-    }
-  };
 }
 function insertIconintoToolbar() {
   const element =  document.querySelectorAll("[data-test-id='ticket-editor-app-icon-view']");
@@ -202,8 +200,7 @@ function startApplication(){
   Object.keys(styles).forEach(key => {
     iframe.style[key] = styles[key];
   });
-  const hashConverter = window.location.hash.replace("#", "#/");
-  iframe.src = chrome.runtime.getURL("index.html" + hashConverter);
+  iframe.src = iFrameSrc;
   const docFrame = appSidebar.appendChild(iframe);
   appSidebar.style.right = "0%";
   iframe.contentWindow.postMessage({send:getConversationText()}, '*');
