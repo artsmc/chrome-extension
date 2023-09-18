@@ -50,6 +50,7 @@
                             <div  class="label"><label>Suggested reply</label></div>
                             <ng-container *ngIf="!isLoading; else loader">
                                 <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1" rows="15"></textarea>
+                                <small class="stats" *ngIf="stats"><span>approx. {{stats}} words</span><span></span></small>
                             </ng-container>
                             <ng-template #loader>
                               <div class="square-load">  <div class="spinner"></div></div>

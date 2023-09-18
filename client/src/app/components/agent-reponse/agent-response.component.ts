@@ -29,6 +29,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   copied = false;
   isResponseGenerated = false
   isLoading = false;
+  stats = 0;
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
@@ -91,6 +92,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
         itm = itm.replace('data: ', '').replace(',  ', ', ').replace('  ', '\n').replace('  ', '\n').replace('\n', '\n\n');
         return itm;
       }).join('').split('&nbsp;').join('\n\n');
+      this.stats = message.trim().split(/\s+/).length;
       this.agentResponseForm.controls['responseCreated'].setValue('');
       this.agentResponseForm.controls['responseCreated'].setValue(message);
       this.isResponseGenerated = true

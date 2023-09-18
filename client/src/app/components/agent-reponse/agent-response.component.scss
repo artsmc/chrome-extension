@@ -44,12 +44,20 @@ input[type=text] {
 }
 .d-flex {
     display: flex;
+    align-items: flex-start;
 }
 
 .m-top-20 {
     margin-top: 20px;
 }
-
+small.stats {
+    margin: 5px;
+    padding: 8px;
+    background: rgb(234, 255, 195);
+    border-radius: 10px;
+    display: flex;
+    width: auto;
+}
 .drop-down1 {
     position: relative;
     padding: 12px 15px;
