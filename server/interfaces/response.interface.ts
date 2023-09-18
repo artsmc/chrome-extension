@@ -4,7 +4,7 @@ export interface IResponse extends Document {
   _id?: string;
   tone:string;
   emojiAllowed:string;
-  characterLimit: number;
+  wordLimit: number;
   customerInquery: string;
   responseCreated: string;
   feelingsAllowed: boolean;

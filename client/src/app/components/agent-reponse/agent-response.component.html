@@ -27,13 +27,13 @@
                                 aria-describedby="Emoji" placeholder="Emoji Allowed">
                         </div>
                         <div class="col-xs-6 col-xs-6  char-limit">
-                            <input type="text" formControlName="characterLimit" class="form-control max-width-250" id="emoji"
-                                aria-describedby="Emoji" placeholder="Character limit">
+                            <input type="text" formControlName="wordLimit" class="form-control max-width-250" id="emoji"
+                                aria-describedby="Emoji" placeholder="Word limit">
                         </div>
                     </div>
                     <div class="col-xs-12">
-                        <div class="error-msg" *ngIf="agentResponseForm.get('characterLimit')?.invalid && agentResponseForm.dirty">
-                            <span> Must supply character limit</span>
+                        <div class="error-msg" *ngIf="agentResponseForm.get('wordLimit')?.invalid && agentResponseForm.dirty">
+                            <span> Must supply word limit</span>
                         </div>
                     </div>
                     <ng-container *ngIf="isResponseGenerated">

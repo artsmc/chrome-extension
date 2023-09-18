@@ -14,7 +14,7 @@ let CustomerData = {
 })
 export class AgentResponseComponent implements OnInit, AfterContentInit {
   public agentResponseForm!: FormGroup;
-  public toneSelectedValue = 'Response tone'
+  public toneSelectedValue = 'Pleasant'
   public feelingSelectedValue: string | boolean = 'Feeling Allowed';
   faRotateRight = faRotateRight;
   faCircleChevronLeft = faCircleChevronLeft;
@@ -51,11 +51,11 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
-      tone: [null, [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
+      tone: ['Pleasant', [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
       customerInquery: [''],
       responseCreated: [''],
       agentContext: [''],
-      characterLimit: [null, Validators.required],
+      wordLimit: [50, Validators.required],
       emojiAllowed: [null]
     })
   }
