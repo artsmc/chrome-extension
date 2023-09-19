@@ -122,6 +122,26 @@ export class UserService {
       observe: 'body'})
       .pipe(catchError(this.handleError));
   }
+  setSummary(form:{tone: string, emojiAllowed: string, characterLimit: number, customerInquery: string}): Observable<any> {
+    const token = localStorage.getItem('token')
+    const url = `${this.baseUrl}/response/agent-summary`
+    return this.http
+      .post(url, form, {headers:{
+        authorization: `Bearer ${token}`
+      }, responseType: 'text',
+      observe: 'body'})
+      .pipe(catchError(this.handleError));
+  }
+  setSentiment(form:{tone: string, emojiAllowed: string, characterLimit: number, customerInquery: string}): Observable<any> {
+    const token = localStorage.getItem('token')
+    const url = `${this.baseUrl}/response/agent-sentiment`
+    return this.http
+      .post(url, form, {headers:{
+        authorization: `Bearer ${token}`
+      }, responseType: 'text',
+      observe: 'body'})
+      .pipe(catchError(this.handleError));
+  }
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');

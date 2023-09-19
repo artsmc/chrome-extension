@@ -29,6 +29,9 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   copied = false;
   isResponseGenerated = false
   isLoading = false;
+  isAnalysisLoading = false;
+  summary!: string;
+  sentiment!: string
   stats = 0;
   constructor(
     private formbuilder: FormBuilder,
@@ -101,6 +104,66 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.isLoading = false;
     })
   }
+public postMessageAndGetResponse(): void {
+  if (this.window && this.window.top && this.window.top.postMessage) {
+    this.window.top.postMessage({ getTextContent: '' }, '*');
+    this.window.onmessage = function (e) {
+      if (e.data && e.data.send && typeof e.data.send === 'string') {
+        CustomerData.message = e.data.send;
+        console.log(CustomerData);
+      }
+    };
+  }
+}
+
+public patchFormAndValidate(): boolean {
+  this.agentResponseForm.patchValue({
+    customerInquery: CustomerData.message,
+    tone: this.toneSelectedValue
+  });
+
+  if (this.agentResponseForm.invalid) {
+    console.log(this.agentResponseForm)
+    return false;
+  }
+
+  return true;
+}
+
+public processResponse(response: any): string {
+  return response.split('\n\n').map((item: string) => {
+    let itm = item;
+    if(!item.includes('data: ') || !item.includes('data:')){
+      itm = 'data: \n';
+    } 
+    itm = itm.replace('data: ', '').replace(',  ', ', ').replace('  ', '\n').replace('  ', '\n').replace('\n', '\n\n');
+    return itm;
+  }).join('').split('&nbsp;').join('\n\n');
+}
+
+public insertSummary(): void {
+  this.postMessageAndGetResponse();
+
+  if (!this.patchFormAndValidate()) return;
+
+  this.isAnalysisLoading = true;
+  this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {
+    this.isAnalysisLoading = false;
+    this.summary = this.processResponse(response);
+  });
+}
+
+public insertSentiment(): void {
+  this.postMessageAndGetResponse();
+
+  if (!this.patchFormAndValidate()) return;
+
+  this.isAnalysisLoading = true;
+  this.userService.setSentiment(this.agentResponseForm.value).subscribe((response: any) => {
+    this.isAnalysisLoading = false;
+    this.sentiment = this.processResponse(response);
+  });
+}
   public insertResponse(): void {
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ recieve: this.agentResponseForm.controls['responseCreated'].value }, '*');

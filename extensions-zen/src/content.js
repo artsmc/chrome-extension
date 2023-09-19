@@ -95,7 +95,7 @@ function getConversationText() {
   return;
 }
 function getReplyBox() {
-  const element = document.querySelectorAll("[aria-label='Public reply composer']");
+  const element = document.querySelectorAll("[class='ck-content']");
   if (typeof(element) != 'undefined' && element != null && element.length > 0)
   {
     // console.log(element[0].querySelector('p'))
