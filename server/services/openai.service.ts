@@ -30,6 +30,20 @@ class OpenAIService extends UtilService {
     public async BuildCustomCustomerResponseStream(response:IResponse, options: IOpenAICompletionDefault) {
         return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
+    public async BuildCustomSentimentStream(response:IResponse, options: IOpenAICompletionDefault) {
+        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+    }
+    public async BuildCustomSummaryStream(response:IResponse, options: IOpenAICompletionDefault) {
+        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+    }
+    public promptSummary(response: IResponse): {role:string,content:string}[]  {
+        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary.`;
+        return this.promptSummaryGPT(script);
+    }
+    public promptSentiment(response: IResponse): {role:string,content:string}[]  {
+        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery} describe a conversation sentiment.`;
+        return this.promptSentimentGPT(script);
+    }
     public promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
         return this.promptGPT(script, {
@@ -50,6 +64,14 @@ class OpenAIService extends UtilService {
             feelingsAllowed: rules.feelingsAllowed
         });
     }
+    private promptSummaryGPT(prompt: string ): {role:string,content:string}[] {
+        const script = `${prompt}:\n`;
+        return this.systemSummaryGPT(script);
+    }
+    private promptSentimentGPT(prompt: string ): {role:string,content:string}[] {
+        const script = `${prompt}:\n`;
+        return this.systemSentimentGPT(script);
+    }
     private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         return [
             {"role": "system", "content": "you are a customer care representative."},
@@ -63,6 +85,22 @@ class OpenAIService extends UtilService {
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
             {"role": "system", "content": "When it comes to writing content, two factors are crucial, “perplexity” and “burstiness.” Perplexity measures the complexity of text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or complex sentences alongside shorter ones. AI sentences tend to be more uniform. Therefore, when writing the following content I am going to ask you to create, I need it to have a low amount of perplexity and a great amount of burstiness."},
+
+        ]
+    }
+    private systemSummaryGPT(script: string): {role:string,content:string}[] {
+        return [
+            {"role": "system", "content": "you are a skilled writer."},
+            {"role": "user", "content": `${script}`},
+            {"role": "system", "content": "Privide a conversation summary straight to the point no labels or naming just the summary in 30 words or less."},
+
+        ]
+    }
+    private systemSentimentGPT(script: string): {role:string,content:string}[] {
+        return [
+            {"role": "system", "content": "you are a skilled writer."},
+            {"role": "user", "content": `${script}`},
+            {"role": "system", "content": "Privide a conversation sentiment use emoji at the start of the sentiment label"},
 
         ]
     }
