@@ -92,7 +92,8 @@ class OpenAIService extends UtilService {
         return [
             {"role": "system", "content": "you are a skilled writer."},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": "Privide a conversation summary straight to the point no labels or naming just the summary in 30 words or less."},
+            {"role": "system", "content": "If possible pull in customer name for the response. If not just speak to the issue the customer has"},
+            {"role": "system", "content": "Strict rulles to follow: 1) Avoid being redundant in language and phrasing. 2) Keep resonse to 20 words or less. 3) Feel human, you are summarizing the conversation for the agent reading."},
 
         ]
     }
@@ -100,7 +101,7 @@ class OpenAIService extends UtilService {
         return [
             {"role": "system", "content": "you are a skilled writer."},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": "Privide a conversation sentiment use emoji at the start of the sentiment label"},
+            {"role": "system", "content": "Strict Rules to follow: provide a single emoji and a 2 word comma seperated seniments. DO not provide and explaination"},
 
         ]
     }
