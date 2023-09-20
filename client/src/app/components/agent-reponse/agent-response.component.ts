@@ -43,7 +43,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   copied = false;
   isResponseGenerated = false
   isLoading = false;
-  isAnalysisLoading = false;
+  isSummaryLoading = false;
+  isSentimentLoading = false;
   summary!: string;
   sentiment!: string
   message: string = '';
@@ -55,17 +56,17 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
     private elementRef: ElementRef,
     private window: Window
   ) { 
+    this.window.onmessage = function (e) {
+      if (e.data && e.data.send && typeof e.data.send === 'string') {
+        customerData['message'] = e.data.send;
+      }
+    };
   }
 
   ngOnInit(): void {
     this.initializeAgentResponseForm()
   }
   ngAfterContentInit(): void {
-    this.window.onmessage = function (e) {
-      if (e.data && e.data.send && typeof e.data.send === 'string') {
-        customerData['message'] = e.data.send;
-      }
-    };
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ getTextContent: '' }, '*');
       this.window.onmessage = function (e) {
@@ -102,7 +103,6 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.window.onmessage = function (e) {
         if (e.data && e.data.send && typeof e.data.send === 'string') {
           customerData['message'] = e.data.send;
-          console.log(CustomerData);
         }
       };
     }
@@ -176,9 +176,9 @@ public insertSummary(): void {
 
   if (!this.patchFormAndValidate()) return;
 
-  this.isAnalysisLoading = true;
+  this.isSummaryLoading = true;
   this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {
-    this.isAnalysisLoading = false;
+    this.isSummaryLoading = false;
     this.summary = this.processResponse(response);
   });
 }
@@ -188,9 +188,9 @@ public insertSentiment(): void {
 
   if (!this.patchFormAndValidate()) return;
 
-  this.isAnalysisLoading = true;
+  this.isSentimentLoading = true;
   this.userService.setSentiment(this.agentResponseForm.value).subscribe((response: any) => {
-    this.isAnalysisLoading = false;
+    this.isSentimentLoading = false;
     this.sentiment = this.processResponse(response);
   });
 }

@@ -3,16 +3,17 @@ const iFrameSrc = chrome.runtime.getURL("index.html" + hashConverter);
 // console.log('start application')
 let initiated = false;
 let callCount = 0;
+const ids = [];
+let activeId = '';
+let previousUrl = '';
+const uid = function(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
 // Handle messages from the iframe
 window.onmessage = function(e) {
     if(e.data) {
     }
     if (e.data && e.data.recieve) {
-      // console.log(e.data.recieve)
-      // const insertBox = getReplyBox();
-      // const reply = document.createElement('p');
-      // reply.innerHTML = e.data.recieve;
-      // insertBox.innerHTML +=e.data.recieve;
       navigator.clipboard.writeText(e.data.recieve);
     }
     if(e.data && e.data.getTextContent!==undefined) {
@@ -23,19 +24,26 @@ window.onmessage = function(e) {
     }
 };
 function addLocationObserver(callback) {
-
   // Options for the observer (which mutations to observe)
-  const config = { attributes: false, childList: true, subtree: false }
-
+  const config = { childList: true, subtree: false }
   // Create an observer instance linked to the callback function
   const observer = new MutationObserver(callback)
-
   // Start observing the target node for configured mutations
   observer.observe(document.body, config)
 }
 function observerCallback() {
-  if (window.location.href.includes('/agent/tickets/')) {
+  // console.log('change occured')
+  if (window.location.href.includes('/agent/tickets/') && window.location.href !== previousUrl) {
+    let previousUrl = window.location.href;
     // console.log('contenet ready', window.location.href)
+    const pathArray = window.location.pathname.split('/');
+    if(ids.findIndex(x => x.id === pathArray[3]) === -1) {
+      let idVal = uid();
+      ids.push({id:pathArray[3], uid: idVal, index: ids.length});
+      activeId = idVal;
+    }else {
+      activeId = ids[ids.findIndex(x => x.id === pathArray[3])].uid;
+    }
     initContentScript();
   }
 }
@@ -59,11 +67,11 @@ function startOnPageReady() {
       if(callCount <= 8) {
         let intervalId = setInterval(() => {
           // Assumes insertIconintoToolbar() returns true when successful
-          if(insertIconintoToolbar()) {
+          if(insertIconintoToolbar() && insertActiveIdConvo()) {
             clearInterval(intervalId);
+            callCount = 0;
           }
         }, 1000); 
-        callCount = 0;
       }
 }
 function insertIconintoToolbar() {
@@ -71,19 +79,32 @@ function insertIconintoToolbar() {
   if (typeof(element) != 'undefined' && element != null && element.length > 0)
   {
     // console.log('add to toolbar SUCCESSFUL');
-    addIconElement(element[0]);
+    for(let i = 0; i < element.length; i++) {
+      addIconElement(element[i]);
+    }
+    return true;
+  }
+  return false;
+}
+function insertActiveIdConvo() {
+  const element = document.querySelectorAll("[aria-label='conversationLabel']");
+  if (typeof(element) != 'undefined' && element != null && element.length > 0)
+  {
+    for(let i = 0; i < element.length; i++) {
+      addDataId(element[i]);
+    }
     return true;
   }
   return false;
 }
 function getConversationText() {
   let conversation = '';
+  const index = getActiveId().index;
   const element = document.querySelectorAll("[aria-label='conversationLabel']");
   if (typeof(element) != 'undefined' && element != null && element.length > 0)
   {
-    const convo = element[0].querySelectorAll('span.mount-point-wrapper');
+    const convo = element[index].querySelectorAll('span.mount-point-wrapper');
     for(let i = 0; i < convo.length; i++) {
-      
       conversation += convo[i].innerText;
       conversation += '\n\n';
       conversation += '-------------------------';
@@ -94,18 +115,11 @@ function getConversationText() {
   console.error('message element not found');
   return;
 }
-function getReplyBox() {
-  const element = document.querySelectorAll("[class='ck-content']");
-  if (typeof(element) != 'undefined' && element != null && element.length > 0)
-  {
-    // console.log(element[0].querySelector('p'))
-    return element[0];
-  }
-  console.error('message element not found');
-  return;
+function addDataId(conversation) {
+  conversation.setAttribute('data-active-id', setActiveId());
 }
 function addIconElement(list) {
-  var icon =  document.querySelectorAll("[data-icon='ticket-editor-app-icon']");
+  var icon =  list.querySelectorAll("[data-icon='ticket-editor-app-icon']");
   // console.log(callCount);
   if (icon.length < 1)
   {
@@ -124,8 +138,9 @@ function addIconElement(list) {
     appIconButton.setAttribute('aria-describedby', '83val-tooltip_1.0.6');
     appIconButton.setAttribute('data-garden-container-id', 'containers.tooltip');
     appIconButton.setAttribute('data-garden-container-version', '1.0.6');
+    appIconButton.myParam = activeId;
     appIconButton.setAttribute('class', 'StyledButton-sc-qe3ace-0 sc-gxiark-0 iWvMow StyledIconButton-sc-1t0ughp-0 cBMPuI');
-    appIconButton.addEventListener("click", toggle);
+    appIconButton.addEventListener("click", toggle, false);
     const appIcon = document.createElement('img');
     appIcon.src = chrome.runtime.getURL("/assets/16-mail.png");
     appIconButton.appendChild(appIcon);
@@ -135,7 +150,8 @@ function addIconElement(list) {
   }
   return;
 }
-function toggle(system) {
+function toggle() {
+  setActiveId();
   var appSidebar =  document.querySelectorAll("[data-test-id='dashboard-extension-sidebar']");
   if (appSidebar.length < 1){
     startApplication()
@@ -143,9 +159,22 @@ function toggle(system) {
     if(appSidebar[0].style.right !== "-100%"){
       appSidebar[0].style.right = "-100%";
     }else {
+      returnIframe().contentWindow.postMessage({send:getConversationText()}, '*');
       appSidebar[0].style.right = "0%";
     }
   }
+}
+function setActiveId() {
+  const pathArray = window.location.pathname.split('/');
+  const windowId = pathArray[3];
+  activeId = ids[ids.findIndex(x => x.id === windowId)].uid;
+  return activeId;
+}
+function getActiveId() {
+  const pathArray = window.location.pathname.split('/');
+  const windowId = pathArray[3];
+  activeId = ids[ids.findIndex(x => x.id === windowId)];
+  return activeId;
 }
 function startApplication(){
   const conversation = document.body;

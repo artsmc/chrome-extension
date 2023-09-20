@@ -47,12 +47,13 @@
                     </ng-container>
                     <div class="col-xs-12">
                         <div class="d-flex single-flex">
-                            <div class="label"><label>Conversation Analysis</label></div>
-                            <div class="analysis" *ngIf="!isAnalysisLoading; else loader">
-                                <small><strong>Sentiment</strong></small>
+                            <div class="label"><label>Customer Sentiment</label></div>
+                            <div class="analysis" *ngIf="!isSentimentLoading; else loader">
                                 <small class="sentiment">{{sentiment}}</small>
-                                <small><strong>Summary</strong></small>
-                                <small class="summary">{{summary}}</small> 
+                            </div>
+                            <div class="label"><label>Customer Summary</label></div>
+                            <div class="analysis" *ngIf="!isSummaryLoading; else loader">
+                                <small class="summary">{{summary}}</small>
                             </div>
                             <div class="label"><label>Suggested reply</label></div>
                             <ng-container *ngIf="!isLoading; else loader">
