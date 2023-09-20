@@ -35,7 +35,7 @@ function addLocationObserver(callback) {
 }
 function observerCallback() {
   if (window.location.href.includes('/agent/tickets/')) {
-    console.log('contenet ready', window.location.href)
+    // console.log('contenet ready', window.location.href)
     initContentScript();
   }
 }

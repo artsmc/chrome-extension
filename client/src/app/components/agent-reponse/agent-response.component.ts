@@ -4,9 +4,23 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faCopy, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-let CustomerData = {
-  message: ''
+class CustomerData {
+    private _message: string = '';
+    private _onChange: Function | null = null;
+    get message(): string {
+        return this._message;
+    }
+    set message(value: string) {
+        this._message = value;
+        if (typeof this._onChange === 'function') {
+            this._onChange(this._message);
+        }
+    }
+    set onChange(callback: Function) {
+        this._onChange = callback;
+    }
 }
+let customerData = new CustomerData();
 @Component({
   selector: 'app-agent-response',
   templateUrl: './agent-response.component.html',
@@ -32,6 +46,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   isAnalysisLoading = false;
   summary!: string;
   sentiment!: string
+  message: string = '';
   stats = 0;
   constructor(
     private formbuilder: FormBuilder,
@@ -39,7 +54,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
     private router: Router,
     private elementRef: ElementRef,
     private window: Window
-  ) { }
+  ) { 
+  }
 
   ngOnInit(): void {
     this.initializeAgentResponseForm()
@@ -47,10 +63,24 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
     this.window.onmessage = function (e) {
       if (e.data && e.data.send && typeof e.data.send === 'string') {
-        CustomerData.message = e.data.send;
-        console.log(CustomerData);
+        customerData['message'] = e.data.send;
       }
     };
+    if (this.window && this.window.top && this.window.top.postMessage) {
+      this.window.top.postMessage({ getTextContent: '' }, '*');
+      this.window.onmessage = function (e) {
+        if (e.data && e.data.send && typeof e.data.send === 'string') {
+          customerData['message'] = e.data.send;
+        }
+      };
+    }
+    customerData.onChange = (message: string) => {
+      if(this.message !== message) {
+        this.insertSummary();
+        this.insertSentiment();
+        this.message = message;
+      }
+    }
   }
 
   private initializeAgentResponseForm(): void {
@@ -71,13 +101,13 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.window.top.postMessage({ getTextContent: '' }, '*');
       this.window.onmessage = function (e) {
         if (e.data && e.data.send && typeof e.data.send === 'string') {
-          CustomerData.message = e.data.send;
+          customerData['message'] = e.data.send;
           console.log(CustomerData);
         }
       };
     }
     this.agentResponseForm.patchValue({
-      customerInquery: CustomerData.message,
+      customerInquery: customerData['message'],
       tone: this.toneSelectedValue
     })
     if (this.agentResponseForm.invalid) {
@@ -109,7 +139,7 @@ public postMessageAndGetResponse(): void {
     this.window.top.postMessage({ getTextContent: '' }, '*');
     this.window.onmessage = function (e) {
       if (e.data && e.data.send && typeof e.data.send === 'string') {
-        CustomerData.message = e.data.send;
+        customerData['message'] = e.data.send;
         console.log(CustomerData);
       }
     };
@@ -118,7 +148,7 @@ public postMessageAndGetResponse(): void {
 
 public patchFormAndValidate(): boolean {
   this.agentResponseForm.patchValue({
-    customerInquery: CustomerData.message,
+    customerInquery:customerData['message'],
     tone: this.toneSelectedValue
   });
 
@@ -186,7 +216,7 @@ public insertSentiment(): void {
       this.window.top.postMessage({ getTextContent: '' }, '*');
       this.window.onmessage = function (e) {
         if (e.data && e.data.send && typeof e.data.send === 'string') {
-          CustomerData.message = e.data.send;
+          customerData['message'] = e.data.send;
           console.log(CustomerData);
         }
       };

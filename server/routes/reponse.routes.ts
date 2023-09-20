@@ -51,6 +51,7 @@ router.post('/agent-request/', (req: Request, res: Response) => {
   });
 });
 router.post('/agent-sentiment/', (req: Request, res: Response) => {
+  console.log('Sentiment',req.body);
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -86,6 +87,7 @@ router.post('/agent-sentiment/', (req: Request, res: Response) => {
   });
 });
 router.post('/agent-summary/', (req: Request, res: Response) => {
+  console.log('SUMAARY',req.body);
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Access-Control-Allow-Origin', '*');

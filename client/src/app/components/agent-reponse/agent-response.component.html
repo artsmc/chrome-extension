@@ -48,15 +48,16 @@
                     <div class="col-xs-12">
                         <div class="d-flex single-flex">
                             <div class="label"><label>Conversation Analysis</label></div>
-                            <small><strong>Sentiment</strong></small>
-                            <small class="sentiment">{{sentiment}}</small>
-                            <small><strong>Summary</strong></small>
-                            <small class="summary">{{summary}}</small>
-                            <div  class="label"><label>Suggested reply</label></div>
+                            <div class="analysis" *ngIf="!isAnalysisLoading; else loader">
+                                <small><strong>Sentiment</strong></small>
+                                <small class="sentiment">{{sentiment}}</small>
+                                <small><strong>Summary</strong></small>
+                                <small class="summary">{{summary}}</small> 
+                            </div>
+                            <div class="label"><label>Suggested reply</label></div>
                             <ng-container *ngIf="!isLoading; else loader">
                                 <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1" rows="15"></textarea>
                                 <small class="stats" *ngIf="stats"><span>approx. {{stats}} words</span><span></span></small>
-                                
                             </ng-container>
                             <ng-template #loader>
                               <div class="square-load">  <div class="spinner"></div></div>
