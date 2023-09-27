@@ -93,7 +93,7 @@ class OpenAIService extends UtilService {
             {"role": "system", "content": "you are a skilled writer."},
             {"role": "user", "content": `${script}`},
             {"role": "system", "content": "If possible pull in customer name for the response. If not just speak to the issue the customer has"},
-            {"role": "system", "content": "Strict rulles to follow: 1) Avoid being redundant in language and phrasing. 2) Keep resonse to 20 words or less. 3) Feel human, you are summarizing the conversation for the agent reading."},
+            {"role": "system", "content": "Strict rulles to follow: 1) Avoid being redundant in language and phrasing. 2) Keep resonse to 20 words or less. 3) Feel human, you are summarizing the conversation for the agent reading. 4) only summarize the last message, and if its from the agent consider the issue resolved."},
 
         ]
     }
