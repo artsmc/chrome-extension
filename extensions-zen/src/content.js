@@ -20,8 +20,8 @@ document.addEventListener('click', (event) => {
     if (window.location.href.includes('/agent/tickets/') && window.location.pathname.split('/').length <= 4) {
       // console.log('set previousUrl button listener');
       previousUrl = window.location.href;
-      setActiveId();
       createID();
+      setActiveId();
       reloadData();
     }
     // console.log('set currentUrl button listener');
