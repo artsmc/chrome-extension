@@ -16,9 +16,11 @@
 .footer{
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
+  max-width: 350px;
+  margin:auto;
   height:auto;
   img{margin-right: 5px;}
   a{ cursor: pointer;}
-  padding:40px 0px;
+  
 }

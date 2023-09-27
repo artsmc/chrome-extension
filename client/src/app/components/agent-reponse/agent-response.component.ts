@@ -1,9 +1,11 @@
-import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faCopy, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
+import { ZendeskService } from '../../services/zendesk.service';
+import { Observable } from 'rxjs';
 class CustomerData {
     private _message: string = '';
     private _onChange: Function | null = null;
@@ -45,43 +47,37 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   isLoading = false;
   isSummaryLoading = false;
   isSentimentLoading = false;
-  summary!: string;
-  sentiment!: string
-  message: string = '';
+  summary: string| null = null;
+  sentiment: string| null= null;
+  message: string| null = '';
+  messageListener: Observable<string | null> = this.zendeskService.message$;
   stats = 0;
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
+    private zendeskService: ZendeskService,
     private router: Router,
     private elementRef: ElementRef,
     private window: Window
   ) { 
-    this.window.onmessage = function (e) {
-      if (e.data && e.data.send && typeof e.data.send === 'string') {
-        customerData['message'] = e.data.send;
-      }
-    };
   }
-
   ngOnInit(): void {
     this.initializeAgentResponseForm()
+    this.zendeskService.getCustomerMessages();
   }
   ngAfterContentInit(): void {
-    if (this.window && this.window.top && this.window.top.postMessage) {
-      this.window.top.postMessage({ getTextContent: '' }, '*');
-      this.window.onmessage = function (e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          customerData['message'] = e.data.send;
-        }
-      };
-    }
-    customerData.onChange = (message: string) => {
-      if(this.message !== message) {
-        this.insertSummary();
-        this.insertSentiment();
+    this.messageListener.subscribe(message => {
+      console.log(message)
+      if(message !== this.message) {
+        this.reset();
         this.message = message;
+        if(this.message !== null){
+          this.patchFormAndValidate();
+          this.insertSummary();
+          this.insertSentiment();
+        }
       }
-    }
+    })
   }
 
   private initializeAgentResponseForm(): void {
@@ -94,24 +90,31 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       emojiAllowed: [null]
     })
   }
-
+  public reset(): void {
+    this.zendeskService.getCustomerMessages();
+    this.agentResponseForm.reset();
+    this.agentResponseForm.patchValue({
+      customerInquery:this.message,
+      tone: this.toneSelectedValue,
+      wordLimit: 50
+    });
+    this.isResponseGenerated = false;
+    this.message = null;
+    this.summary = null;
+    this.sentiment = null;
+  }
   public generateResponse(): void {
-  this.agentResponseForm.markAsDirty();
-  this.copied = false;
+    this.agentResponseForm.markAsDirty();
+    this.copied = false;
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ getTextContent: '' }, '*');
-      this.window.onmessage = function (e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          customerData['message'] = e.data.send;
-        }
-      };
     }
     this.agentResponseForm.patchValue({
-      customerInquery: customerData['message'],
+      customerInquery: this.message,
       tone: this.toneSelectedValue
     })
     if (this.agentResponseForm.invalid) {
-      console.log(this.agentResponseForm)
+      // console.log(this.agentResponseForm)
       return;
     }
     this.isLoading = true;
@@ -134,26 +137,16 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.isLoading = false;
     })
   }
-public postMessageAndGetResponse(): void {
-  if (this.window && this.window.top && this.window.top.postMessage) {
-    this.window.top.postMessage({ getTextContent: '' }, '*');
-    this.window.onmessage = function (e) {
-      if (e.data && e.data.send && typeof e.data.send === 'string') {
-        customerData['message'] = e.data.send;
-        console.log(CustomerData);
-      }
-    };
-  }
-}
 
 public patchFormAndValidate(): boolean {
+  this.zendeskService.getCustomerMessages();
   this.agentResponseForm.patchValue({
-    customerInquery:customerData['message'],
+    customerInquery:this.message,
     tone: this.toneSelectedValue
   });
 
   if (this.agentResponseForm.invalid) {
-    console.log(this.agentResponseForm)
+    // console.log(this.agentResponseForm)
     return false;
   }
 
@@ -172,10 +165,6 @@ public processResponse(response: any): string {
 }
 
 public insertSummary(): void {
-  this.postMessageAndGetResponse();
-
-  if (!this.patchFormAndValidate()) return;
-
   this.isSummaryLoading = true;
   this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {
     this.isSummaryLoading = false;
@@ -184,10 +173,6 @@ public insertSummary(): void {
 }
 
 public insertSentiment(): void {
-  this.postMessageAndGetResponse();
-
-  if (!this.patchFormAndValidate()) return;
-
   this.isSentimentLoading = true;
   this.userService.setSentiment(this.agentResponseForm.value).subscribe((response: any) => {
     this.isSentimentLoading = false;
@@ -212,15 +197,7 @@ public insertSentiment(): void {
   }
 
   public refresh(): void {
-    if (this.window && this.window.top && this.window.top.postMessage) {
-      this.window.top.postMessage({ getTextContent: '' }, '*');
-      this.window.onmessage = function (e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          customerData['message'] = e.data.send;
-          console.log(CustomerData);
-        }
-      };
-    }
+    this.zendeskService.getCustomerMessages();
   }
 
   public openDropdown(): void {

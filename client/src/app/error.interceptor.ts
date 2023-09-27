@@ -27,9 +27,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     // return next.handle(authReq);
 
     // //Testing new code
-
-    console.log('interceptor');
-
     let authReq = request.clone();
     const token = localStorage.getItem('token');
 

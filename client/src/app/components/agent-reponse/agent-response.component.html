@@ -49,16 +49,16 @@
                         <div class="d-flex single-flex">
                             <div class="label"><label>Customer Sentiment</label></div>
                             <div class="analysis" *ngIf="!isSentimentLoading; else loader">
-                                <small class="sentiment">{{sentiment}}</small>
+                                <p class="sentiment">{{sentiment}}</p>
                             </div>
                             <div class="label"><label>Customer Summary</label></div>
                             <div class="analysis" *ngIf="!isSummaryLoading; else loader">
-                                <small class="summary">{{summary}}</small>
+                                <p class="summary">{{summary}}</p>
                             </div>
                             <div class="label"><label>Suggested reply</label></div>
                             <ng-container *ngIf="!isLoading; else loader">
                                 <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1" rows="15"></textarea>
-                                <small class="stats" *ngIf="stats"><span>approx. {{stats}} words</span><span></span></small>
+                                <p class="stats" *ngIf="stats"><span>approx. {{stats}} words</span><span></span></p>
                             </ng-container>
                             <ng-template #loader>
                               <div class="square-load">  <div class="spinner"></div></div>

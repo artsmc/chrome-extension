@@ -6,6 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: {
     content: './src/content.js',
+    ckeditor: './src/ckeditor.js',
     background: './src/background.js',
   },
   module: {
