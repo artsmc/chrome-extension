@@ -48,7 +48,7 @@ class AuthController extends UtilController {
     }
     public async loginUser(userData: {email: string; password:string;}): Promise<{}> {
       return new Promise((resolve, reject) => {
-        UserModel.findOne({ email: userData.email }).then((user: any) => {
+        UserModel.findOne({ email: userData.email.toLowerCase() }).then((user: any) => {
           if (!user) {
             reject('User not found');
           }
