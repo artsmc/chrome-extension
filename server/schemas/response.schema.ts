@@ -5,6 +5,7 @@ import { Schema } from 'mongoose';
 export let responseSchema: Schema = new Schema(
   {
     tone:{ type: String,required: true/*, default: 'formal'*/ },
+    emojiPermission:{ type: Boolean, required:true, default: false},
     emojiAllowed:{ type: String, required: true/*, default:'🫡😔☹️🧐🤓😊'*/ },
     feelingsAllowed: { type: Boolean, default: true},
     characterLimit: { type: Number, default: 300},

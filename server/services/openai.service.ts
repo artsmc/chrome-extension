@@ -48,16 +48,18 @@ class OpenAIService extends UtilService {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
         return this.promptGPT(script, {
             tone: response.tone,
+            emojiPermission: response.emojiPermission|| false,
             emojiAllowed: response.emojiAllowed,
             wordLimit: response.wordLimit,
             agentContext: response.agentContext,
             feelingsAllowed: response.feelingsAllowed
         });
     }
-    private promptGPT(prompt: string , rules: {tone:string, emojiAllowed:string, agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
+    private promptGPT(prompt: string , rules: {tone:string,emojiPermission:boolean, emojiAllowed:string, agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         const script = `${prompt}:\n`;
         return this.systemSettingsGPT(script, {
             tone: rules.tone,
+            emojiPermission: rules.emojiPermission,
             emojiAllowed: rules.emojiAllowed,
             wordLimit: rules.wordLimit,
             agentContext: rules.agentContext,
@@ -72,15 +74,20 @@ class OpenAIService extends UtilService {
         const script = `${prompt}:\n`;
         return this.systemSentimentGPT(script);
     }
-    private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
+    private systemSettingsGPT(script: string, rules: {tone:string, emojiPermission:boolean, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         return [
             {"role": "system", "content": "you are a customer care representative."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
+            {"role": "system", "content": `you are writing for a different culture. In the UK, you are nice but very matter of fact and to the point. The customer appriciates the agent that is clear on the issue and focuses on the solution.`},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]."`},
-            {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
-            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
-            {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
+            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [agent]."`},
+            {"role": "system", "content": "The customer name may or may not be included, please reference them as [customer] in the response and inject their name when possible to personalize the response."},
+            {"role": "system", "content": `Things to consider when interacting with customers:
+                1) if this is a first interaction state "thanks for reaching out" in the opening.
+                2) if there have been multiple interactions express more understanding and try to move to the resolution considering the context.
+            `},
+            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding, but very matter of fact and to the issue.'"},
+            {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}. Only supply emoji If the permission is allowed. Emoji Permission is currently: ${rules.emojiPermission}. This can be overridden by the agent if they provided context.`},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: the response should be limited to ${rules.wordLimit} words`},
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},

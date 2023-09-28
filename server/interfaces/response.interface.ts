@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 export interface IResponse extends Document {
   _id?: string;
   tone:string;
+  emojiPermission:boolean;
   emojiAllowed:string;
   wordLimit: number;
   customerInquery: string;
