@@ -85,6 +85,7 @@ class OpenAIService extends UtilService {
             {"role": "system", "content": `Things to consider when interacting with customers:
                 1) if this is a first interaction state "thanks for reaching out" in the opening.
                 2) if there have been multiple interactions express more understanding and try to move to the resolution considering the context.
+                3) If the issue has been resolved then consider you message to be a follow up ensuring you addressed the issue correctly.
             `},
             {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding, but very matter of fact and to the issue.'"},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}. Only supply emoji If the permission is allowed. Emoji Permission is currently: ${rules.emojiPermission}. This can be overridden by the agent if they provided context.`},
