@@ -67,10 +67,11 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
   ngAfterContentInit(): void {
     this.messageListener.subscribe(message => {
-      console.log(message)
+      // console.log({messageListener: message})
       if(message !== this.message) {
         this.reset();
         this.message = message;
+        // console.log('message has been reset');
         if(this.message !== null){
           this.patchFormAndValidate();
           this.insertSummary();

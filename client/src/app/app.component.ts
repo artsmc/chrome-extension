@@ -26,7 +26,7 @@ export class AppComponent {
     private window: Window
   ) { }
   @HostListener('window:message', ['$event']) onMessage(e:any) {
-    console.log(e.data)
+    // console.log('recieved message')
     if (e.data && e.data.send && typeof e.data.send === 'string') {
       this.zendeskService.updateMessage(e.data.send);
     }
@@ -34,10 +34,10 @@ export class AppComponent {
   public ngOnInit(): void {
     const user = this.userService.getUserValue();
     this.messageSender.pipe(first()).subscribe((message) => {
-    console.log('send message')
-    if(this.window && this.window.top && this.window.top.postMessage){
-      this.window.top.postMessage({ getTextContent: '' }, '*');
-    }
+      // console.log('request message')
+      if(this.window && this.window.top && this.window.top.postMessage){
+        this.window.top.postMessage({ getTextContent: '' }, '*');
+      }
     });
     if(user) {
       this.userService.verify().subscribe((response) => {

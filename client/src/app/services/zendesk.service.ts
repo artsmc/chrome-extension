@@ -23,6 +23,7 @@ export class ZendeskService {
     this.message.next(message);
   }
   getCustomerMessages(): void {
+    // console.log('message change request has been issued');
     this.postMessage.next('');
   }
 
