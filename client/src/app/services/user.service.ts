@@ -133,7 +133,7 @@ export class UserService {
     const token = localStorage.getItem('token');
     const url =`${this.baseUrl}/auth/create`;
     const payload  = {
-      email: email,
+      email: email.toLowerCase(),
       password: password,
       full_name: fullName
     }
