@@ -1,19 +1,15 @@
+// console.log('start application')
 const hashConverter = window.location.hash.replace("#", "#/");
 const iFrameSrc = chrome.runtime.getURL("index.html" + hashConverter);
-// console.log('start application')
 let callCount = 0;
-let ids = new Map();
+const ids = new Map();
 let activeId = '';
 let previousUrl = '';
 let state = 'closed';
 let currentUrl = window.location.href;
-const currentTabValues = new WeakMap();
 const uid = function(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
-const deleteElem = document.querySelectorAll("[data-test-id='close-button']");
-
-
 document.addEventListener('click', (event) => {
   // console.log(event)
   setTimeout(() => {
@@ -91,7 +87,6 @@ function startOnPageReady() {
   callCount++;
   if(callCount <= 8) {
     let intervalId = setInterval(() => {
-      // Assumes insertIconintoToolbar() returns true when successful
       if(insertIconintoToolbar() && insertActiveIdConvo()) {
         insertCloseWatch();
         clearInterval(intervalId);
@@ -211,7 +206,6 @@ function addDataId(conversation) {
 }
 function addIconElement(list) {
   var icon =  list.querySelectorAll("[data-icon='ticket-editor-app-icon']");
-  // console.log(callCount);
   if (icon.length < 1)
   {
     const appIconWrapper = document.createElement('li');
