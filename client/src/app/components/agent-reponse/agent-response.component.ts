@@ -76,6 +76,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
           this.patchFormAndValidate();
           this.insertSummary();
           this.insertSentiment();
+          this.insertSummarySentiment();
         }
       }
     })
@@ -164,7 +165,14 @@ public processResponse(response: any): string {
     return itm;
   }).join('').split('&nbsp;').join('\n\n');
 }
-
+public insertSummarySentiment(): void {
+  this.isSummaryLoading = true;
+  this.userService.setSummarySentiment(this.agentResponseForm.value).subscribe((response: any) => {
+    this.isSummaryLoading = false;
+    // this.summary = this.processResponse(response);
+    console.log(response)
+  });
+}
 public insertSummary(): void {
   this.isSummaryLoading = true;
   this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {

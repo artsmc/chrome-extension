@@ -133,6 +133,17 @@ export class UserService {
       observe: 'body'})
       .pipe(catchError(this.handleError));
   }
+  setSummarySentiment(form:{tone: string, customerInquery: string}): Observable<any> {
+    console.log({form})
+    const token = localStorage.getItem('token')
+    const url = `${this.baseUrl}/response/agent-summary-sentiment`
+    return this.http
+      .post(url, form, {headers:{
+        authorization: `Bearer ${token}`
+      }, responseType: 'text',
+      observe: 'body'})
+      .pipe(catchError(this.handleError));
+  }
   setSentiment(form:{tone: string, customerInquery: string}): Observable<any> {
     const token = localStorage.getItem('token')
     const url = `${this.baseUrl}/response/agent-sentiment`
