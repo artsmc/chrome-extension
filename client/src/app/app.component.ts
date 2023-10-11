@@ -51,7 +51,7 @@ export class AppComponent {
   ngAfterViewInit(): void {
   }
   public toggle(): void {
-    this.zendeskService.resetMessage();
+    // this.zendeskService.resetMessage();
     if(this.window && this.window.top && this.window.top.postMessage){
       this.window.top.postMessage({system: 'close'}, '*');
     }

@@ -36,12 +36,16 @@
                             <span> Must supply word limit</span>
                         </div>
                     </div>
-                    <ng-container *ngIf="isResponseGenerated">
+                    <ng-container>
                         <div class="col-xs-12">
                             <div class="d-flex single-flex">
                                 <label>Add More Details</label>
-                                <input formControlName="agentContext" type="text" class="form-control" id="context"
-                                    placeholder="Add additional details to improve the response.">
+                                <textarea class="form-control" 
+                                formControlName="agentContext" 
+                                id="context" 
+                                rows="2" 
+                                placeholder="Add additional details to improve the response.">
+                                </textarea>
                             </div>
                         </div>
                     </ng-container>

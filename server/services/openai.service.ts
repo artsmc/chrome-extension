@@ -31,10 +31,10 @@ class OpenAIService extends UtilService {
         return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
     public async BuildCustomSentimentStream(response:IResponse, options: IOpenAICompletionDefault) {
-        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+        return (await this.OpenAIChatRequest(this.promptSentiment(response), options)).choices[0].message.content;
     }
     public async BuildCustomSummaryStream(response:IResponse, options: IOpenAICompletionDefault) {
-        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+        return (await this.OpenAIChatRequest(this.promptSummary(response), options)).choices[0].message.content;
     }
     public promptSummary(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary.`;
@@ -43,6 +43,10 @@ class OpenAIService extends UtilService {
     public promptSentiment(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery} describe a conversation sentiment.`;
         return this.promptSentimentGPT(script);
+    }
+    public promptSummarySentiment(response: IResponse): {role:string,content:string}[]  {
+        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary and describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary and describe a conversation sentiment.`;
+        return this.promptSummaryGPT(script);
     }
     public promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
@@ -63,6 +67,10 @@ class OpenAIService extends UtilService {
             agentContext: rules.agentContext,
             feelingsAllowed: rules.feelingsAllowed
         });
+    }
+    private promptSummarySentimentGPT(prompt: string ): {role:string,content:string}[] {
+        const script = `${prompt}:\n`;
+        return this.systemSummarySentimentGPT(script);
     }
     private promptSummaryGPT(prompt: string ): {role:string,content:string}[] {
         const script = `${prompt}:\n`;
@@ -86,6 +94,20 @@ class OpenAIService extends UtilService {
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
             {"role": "system", "content": "When it comes to writing content, two factors are crucial, “perplexity” and “burstiness.” Perplexity measures the complexity of text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or complex sentences alongside shorter ones. AI sentences tend to be more uniform. Therefore, when writing the following content I am going to ask you to create, I need it to have a low amount of perplexity and a great amount of burstiness."},
 
+        ]
+    }
+    private systemSummarySentimentGPT(script: string): {role:string,content:string}[] {
+        return [
+            {"role": "system", "content": "You are a RFC8259 compliant JSON response bot."},
+            {"role": "user", "content": `${script}`},
+            {"role": "system", "content": `Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation: {summary: '{return a string that takes on the following rules:
+                1) Avoid being redundant in language and phrasing. 
+                2) Keep resonse to 20 words or less. 
+                3) Feel human, you are summarizing the conversation for the agent reading.
+                4) If possible pull in customer name for the response. If not just speak to the issue the customer has.
+                5) Most important, to pay close attention to the last message of the conversation.
+            }', sentiment: '{Strict Rules to follow: provide a single emoji and a 2 word comma seperated seniments. DO not provide and explaination}'}`},
+            {"role": "system", "content": "1) only provide a  RFC8259 compliant JSON response. 2) ALWAYS return just the JSON. 3) every JSON object includes a summary and sentiment."},
         ]
     }
     private systemSummaryGPT(script: string): {role:string,content:string}[] {
