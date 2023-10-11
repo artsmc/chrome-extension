@@ -8,6 +8,8 @@ uploads/*
 /_deploys/*
 extensions/app
 extensions/app/*
+extensions-zen/app
+extensions-zen/app/*
 _deploys/*
 _logs/*
 _build/*
@@ -70,3 +72,5 @@ dist
 .next
 extensions/app.zip
 extensions-zen/app.zip
+extensions/app/content.js
+extensions/app/manifest.json

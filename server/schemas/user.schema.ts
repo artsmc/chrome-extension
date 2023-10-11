@@ -4,7 +4,7 @@ import { Schema } from 'mongoose';
 
 export let userSchema: Schema = new Schema(
   {
-    email: { type: String, lowercase: true, index: true, unique: true, required: true },
+    email: { type: String,lowercase: true, index: true, unique: true, required: true },
     company: {
       type: Schema.Types.ObjectId,
       ref: 'Companies',
@@ -14,6 +14,8 @@ export let userSchema: Schema = new Schema(
       ref: 'Roles',
     }],
     agent: { type: String },
+    first_name: { type: String },
+    last_name: { type: String },
     full_name: { type: String },
     user_agent: { type: String },
     ip: { type: String },

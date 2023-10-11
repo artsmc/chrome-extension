@@ -4,13 +4,15 @@ export interface IUsers extends Document {
   _id?: string;
   email: string;
   agent: string;
+  full_name: string;
+  first_name: string;
+  last_name: string;
   token?: string;
   company: string;
   user_id: string;
   ip: string;
   user_agent: string;
   referrer: string;
-  full_name: string;
   password: string;
   created: string;
   is_active?: boolean;

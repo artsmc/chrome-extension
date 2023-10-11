@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AI ZenDesk Assistant by Callcentre.ai",
-  "version": "1.0",
+  "version": "1.0.4",
   "host_permissions": [
     "*://*.zendesk.com/*"
   ],
@@ -27,7 +27,7 @@
   "action": {},
   "web_accessible_resources":[
    {
-        "resources": ["index.html", "index.html/*", "pageWorld.js"],
+        "resources": ["index.html", "index.html/*", "ckeditor.js", "pageWorld.js", "https://s3.us-east-2.amazonaws.com/*", "/assets/16-mail.png"],
         "matches": ["https://*/*", "http://*/*"]
       }
   ]

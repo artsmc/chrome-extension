@@ -8,6 +8,7 @@
   top:0;
   bottom:0;
   padding:20px;
+  
   background-color: #fff;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px, rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
     rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
@@ -16,9 +17,12 @@
 .footer{
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
+  max-width: 350px;
+  margin:auto;
   height:auto;
+  padding-bottom: 50px;
   img{margin-right: 5px;}
   a{ cursor: pointer;}
-  padding:40px 0px;
+  
 }

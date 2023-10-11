@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-11">
-            <h2>Email Assistant</h2>
+            <h2>Zendesk Assistant</h2>
             <h5>Please choose your setting below:</h5>
         </div>
         <div class="col-xs-11">
@@ -12,7 +12,6 @@
                             <span>{{toneSelectedValue}}</span>
                             <fa-icon *ngIf="!toggle" [icon]="faChevronDown"></fa-icon>
                             <fa-icon *ngIf="toggle" [icon]="faChevronUp"></fa-icon>
-            
                             <ul id="drop-down-list" class="drop-down-list">
                                 <li (click)="getTone('Pleasant')">Pleasant</li>
                                 <li (click)="getTone('Firm')">Firm</li>
@@ -28,16 +27,25 @@
                                 aria-describedby="Emoji" placeholder="Emoji Allowed">
                         </div>
                         <div class="col-xs-6 col-xs-6  char-limit">
-                            <input type="text" formControlName="characterLimit" class="form-control max-width-250" id="emoji"
-                                aria-describedby="Emoji" placeholder="Character limit">
+                            <input type="text" formControlName="wordLimit" class="form-control max-width-250" id="emoji"
+                                aria-describedby="Emoji" placeholder="Word limit">
                         </div>
                     </div>
-                    <ng-container *ngIf="isResponseGenerated">
+                    <div class="col-xs-12">
+                        <div class="error-msg" *ngIf="agentResponseForm.get('wordLimit')?.invalid && agentResponseForm.dirty">
+                            <span> Must supply word limit</span>
+                        </div>
+                    </div>
+                    <ng-container>
                         <div class="col-xs-12">
                             <div class="d-flex single-flex">
                                 <label>Add More Details</label>
-                                <input formControlName="agentContext" type="text" class="form-control" id="context"
-                                    placeholder="Add additional details to improve the response.">
+                                <textarea class="form-control" 
+                                formControlName="agentContext" 
+                                id="context" 
+                                rows="2" 
+                                placeholder="Add additional details to improve the response.">
+                                </textarea>
                             </div>
                         </div>
                         <div class="col-xs-12">
@@ -48,9 +56,18 @@
                     </ng-container>
                     <div class="col-xs-12">
                         <div class="d-flex single-flex">
-                            <div  class="label"><label>Suggested reply</label><fa-icon (click)="refresh()" class="success" [icon]="faArrowsRotate"></fa-icon></div>
+                            <div class="label"><label>Customer Sentiment</label></div>
+                            <div class="analysis" *ngIf="!isSentimentLoading; else loader">
+                                <p class="sentiment">{{sentiment}}</p>
+                            </div>
+                            <div class="label"><label>Customer Summary</label></div>
+                            <div class="analysis" *ngIf="!isSummaryLoading; else loader">
+                                <p class="summary">{{summary}}</p>
+                            </div>
+                            <div class="label"><label>Suggested reply</label></div>
                             <ng-container *ngIf="!isLoading; else loader">
                                 <textarea class="form-control" formControlName="responseCreated" id="exampleFormControlTextarea1" rows="15"></textarea>
+                                <p class="stats" *ngIf="stats"><span>approx. {{stats}} words</span><span></span></p>
                             </ng-container>
                             <ng-template #loader>
                               <div class="square-load">  <div class="spinner"></div></div>
@@ -72,9 +89,9 @@
                         <ng-container *ngIf="isResponseGenerated">
                             <div class="btn-group w-100 d-flex" role="group">
                                 <div class="col-xs-6">
-                                    <button type="button" class="btn" (click)="insertResponse()">
-                                        <fa-icon class="" [icon]="faReply"></fa-icon>
-                                        Insert
+                                    <button type="button" class="btn" (click)="insertResponse()"  [ngClass]="{'goal': copied==true}">
+                                        <fa-icon class="" [icon]="faCopy"></fa-icon>
+                                        {{copied ? 'Copied' : 'Copy'}}
                                     </button>
                                 </div>
                                 <div class="col-xs-6">

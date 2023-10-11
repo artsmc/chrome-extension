@@ -1,13 +1,28 @@
-import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnInit, Injectable, Inject, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { faArrowsRotate, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsRotate, faCopy, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
-let CustomerData = {
-  message: '',
-  reset: false
+import { ZendeskService } from '../../services/zendesk.service';
+import { Observable } from 'rxjs';
+class CustomerData {
+    private _message: string = '';
+    private _onChange: Function | null = null;
+    get message(): string {
+        return this._message;
+    }
+    set message(value: string) {
+        this._message = value;
+        if (typeof this._onChange === 'function') {
+            this._onChange(this._message);
+        }
+    }
+    set onChange(callback: Function) {
+        this._onChange = callback;
+    }
 }
+let customerData = new CustomerData();
 @Component({
   selector: 'app-agent-response',
   templateUrl: './agent-response.component.html',
@@ -15,7 +30,7 @@ let CustomerData = {
 })
 export class AgentResponseComponent implements OnInit, AfterContentInit {
   public agentResponseForm!: FormGroup;
-  public toneSelectedValue = 'Response tone'
+  public toneSelectedValue = 'Pleasant'
   public feelingSelectedValue: string | boolean = 'Feeling Allowed';
   faRotateRight = faRotateRight;
   faCircleChevronLeft = faCircleChevronLeft;
@@ -25,80 +40,84 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   faChevronDown = faChevronDown;
   faArrowsRotate = faArrowsRotate;
   faReply = faReply;
-  toggle = false
+  faCopy = faCopy;
+  toggle = false;
+  copied = false;
   isResponseGenerated = false
   isLoading = false;
+  isSummaryLoading = false;
+  isSentimentLoading = false;
+  summary: string| null = null;
+  sentiment: string| null= null;
+  message: string| null = '';
+  messageListener: Observable<string | null> = this.zendeskService.message$;
+  stats = 0;
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
+    private zendeskService: ZendeskService,
     private router: Router,
     private elementRef: ElementRef,
     private window: Window
-  ) { }
-
+  ) { 
+  }
   ngOnInit(): void {
-    this.initializeAgentResponseForm();
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes') {
-          if (CustomerData.reset) {
-            this.resetPage();
-            CustomerData.reset = false;
-          }
-          this.agentResponseForm.controls['customerInquery'].setValue(CustomerData.message);
-        }
-      });
-    });
+    this.initializeAgentResponseForm()
+    this.zendeskService.getCustomerMessages();
   }
   ngAfterContentInit(): void {
-    this.window.onmessage = function (e) {
-      if (e.data && e.data.send && typeof e.data.send === 'string') {
-        CustomerData.message = e.data.send;
-        console.log(CustomerData);
+    this.messageListener.subscribe(message => {
+      // console.log({messageListener: message})
+      if(message !== this.message) {
+        this.reset();
+        this.message = message;
+        // console.log('message has been reset');
+        if(this.message !== null){
+          this.patchFormAndValidate();
+          this.insertSummary();
+          this.insertSentiment();
+        }
       }
-      if (e.data && e.data.clear) {
-        CustomerData.reset = true;
-      }
-    };
-    //create a vanilla js observer that watches for changes to the CustomerData object
+    })
   }
 
   private initializeAgentResponseForm(): void {
     this.agentResponseForm = this.formbuilder.group({
-      tone: [null, [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
+      tone: ['Pleasant', [Validators.required, Validators.pattern(/^((?!(Response tone)).)*$/)]],
       customerInquery: [''],
       responseCreated: [''],
       agentContext: [''],
-      characterLimit: [null, Validators.required],
+      wordLimit: [50, Validators.required],
       emojiAllowed: [null]
     })
   }
-  resetPage(): void {
+  public reset(): void {
+    this.zendeskService.getCustomerMessages();
     this.agentResponseForm.reset();
-    this.isLoading = false;
-    this.toneSelectedValue = 'Response tone';
+    this.agentResponseForm.patchValue({
+      customerInquery:this.message,
+      tone: this.toneSelectedValue,
+      wordLimit: 50
+    });
     this.isResponseGenerated = false;
+    this.message = null;
+    this.summary = null;
+    this.sentiment = null;
   }
   public generateResponse(): void {
     this.agentResponseForm.markAsDirty();
+    this.copied = false;
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ getTextContent: '' }, '*');
-      this.window.onmessage = function (e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          CustomerData.message = e.data.send;
-          console.log(CustomerData);
-        }
-      };
     }
     this.agentResponseForm.patchValue({
-      customerInquery: CustomerData.message,
+      customerInquery: this.message,
       tone: this.toneSelectedValue
-    });
+    })
     if (this.agentResponseForm.invalid) {
-      console.log(this.agentResponseForm)
+      // console.log(this.agentResponseForm)
       return;
     }
-    console.log(this.agentResponseForm.value)
     this.isLoading = true;
     this.userService.setResponse(this.agentResponseForm.value).subscribe((response: any) => {
       this.isLoading = false;
@@ -110,6 +129,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
         itm = itm.replace('data: ', '').replace(',  ', ', ').replace('  ', '\n').replace('  ', '\n').replace('\n', '\n\n');
         return itm;
       }).join('').split('&nbsp;').join('\n\n');
+      this.stats = message.trim().split(/\s+/).length;
       this.agentResponseForm.controls['responseCreated'].setValue('');
       this.agentResponseForm.controls['responseCreated'].setValue(message);
       this.isResponseGenerated = true
@@ -118,11 +138,52 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       this.isLoading = false;
     })
   }
+
+public patchFormAndValidate(): boolean {
+  this.zendeskService.getCustomerMessages();
+  this.agentResponseForm.patchValue({
+    customerInquery:this.message,
+    tone: this.toneSelectedValue
+  });
+
+  if (this.agentResponseForm.invalid) {
+    // console.log(this.agentResponseForm)
+    return false;
+  }
+
+  return true;
+}
+
+public processResponse(response: any): string {
+  return response.split('\n\n').map((item: string) => {
+    let itm = item;
+    if(!item.includes('data: ') || !item.includes('data:')){
+      itm = 'data: \n';
+    } 
+    itm = itm.replace('data: ', '').replace(',  ', ', ').replace('  ', '\n').replace('  ', '\n').replace('\n', '\n\n');
+    return itm;
+  }).join('').split('&nbsp;').join('\n\n');
+}
+
+public insertSummary(): void {
+  this.isSummaryLoading = true;
+  this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {
+    this.isSummaryLoading = false;
+    this.summary = this.processResponse(response);
+  });
+}
+
+public insertSentiment(): void {
+  this.isSentimentLoading = true;
+  this.userService.setSentiment(this.agentResponseForm.value).subscribe((response: any) => {
+    this.isSentimentLoading = false;
+    this.sentiment = this.processResponse(response);
+  });
+}
   public insertResponse(): void {
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ recieve: this.agentResponseForm.controls['responseCreated'].value }, '*');
-      // reset all values on agentResponseForm
-      this.agentResponseForm.controls['responseCreated'].setValue('');
+      this.copied = true;
     }
   }
   public getFeelings(feeling: boolean) {
@@ -137,15 +198,7 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   }
 
   public refresh(): void {
-    if (this.window && this.window.top && this.window.top.postMessage) {
-      this.window.top.postMessage({ getTextContent: '' }, '*');
-      this.window.onmessage = function (e) {
-        if (e.data && e.data.send && typeof e.data.send === 'string') {
-          CustomerData.message = e.data.send;
-          console.log(CustomerData);
-        }
-      };
-    }
+    this.zendeskService.getCustomerMessages();
   }
 
   public openDropdown(): void {

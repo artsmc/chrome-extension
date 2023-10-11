@@ -31,10 +31,10 @@ class OpenAIService extends UtilService {
         return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
     }
     public async BuildCustomSentimentStream(response:IResponse, options: IOpenAICompletionDefault) {
-        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+        return (await this.OpenAIChatRequest(this.promptSentiment(response), options)).choices[0].message.content;
     }
     public async BuildCustomSummaryStream(response:IResponse, options: IOpenAICompletionDefault) {
-        return (await this.OpenAIChatRequest(this.promptReponse(response), options)).choices[0].message.content;
+        return (await this.OpenAIChatRequest(this.promptSummary(response), options)).choices[0].message.content;
     }
     public promptSummary(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary.`;
@@ -43,6 +43,10 @@ class OpenAIService extends UtilService {
     public promptSentiment(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery} describe a conversation sentiment.`;
         return this.promptSentimentGPT(script);
+    }
+    public promptSummarySentiment(response: IResponse): {role:string,content:string}[]  {
+        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary and describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary and describe a conversation sentiment.`;
+        return this.promptSummaryGPT(script);
     }
     public promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
@@ -55,7 +59,7 @@ class OpenAIService extends UtilService {
             feelingsAllowed: response.feelingsAllowed
         });
     }
-    private promptGPT(prompt: string , rules: {tone:string,emojiPermission:boolean, emojiAllowed:string, agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
+    private promptGPT(prompt: string , rules: {tone:string, emojiAllowed:string, agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         const script = `${prompt}:\n`;
         return this.systemSettingsGPT(script, {
             tone: rules.tone,
@@ -66,6 +70,10 @@ class OpenAIService extends UtilService {
             feelingsAllowed: rules.feelingsAllowed
         });
     }
+    private promptSummarySentimentGPT(prompt: string ): {role:string,content:string}[] {
+        const script = `${prompt}:\n`;
+        return this.systemSummarySentimentGPT(script);
+    }
     private promptSummaryGPT(prompt: string ): {role:string,content:string}[] {
         const script = `${prompt}:\n`;
         return this.systemSummaryGPT(script);
@@ -74,21 +82,16 @@ class OpenAIService extends UtilService {
         const script = `${prompt}:\n`;
         return this.systemSentimentGPT(script);
     }
-    private systemSettingsGPT(script: string, rules: {tone:string, emojiPermission:boolean, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
+    private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         return [
             {"role": "system", "content": "you are a customer care representative."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
             {"role": "system", "content": `you are writing for a different culture. In the UK, you are nice but very matter of fact and to the point. The customer appriciates the agent that is clear on the issue and focuses on the solution.`},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [agent]."`},
-            {"role": "system", "content": "The customer name may or may not be included, please reference them as [customer] in the response and inject their name when possible to personalize the response."},
-            {"role": "system", "content": `Things to consider when interacting with customers:
-                1) if this is a first interaction state "thanks for reaching out" in the opening.
-                2) if there have been multiple interactions express more understanding and try to move to the resolution considering the context.
-                3) If the issue has been resolved then consider you message to be a follow up ensuring you addressed the issue correctly.
-            `},
-            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding, but very matter of fact and to the issue.'"},
-            {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}. Only supply emoji If the permission is allowed. Emoji Permission is currently: ${rules.emojiPermission}. This can be overridden by the agent if they provided context.`},
+            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]."`},
+            {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
+            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
+            {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: the response should be limited to ${rules.wordLimit} words`},
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
             {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", you are allowed to express feelings in your response.`},
@@ -96,12 +99,26 @@ class OpenAIService extends UtilService {
 
         ]
     }
+    private systemSummarySentimentGPT(script: string): {role:string,content:string}[] {
+        return [
+            {"role": "system", "content": "You are a RFC8259 compliant JSON response bot."},
+            {"role": "user", "content": `${script}`},
+            {"role": "system", "content": `Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation: {summary: '{return a string that takes on the following rules:
+                1) Avoid being redundant in language and phrasing. 
+                2) Keep resonse to 20 words or less. 
+                3) Feel human, you are summarizing the conversation for the agent reading.
+                4) If possible pull in customer name for the response. If not just speak to the issue the customer has.
+                5) Most important, to pay close attention to the last message of the conversation.
+            }', sentiment: '{Strict Rules to follow: provide a single emoji and a 2 word comma seperated seniments. DO not provide and explaination}'}`},
+            {"role": "system", "content": "1) only provide a  RFC8259 compliant JSON response. 2) ALWAYS return just the JSON. 3) every JSON object includes a summary and sentiment."},
+        ]
+    }
     private systemSummaryGPT(script: string): {role:string,content:string}[] {
         return [
             {"role": "system", "content": "you are a skilled writer."},
             {"role": "user", "content": `${script}`},
             {"role": "system", "content": "If possible pull in customer name for the response. If not just speak to the issue the customer has"},
-            {"role": "system", "content": "Strict rulles to follow: 1) Avoid being redundant in language and phrasing. 2) Keep resonse to 20 words or less. 3) Feel human, you are summarizing the conversation for the agent reading. 4) only summarize the last message, and if its from the agent consider the issue resolved."},
+            {"role": "system", "content": "Strict rulles to follow: 1) Avoid being redundant in language and phrasing. 2) Keep resonse to 20 words or less. 3) Feel human, you are summarizing the conversation for the agent reading."},
 
         ]
     }
