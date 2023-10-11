@@ -37,7 +37,7 @@ class OpenAIService extends UtilService {
         return (await this.OpenAIChatRequest(this.promptSummary(response), options)).choices[0].message.content;
     }
     public async BuildCustomSentimentSummaryResponse(response:IResponse, options: IOpenAICompletionDefault) {
-        return (await this.OpenAIChatRequest(this.promptSummarySentiment(response), options)).choices[0].message.content;
+        return (await this.OpenAIChatRequest(this.promptSummarySentiment(response), options));
     }
     public promptSummary(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary.`;
@@ -49,7 +49,7 @@ class OpenAIService extends UtilService {
     }
     public promptSummarySentiment(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a conversation summary and describe a conversation sentiment.`:`Given the following customer inquery: ${response.customerInquery}  write a conversation summary and describe a conversation sentiment.`;
-        return this.promptSummaryGPT(script);
+        return this.promptSummarySentimentGPT(script);
     }
     public promptReponse(response: IResponse): {role:string,content:string}[]  {
         const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
