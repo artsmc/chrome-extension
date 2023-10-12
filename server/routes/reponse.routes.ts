@@ -22,8 +22,8 @@ router.post('/agent-request/', (req: Request, res: Response) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders(); 
   const completion = openai.createChatCompletion({
-    // "model":"gpt-4-0613",
-    "model":"gpt-3.5-turbo",
+    "model":"gpt-4-0613",
+    // "model":"gpt-3.5-turbo",
     "stream": true,
     messages: openAIService.promptReponse(req.body)
   }, {
@@ -59,8 +59,8 @@ router.post('/agent-sentiment/', (req: Request, res: Response) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders(); 
   const completion = openai.createChatCompletion({
-    // "model":"gpt-4-0613",
-    "model":"gpt-3.5-turbo",
+    "model":"gpt-4-0613",
+    // "model":"gpt-3.5-turbo",
     "stream": true,
     messages: openAIService.promptSentiment(req.body)
   }, {
@@ -96,8 +96,8 @@ router.post('/agent-summary/', (req: Request, res: Response) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders(); 
   const completion = openai.createChatCompletion({
-    // "model":"gpt-4-0613",
-    "model":"gpt-3.5-turbo",
+    "model":"gpt-4-0613",
+    // "model":"gpt-3.5-turbo",
     "stream": true,
     messages: openAIService.promptSummary(req.body)
   }, {
@@ -126,7 +126,7 @@ router.post('/agent-summary/', (req: Request, res: Response) => {
   });
 });
 router.post('/agent-summary-sentiment/', (req: Request, res: Response) => {
-  openAIService.BuildCustomSentimentSummaryResponse(req.body,{model:'gpt-3.5-turbo'}).then((response: any) => {
+  openAIService.BuildCustomSentimentSummaryResponse(req.body,{model:'gpt-4-0613'}).then((response: any) => {
     res.status(200).json(response);
   }).catch((error) => {
     res.status(400).json(error);
