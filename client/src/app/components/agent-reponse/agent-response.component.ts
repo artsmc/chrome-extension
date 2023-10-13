@@ -5,7 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { faArrowsRotate, faCopy, faChevronCircleLeft, faChevronDown, faChevronUp, faReply, faRotateRight, faCircleChevronLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 import { ZendeskService } from '../../services/zendesk.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 class CustomerData {
     private _message: string = '';
     private _onChange: Function | null = null;
@@ -49,6 +49,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   isSentimentLoading = false;
   summary: string| null = null;
   sentiment: string| null= null;
+  summ: Observable<string | null> = of(null);
+  sent: Observable<string | null> = of(null);
   message: string| null = '';
   messageListener: Observable<string | null> = this.zendeskService.message$;
   stats = 0;
@@ -74,8 +76,6 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
         // console.log('message has been reset');
         if(this.message !== null){
           this.patchFormAndValidate();
-          this.insertSummary();
-          this.insertSentiment();
           this.insertSummarySentiment();
         }
       }
@@ -167,27 +167,20 @@ public processResponse(response: any): string {
 }
 public insertSummarySentiment(): void {
   this.isSummaryLoading = true;
+  this.isSentimentLoading = true;
+  this.summ = of(null);
+    this.sent = of(null);
   this.userService.setSummarySentiment(this.agentResponseForm.value).subscribe((response: any) => {
+    const content = JSON.parse(response.choices[0].message.content);
+    this.summary = this.processResponse(content.summary);
+    this.sentiment = this.processResponse(content.sentiment);
+    this.summ = of(content.summary);
+    this.sent = of(content.sentiment);
     this.isSummaryLoading = false;
-    // this.summary = this.processResponse(response);
-    console.log(response)
-  });
-}
-public insertSummary(): void {
-  this.isSummaryLoading = true;
-  this.userService.setSummary(this.agentResponseForm.value).subscribe((response: any) => {
-    this.isSummaryLoading = false;
-    this.summary = this.processResponse(response);
+    this.isSentimentLoading = false;
   });
 }
 
-public insertSentiment(): void {
-  this.isSentimentLoading = true;
-  this.userService.setSentiment(this.agentResponseForm.value).subscribe((response: any) => {
-    this.isSentimentLoading = false;
-    this.sentiment = this.processResponse(response);
-  });
-}
   public insertResponse(): void {
     if (this.window && this.window.top && this.window.top.postMessage) {
       this.window.top.postMessage({ recieve: this.agentResponseForm.controls['responseCreated'].value }, '*');

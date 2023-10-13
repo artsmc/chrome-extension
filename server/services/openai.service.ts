@@ -85,11 +85,11 @@ class OpenAIService extends UtilService {
     }
     private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         return [
-            {"role": "system", "content": "you are a customer care representative."},
+            {"role": "system", "content": "you are a customer success executive."},
             {"role": "system", "content": `you write resonses that are ${rules.tone} in tone`},
             {"role": "system", "content": `you are writing for a different culture. In the UK, you are nice but very matter of fact and to the point. The customer appriciates the agent that is clear on the issue and focuses on the solution.`},
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]."`},
+            {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]. Your opening is informal may start with Hi, [customer] thanks for reaching out, or some sort of casual variant."`},
             {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
             {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
@@ -106,7 +106,7 @@ class OpenAIService extends UtilService {
             {"role": "user", "content": `${script}`},
             {"role": "system", "content": `Do not include any explanations, only provide a  RFC8259 compliant JSON response  following this format without deviation: {summary: '{return a string that takes on the following rules:
                 1) Avoid being redundant in language and phrasing. 
-                2) Keep resonse to 20 words or less. 
+                2) Keep resonse to 150 words or less. 
                 3) Feel human, you are summarizing the conversation for the agent reading.
                 4) If possible pull in customer name for the response. If not just speak to the issue the customer has.
                 5) Most important, to pay close attention to the last message of the conversation.
@@ -128,7 +128,6 @@ class OpenAIService extends UtilService {
             {"role": "system", "content": "you are a skilled writer."},
             {"role": "user", "content": `${script}`},
             {"role": "system", "content": "Strict Rules to follow: provide a single emoji and a 2 word comma seperated seniments. DO not provide and explaination"},
-
         ]
     }
     

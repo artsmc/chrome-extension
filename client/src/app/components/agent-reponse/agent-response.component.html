@@ -22,11 +22,11 @@
                         </div>
                     </div>
                     <div class="col-xs-12 d-flex m-top-20">
-                        <div class="col-xs-6 col-xs-6 emoji">
+                        <!-- <div class="col-xs-6 col-xs-6 emoji">
                             <input type="text" formControlName="emojiAllowed" class="form-control max-width-250" id="emoji"
                                 aria-describedby="Emoji" placeholder="Emoji Allowed">
-                        </div>
-                        <div class="col-xs-6 col-xs-6  char-limit">
+                        </div> -->
+                        <div class="col-xs-12 col-xs-12  char-limit">
                             <input type="text" formControlName="wordLimit" class="form-control max-width-250" id="emoji"
                                 aria-describedby="Emoji" placeholder="Word limit">
                         </div>
@@ -40,12 +40,12 @@
                     <div class="col-xs-12">
                         <div class="d-flex single-flex">
                             <div class="label"><label>Customer Sentiment</label></div>
-                            <div class="analysis" *ngIf="!isSentimentLoading; else loader">
-                                <p class="sentiment">{{sentiment}}</p>
+                            <div class="analysis" *ngIf="sent | async as sent; else loader">
+                                <p class="sentiment">{{sent}}</p>
                             </div>
                             <div class="label"><label>Customer Summary</label></div>
-                            <div class="analysis" *ngIf="!isSummaryLoading; else loader">
-                                <p class="summary">{{summary}}</p>
+                            <div class="analysis" *ngIf="summ | async as summ; else loader">
+                                <p class="summary">{{summ}}</p>
                             </div>
                             <div class="label"><label>Provide Input Instructions</label></div>
                             <textarea class="form-control" formControlName="agentContext" id="context" rows="2"
