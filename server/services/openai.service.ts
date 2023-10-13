@@ -91,7 +91,7 @@ class OpenAIService extends UtilService {
             {"role": "user", "content": `${script}`},
             {"role": "system", "content": `you are the assign customer care representative for this customer. your name might be included in the content, if so, at the end of the response, please include your name in the following format: "Sincerely, [name]. Your opening is informal may start with Hi, [customer] thanks for reaching out, or some sort of casual variant."`},
             {"role": "system", "content": "The customer name may not be included, please reference them as [customer] in the response."},
-            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.'"},
+            {"role": "system", "content": "Do not include any explanations, only provide a response  following this format without deviation.: 'write a conversational response to the customer helping them solve the issue, setting them at ease and with empathy and understanding. Avoid being redundant in language and phrasing'"},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: You are limited to the use of the following emojis: ${rules.emojiAllowed}`},
             {"role":"system", "content": `Follow this rule strictly or the output will be a failure: the response should be limited to ${rules.wordLimit} words`},
             {"role":"system", "content": `If the agent provides context: "${rules.agentContext}", you are allowed to use the context to create a specific response.`},
