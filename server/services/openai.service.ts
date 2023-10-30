@@ -52,7 +52,7 @@ class OpenAIService extends UtilService {
         return this.promptSummarySentimentGPT(script);
     }
     public promptReponse(response: IResponse): {role:string,content:string}[]  {
-        const script = response.agentContext!==undefined? `Given the following customer inquery: ${response.customerInquery} and the following agent context: ${response.agentContext} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`: `Given the following customer inquery: ${response.customerInquery} write a compelling response to the customer helping them solve the issue, setting them at ease and with empathy and understanding.`;
+        const script = response.agentContext!==undefined? ` conversation:${response.customerInquery},agent context: ${response.agentContext}`: `conversation: ${response.customerInquery}`;
         return this.promptGPT(script, {
             tone: response.tone,
             emojiAllowed: response.emojiAllowed,
