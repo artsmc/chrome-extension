@@ -131,8 +131,7 @@ class OpenAIService extends UtilService {
                         I've gone ahead and manually changed your delivery date to Friday, July 28 as requested. You should now see this updated in your account and If there are any other adjustments or issues, please let me know.
                     Reply: 
                     (use standard British English spelling)
-            `},
-            {"role":"system", "content": `If feelings are allowed: "${rules.feelingsAllowed}", Response tone should be friendly. otherwise ignore this rule and respect the previous lines.`},
+            `}
         ]
     }
     private systemSummarySentimentGPT(script: string): {role:string,content:string}[] {
