@@ -86,7 +86,7 @@ class OpenAIService extends UtilService {
     private systemSettingsGPT(script: string, rules: {tone:string, emojiAllowed:string,agentContext: string, feelingsAllowed: boolean, wordLimit: number}): {role:string,content:string}[] {
         return [
             {"role": "user", "content": `${script}`},
-            {"role": "system", "content": `Your first directive is to understand your job:
+            {"role": "system", "content": `
                 You are required to respond to customer queries in the stipulated tone or voice, queries will be about customer orders, late deliveries, missing items, and general queries.
                 The formula for response is as follows, the response formular should not deviate from this :                    
                     Hi {Customer First Name},
