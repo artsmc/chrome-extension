@@ -2,6 +2,7 @@ import { Component, HostListener, ViewChild } from '@angular/core';
 import { ZendeskService } from './services/zendesk.service';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
+import {  faRotateRight, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 import { Observable, first } from 'rxjs';
 // // @ts-ignore
 // import * as $ from 'jquery';
@@ -15,6 +16,8 @@ import { Observable, first } from 'rxjs';
 })
 export class AppComponent {
   title = 'Website Comment Chrome Extension';
+  faRotateRight = faRotateRight;
+  faArrowsRotate = faArrowsRotate;
   @ViewChild("offcanvasRight") offcanvasRight: any;
   private offcanvasElement: any
   public isOffcanvasOpen = false;
@@ -59,6 +62,12 @@ export class AppComponent {
   getZendeskMessages() {
     if(this.window && this.window.top && this.window.top.postMessage){
       this.window.top.postMessage({ getTextContent: '' }, '*');
+    }
+  }
+  resetZendeskMessages() {
+    if(this.window && this.window.top && this.window.top.postMessage){
+      this.window.top.postMessage({ resetApp: '' }, '*');
+      this.zendeskService.resetMessage();
     }
   }
 

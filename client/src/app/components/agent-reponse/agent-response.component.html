@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="col-xs-12">
-                        <div class="d-flex single-flex">
+                        <div class="d-flex single-flex"><fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon>
                             <div class="label"><label>Customer Sentiment</label></div>
                             <div class="analysis" *ngIf="sent | async as sent; else loader">
                                 <p class="sentiment">{{sent}}</p>
@@ -60,7 +60,7 @@
                               <div class="square-load">  <div class="spinner"></div></div>
                             </ng-template>
                             
-                            <!-- <fa-icon (click)="refresh()" class="icon-user" [icon]="faRotateRight"></fa-icon> -->
+                            
                         </div>
                     </div>
                     <div class="col-xs-12 text-center">

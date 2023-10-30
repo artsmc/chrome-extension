@@ -14,6 +14,23 @@
     rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
+.window{
+  position: relative;
+}
+.icon-user {
+  position: absolute;
+  right: 60px;
+  top:20px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all ease 200ms;
+
+  &:focus,
+  &:active,
+  &:hover {
+    color: #03363d;
+  }
+}
 .footer{
   display: flex;
   flex-direction: column;

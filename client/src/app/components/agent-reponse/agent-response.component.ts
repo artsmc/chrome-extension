@@ -52,6 +52,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   summ: Observable<string | null> = of(null);
   sent: Observable<string | null> = of(null);
   message: string| null = '';
+  agentResponse: string| null = '';
+  agentContext: string| null = '';
   messageListener: Observable<string | null> = this.zendeskService.message$;
   stats = 0;
   constructor(
@@ -64,11 +66,14 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
   ) { 
   }
   ngOnInit(): void {
-    this.initializeAgentResponseForm()
+    this.initializeAgentResponseForm();
     this.zendeskService.getCustomerMessages();
   }
   ngAfterContentInit(): void {
     this.messageListener.subscribe(message => {
+      if(message === null) {
+        this.restart();
+      }
       // console.log({messageListener: message})
       if(message !== this.message) {
         this.reset();
@@ -88,19 +93,31 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
       customerInquery: [''],
       responseCreated: [''],
       agentContext: [''],
-      wordLimit: [50, Validators.required],
+      wordLimit: [100, Validators.required],
       emojiAllowed: [null]
     })
+  }
+  public restart(): void {
+    this.agentResponse = null;
+    this.agentContext = null;
+    this.stats = 0;
+    this.reset();
+    this.initializeAgentResponseForm();
+    this.zendeskService.getCustomerMessages();
   }
   public reset(): void {
     this.zendeskService.getCustomerMessages();
     this.agentResponseForm.reset();
     this.agentResponseForm.patchValue({
       customerInquery:this.message,
+      responseCreated: this.agentResponse,
+      agentContext: this.agentContext,
       tone: this.toneSelectedValue,
-      wordLimit: 50
+      wordLimit: 100
     });
-    this.isResponseGenerated = false;
+    if(this.agentResponse === null) {
+      this.isResponseGenerated = false;
+    }
     this.message = null;
     this.summary = null;
     this.sentiment = null;
@@ -131,6 +148,8 @@ export class AgentResponseComponent implements OnInit, AfterContentInit {
         return itm;
       }).join('').split('&nbsp;').join('\n\n');
       this.stats = message.trim().split(/\s+/).length;
+      this.agentResponse = message;
+      this.agentContext = this.agentResponseForm.controls['agentContext'].value;
       this.agentResponseForm.controls['responseCreated'].setValue('');
       this.agentResponseForm.controls['responseCreated'].setValue(message);
       this.isResponseGenerated = true
@@ -199,7 +218,9 @@ public insertSummarySentiment(): void {
   }
 
   public refresh(): void {
+    this.message = null;
     this.zendeskService.getCustomerMessages();
+    this.initializeAgentResponseForm();
   }
 
   public openDropdown(): void {

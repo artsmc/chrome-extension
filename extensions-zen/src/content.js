@@ -7,11 +7,33 @@ let activeId = '';
 let previousUrl = '';
 let state = 'closed';
 let currentUrl = window.location.href;
+let initialized = false;
 const uid = function(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 document.addEventListener('click', (event) => {
   // console.log(event)
+  reset();
+});
+// Handle messages from the iframe
+window.onmessage = function(e) {
+    if(e.data) {
+      // console.log(e.data)
+    }
+    if (e.data && e.data.recieve) {
+      navigator.clipboard.writeText(e.data.recieve);
+    }
+    if(e.data && e.data.getTextContent!==undefined) {
+      reloadData();
+    } 
+    if(e.data && e.data.resetApp!==undefined) {
+      reset();
+    }
+    if(e.data && e.data.system) {
+      toggle()
+    }
+};
+function reset() {
   setTimeout(() => {
     if (window.location.href.includes('/agent/tickets/') && window.location.pathname.split('/').length <= 4) {
       // console.log('set previousUrl button listener');
@@ -24,22 +46,7 @@ document.addEventListener('click', (event) => {
     currentUrl = window.location.href;
     // console.log("CLICKED", window.location.href, {currentUrl, previousUrl});
   }, 300);
-});
-// Handle messages from the iframe
-window.onmessage = function(e) {
-    if(e.data) {
-      // console.log(e.data)
-    }
-    if (e.data && e.data.recieve) {
-      navigator.clipboard.writeText(e.data.recieve);
-    }
-    if(e.data && e.data.getTextContent!==undefined) {
-      reloadData();
-    }
-    if(e.data && e.data.system) {
-      toggle()
-    }
-};
+}
 function addLocationObserver(callback) {
   // Options for the observer (which mutations to observe)
   const config = { childList: true, subtree: false }
@@ -119,6 +126,12 @@ function insertCloseWatch() {
         });
       }
     }
+  }
+  if(!initialized) {
+    intitialized = true;
+    createID();
+    setActiveId();
+    reloadData();
   }
 }
 function removedClosedIDs() {
