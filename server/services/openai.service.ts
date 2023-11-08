@@ -167,7 +167,7 @@ class OpenAIService extends UtilService {
     
     private OpenAIChatRequest(messages: {role:string,content:string}[],options?:IOpenAICompletionDefault, quality?: string): Promise<{ choices: [{ message:{role:string, content: string}, finish_reason: string; }]; }> {
         return new Promise((resolve, reject) => {
-            const modelId = quality ? quality : 'gpt-4-0613';
+            const modelId = quality ? quality : 'gpt-4-1106-preview';
             const settings: IOpenAICompletionDefault = {
                 model: modelId,
             };
