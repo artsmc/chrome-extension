@@ -20,50 +20,61 @@ router.post('/agent-request/', (req: Request, res: Response) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders(); 
+  res.flushHeaders();
+
   const completion = openai.createChatCompletion({
     model: "gpt-4-1106-preview",
     stream: true,
-    messages: openAIService.promptReponse(req.body)
+    messages: openAIService.promptReponse(req.body) // correct this if it's supposed to be promptResponse
   }, {
     responseType: 'stream'
   });
 
   let buffer = ''; // Buffer to accumulate stream chunks
+  let responseHasStarted = false;
+
   completion.then(resp => {
-    resp.data.on('data', data => {
+    resp.data.on('data', (data) => {
       buffer += data.toString(); // Append new data to buffer
-  
-      // Process buffer line by line
+
       let index;
-      while ((index = buffer.indexOf('\n')) >= 0) { // While there are newlines in the buffer
-        let line = buffer.substring(0, index); // Get line from buffer
-        buffer = buffer.substring(index + 1); // Remove processed line from buffer
-        
-        if (line.trim() === '') { // Skip empty lines
+      while ((index = buffer.indexOf('\n')) >= 0) {
+        const line = buffer.substring(0, index);
+        buffer = buffer.substring(index + 1);
+
+        if (line.trim() === '') {
           continue;
         }
-  
+
         if (line === 'data: [DONE]') {
           res.end();
           return;
         }
-  
+
         try {
           const message = line.replace(/^data: /, '');
-          const parsed = JSON.parse(message); // Parse complete line as JSON
-          const word = parsed.choices[0].delta.content ?? ' '; // Use Nullish Coalescing Operator for safer fallback
+          const parsed = JSON.parse(message);
+          const word = parsed.choices[0].delta.content ?? ' ';
           res.write(`data: ${word}\n\n`);
+          responseHasStarted = true;
         } catch (error) {
-          // Handle JSON parse errors without terminating the entire stream
           console.error(error);
-          // Consider writing an error to the client if necessary
+          if (!responseHasStarted) {
+            res.status(500).json({ message: error.message });
+          }
         }
       }
     });
-  }).catch(error => {
-    console.log(error);
-    res.status(500).json({ message: error.message }); // Send error response with status code
+
+    resp.data.on('end', () => {
+      res.end(); // End the response when the stream ends
+    });
+
+  }).catch((error) => {
+    console.error(error);
+    if (!responseHasStarted) {
+      res.status(500).json({ message: error.message });
+    }
   });
 });
 router.post('/agent-sentiment/', (req: Request, res: Response) => {
