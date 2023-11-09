@@ -32,7 +32,6 @@ router.post('/agent-request/', (req: Request, res: Response) => {
 
   let buffer = ''; // Buffer to accumulate stream chunks
   let responseHasStarted = false;
-
   completion.then(resp => {
     resp.data.on('data', (data) => {
       buffer += data.toString(); // Append new data to buffer
